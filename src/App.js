@@ -1,24 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
-
+import {publicRouter} from "./config/routes/index"
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Routes>
+        {publicRouter.map((routers) => {
+            return routers.map((route, index) => {
+              return (
+                <Route path={route.path} element={route.element} key={index}>
+                  {route.index ? <Route index element={route.index} /> : null}
+                  {route.children
+                    ? route.children.map(({ path, Component }, index) => {
+                        return (
+                          <Route
+                            path={path}
+                            element={<Component />}
+                            key={index}
+                          />
+                        );
+                      })
+                    : null}
+                </Route>
+              );
+            });
+          })}
+        </Routes>
+    </Router>
   );
 }
 
