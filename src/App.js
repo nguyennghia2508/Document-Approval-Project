@@ -1,13 +1,33 @@
-import { Route, Routes } from 'react-router-dom';
-import Login from './pages/Login/index.jsx';
-import Homepage from './pages/Homepage/index.jsx';
-
+import logo from './logo.svg';
+import './App.css';
+import {publicRouter} from "./config/routes/index"
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<Homepage />}></Route>
-      <Route path='/login' element={<Login />}></Route>
-    </Routes>
+    <Router>
+        <Routes>
+        {publicRouter.map((routers) => {
+            return routers.map((route, index) => {
+              return (
+                <Route path={route.path} element={route.element} key={index}>
+                  {route.index ? <Route index element={route.index} /> : null}
+                  {route.children
+                    ? route.children.map(({ path, Component }, index) => {
+                        return (
+                          <Route
+                            path={path}
+                            element={<Component />}
+                            key={index}
+                          />
+                        );
+                      })
+                    : null}
+                </Route>
+              );
+            });
+          })}
+        </Routes>
+    </Router>
   );
 }
 
