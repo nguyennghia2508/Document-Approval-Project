@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { Divider } from 'antd';
-
 const Container = styled.div`
   display: flex;
   justify-content: center;
