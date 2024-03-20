@@ -58,7 +58,6 @@ const CustomTable = ({
             {list.length > 0 ? (
                 <div className={`table_pagination ${className ? className : ""}`}>
                 <Pagination
-                    style={{justifyContent}}
                     itemRender={itemRender}
                     current={no}
                     onChange={handleChangePage}
