@@ -1,10 +1,12 @@
 .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     background-color: #167c82;
     font-size: 14px;
-    position: relative;
-    top: 50px;
+    // top: 50px;
     padding: 5px 40px;
     color: #fff;
 
