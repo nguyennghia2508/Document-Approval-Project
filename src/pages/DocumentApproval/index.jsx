@@ -1,4 +1,4 @@
-import CustomTable from "../../Components/CustomTable"
+import CustomTable from "../../components/CustomTable"
 import "./style.scss"
 import { useState, useEffect } from "react";
 const DocumentApproval = () => {
