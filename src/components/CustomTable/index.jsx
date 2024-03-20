@@ -1,4 +1,4 @@
-import { Table,Pagination } from "antd"
+import { Table, Pagination } from "antd"
 import "./style.scss"
 
 const CustomTable = ({
@@ -15,15 +15,15 @@ const CustomTable = ({
     columns = null,
     className = null,
     pageSize = 5,
-    scroll=null,
-    useText=false,
+    scroll = null,
+    useText = false,
 }) => {
     const handleChangePage = (page) => {
         // setCurrent(page);
         if (onChange) {
-          onChange(page);
+            onChange(page);
         }
-      };
+    };
     // const showTotal = () => {
     // const start = (no - 1) * pageSize + 1;
     // const end = Math.min(no * pageSize, totalItems);
@@ -41,7 +41,7 @@ const CustomTable = ({
         }
         return originalElement;
     };
-    
+
 
     return (
         <div className={`table_container ${className ? className : ""}`}>
@@ -57,16 +57,15 @@ const CustomTable = ({
             </Table>
             {list.length > 0 ? (
                 <div className={`table_pagination ${className ? className : ""}`}>
-                <Pagination
-                    style={{justifyContent}}
-                    itemRender={itemRender}
-                    current={no}
-                    onChange={handleChangePage}
-                    total={totalItems} // Provide the totalItems prop here
-                    pageSize={pageSize} // Specify the number of items per page
-                    showSizeChanger={false} // Hide the pageSize changer
-                />
-            </div>
+                    <Pagination
+                        itemRender={itemRender}
+                        current={no}
+                        onChange={handleChangePage}
+                        total={totalItems} // Provide the totalItems prop here
+                        pageSize={pageSize} // Specify the number of items per page
+                        showSizeChanger={false} // Hide the pageSize changer
+                    />
+                </div>
             ) : (
                 <></>
             )}
