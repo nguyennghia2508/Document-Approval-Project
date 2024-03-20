@@ -5,8 +5,6 @@ import DocumentApproval from '../../pages/DocumentApproval';
 import Login from '../../pages/Login';
 import MainLayout from '../../layouts/main/MainLayout';
 
-import MainLayout from '../../layouts/main/MainLayout';
-
 
 const mainRouter = [
   {
