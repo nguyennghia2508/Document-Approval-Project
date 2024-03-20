@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button, Input, Space } from 'antd';
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const Container = styled.div`
   display: flex;
@@ -66,15 +66,6 @@ const Form = styled.form`
   flex-direction: column;
   gap: 32px;
   margin-top: 32px;
-`;
-
-const LoginButton = styled.button`
-  border-radius: 0.5rem;
-  border: 1px solid black;
-  color: white;
-  padding: 4px;
-  background-image: linear-gradient(to top right, #ff0, #800080);
-  background-color: #ff0;
 `;
 
 const Login = () => {
