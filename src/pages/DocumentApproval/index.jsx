@@ -1,6 +1,9 @@
+import MainLayout from '../../layouts/main/MainLayout'
 const DocumentApproval = () => {
     return (
-        <span>Hello</span>
+        <MainLayout>
+            <span>Hello</span>
+        </MainLayout>
     )
 }
 
