@@ -1,4 +1,7 @@
+import { Navigate } from 'react-router';
+import NotFound from '../../pages/404';
 import DocumentApproval from '../../pages/DocumentApproval';
+import Homepage from '../../pages/Homepage';
 import Login from '../../pages/Login';
 import Header from '../../pages/Header';
 import Sidebar from '../../pages/Sidebar';
@@ -8,7 +11,7 @@ import Footer from '../../pages/Footer';
 const mainRouter = [
   {
     path: '/',
-    //   element: <MainLayout />,
+    element: <Homepage />,
     children: [
       {
         path: '/avn/documentapproval',
@@ -21,23 +24,14 @@ const mainRouter = [
     element: <Login />,
   },
   {
-    path: '/header',
-    element: <Header />,
+
+    path: '*',
+    element: <Navigate to='/404' />,
   },
   {
-    path: '/sidebar',
-    element: <Sidebar />,
+    path: '/404',
+    element: <NotFound />,
   },
-  {
-    path: '/footer',
-    element: <Footer />,
-  },
-
-
-  // {
-  //   path: '/not-found',
-  //   element: <NotFound />,
-  // },
 ];
 
 export default mainRouter;

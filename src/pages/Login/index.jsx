@@ -1,11 +1,20 @@
 import styled from 'styled-components';
+import { Button, Input, Space } from 'antd';
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router';
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100dvh;
-  background: #42e6f5;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    225deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(131, 164, 179, 1) 50%,
+    rgba(0, 212, 255, 1) 100%
+  );
 `;
 
 const InnerContainer = styled.div`
@@ -16,11 +25,12 @@ const InnerContainer = styled.div`
   justify-content: center;
   align-items: center;
   border: 1px solid;
+  border-radius: 16px;
   background: #fff;
 `;
 
 const LeftContainer = styled.div`
-display: block
+  display: block;
   width: 50%;
   height: 100%;
 `;
@@ -31,10 +41,11 @@ const InnerLeftContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%;
+  max-width: 400px;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  border-radius: 16px;
 `;
 
 const RightContainer = styled.div`
@@ -57,42 +68,46 @@ const Form = styled.form`
   margin-top: 32px;
 `;
 
-const Email = styled.div``;
-
-const Password = styled.div``;
-
-const Input = styled.input`
-  display: block;
-  width: 100%;
-`;
-
 const LoginButton = styled.button`
   border-radius: 0.5rem;
-  border: 1px solid black
+  border: 1px solid black;
   color: white;
+  padding: 4px;
+  background-image: linear-gradient(to top right, #ff0, #800080);
+  background-color: #ff0;
 `;
 
 const Login = () => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
   return (
     <Container>
       <InnerContainer>
         <LeftContainer>
           <InnerLeftContainer>
-            <Image src='https://images.unsplash.com/photo-1609692814859-9ebe00526a8e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'></Image>
+            <Image src='https://plus.unsplash.com/premium_photo-1683751113164-ba68afd98f6e?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'></Image>
           </InnerLeftContainer>
         </LeftContainer>
         <RightContainer>
           <Title>LOGIN</Title>
           <Form>
-            <Email>
-              <label>Email</label>
-              <Input></Input>
-            </Email>
-            <Password>
-              <label>Password</label>
-              <Input></Input>
-            </Password>
-            <LoginButton>LOGIN</LoginButton>
+            <Input placeholder='Email' />
+            <Space
+              direction='horizontal'
+              style={{ width: '100%', display: 'inline-block' }}
+            >
+              <Input.Password
+                placeholder='Password'
+                visibilityToggle={{
+                  visible: passwordVisible,
+                  onVisibleChange: setPasswordVisible,
+                }}
+              />
+            </Space>
+
+            <Button type='primary' block onClick={() => navigate('/')}>
+              LOGIN
+            </Button>
           </Form>
         </RightContainer>
       </InnerContainer>

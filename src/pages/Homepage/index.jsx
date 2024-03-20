@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { Outlet } from 'react-router';
 
 const Homepage = () => {
   return (
-    <div>Homepage</div>
-  )
-}
+    <div>
+      <div>Homepage</div>
+      <Outlet />
+    </div>
+  );
+};
 
-export default Homepage
+export default Homepage;
