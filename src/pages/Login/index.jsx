@@ -67,15 +67,15 @@ const Login = () => {
       console.log(response)
       
     } catch (error) {
-      console.log(error);
-      handleError(error.response.data.errors);
+      console.log(error.response.data);
+      handleError(error.response.data);
     }
   };
 
-  const toHomepage = () => {
-    let path = `/`;
-    navigate(path, { replace: true });
-  };
+  // const toHomepage = () => {
+  //   let path = `/`;
+  //   navigate(path, { replace: true });
+  // };
 
   return (
     <Container>

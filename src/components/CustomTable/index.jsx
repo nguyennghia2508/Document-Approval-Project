@@ -1,34 +1,34 @@
-import { Table, Pagination } from "antd"
-import "./style.scss"
+import { Table, Pagination } from 'antd';
+import './style.scss';
 
 const CustomTable = ({
-    list = [],
-    listHavePages,
-    onChange,
-    no,
-    reload,
-    type,
-    totalItems = 0,
-    totalPages = 0,
-    arrData = null,
-    emptyText = null,
-    columns = null,
-    className = null,
-    pageSize = 5,
-    scroll=null,
-    useText=false,
+  list = [],
+  listHavePages,
+  onChange,
+  no,
+  reload,
+  type,
+  totalItems = 0,
+  totalPages = 0,
+  arrData = null,
+  emptyText = null,
+  columns = null,
+  className = null,
+  pageSize = 5,
+  scroll = null,
+  useText = false,
 }) => {
-    const handleChangePage = (page) => {
-        // setCurrent(page);
-        if (onChange) {
-          onChange(page);
-        }
-      };
-    // const showTotal = () => {
-    // const start = (no - 1) * pageSize + 1;
-    // const end = Math.min(no * pageSize, totalItems);
-    // return `Hiển thị ${start} - ${end} trong ${totalItems} dữ liệu`;
-    // };
+  const handleChangePage = (page) => {
+    // setCurrent(page);
+    if (onChange) {
+      onChange(page);
+    }
+  };
+  // const showTotal = () => {
+  // const start = (no - 1) * pageSize + 1;
+  // const end = Math.min(no * pageSize, totalItems);
+  // return `Hiển thị ${start} - ${end} trong ${totalItems} dữ liệu`;
+  // };
 
   const itemRender = (_, type, originalElement) => {
     if (!useText) return originalElement;
