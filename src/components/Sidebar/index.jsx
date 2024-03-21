@@ -3,7 +3,7 @@ import './index.scss'
 
 const Sidebar = () => {
     return (
-        <div className='sidebar' style={{ height: '100%' }}>asdasd</div>
+        <div className='sidebar'>asdthtrasd</div>
     )
 }
 

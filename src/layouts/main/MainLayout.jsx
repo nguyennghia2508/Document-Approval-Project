@@ -12,14 +12,10 @@ const MainLayout = () => {
         <>
 
 
-            {/* <div style={{ height: '100%' }}> */}
-            <div style={{ height: '100vh' }}>
-                <Row span={24}>
-                    <Header />
-                </Row>
-                <Row style={{ height: '100%' }}
+            <div style={{ height: "100vh" }} >
 
-                    span={24}>
+                <Row><Header /></Row>
+                <Row style={{ height: '100%' }}>
                     <Col span={3}>
                         <Sidebar />
                     </Col>
@@ -27,12 +23,11 @@ const MainLayout = () => {
                         <Outlet />
                     </Col>
                 </Row>
-
                 <Row span={24}>
                     <Footer />
                 </Row>
+
             </div>
-            {/* </div> */}
         </>
 
     )
