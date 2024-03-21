@@ -130,7 +130,7 @@ const DocumentApproval = () => {
 
   const handleTablePageChange = (page, additionalData) => {
     // Do something with the page number and additional data
-    if (page != undefined) {
+    if (page !== undefined) {
       // dispatch(getDiscountsThunk({ no: page, limit: limit }));
       setCurrentPage(page);
     }
