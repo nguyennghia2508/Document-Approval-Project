@@ -3,7 +3,7 @@ import "./style.scss"
 import { useState, useEffect } from "react";
 const DocumentApproval = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [list, setList] = useState([])
+  const [list, setList] = useState([]);
 
   // Hàm để tạo ngẫu nhiên một phần tử mới dựa trên cấu trúc của phần tử đầu tiên
   const generateRandomElement = () => {
@@ -26,9 +26,9 @@ const DocumentApproval = () => {
       section,
       unit,
       createBy,
-      Processing
+      Processing,
     };
-  }
+  };
 
   const numberOfNewElements = 21;
 
@@ -43,10 +43,10 @@ const DocumentApproval = () => {
       createDate: '25/03/2022',
       department: 'AADSAD',
       section: 'DDSD',
-      unit: "DSADd",
-      createBy: "Nguyen",
-      Processing: "Nguyen"
-    }
+      unit: 'DSADd',
+      createBy: 'Nguyen',
+      Processing: 'Nguyen',
+    },
   ];
   for (let i = 2; i <= numberOfNewElements; i++) {
     const newElement = generateRandomElement();
@@ -57,77 +57,73 @@ const DocumentApproval = () => {
   const columns = [
     {
       title: 'Request Code',
-      align: "center",
+      align: 'center',
       render: (text, record, index) => {
-        return (
-          <span>
-            {(currentPage - 1) * limit + (index + 1)}
-          </span>
-        )
-      }
+        return <span>{(currentPage - 1) * limit + (index + 1)}</span>;
+      },
     },
     {
       title: 'Categories',
       align: 'center',
       render: (text) => {
         return text.categories;
-      }
+      },
     },
     {
       title: 'Document Type',
       align: 'center',
       render: (text) => {
         return text.documentType;
-      }
+      },
     },
     {
       title: 'Subject',
       align: 'center',
       render: (text) => {
         return text.subject;
-      }
+      },
     },
     {
       title: 'Created date',
       align: 'center',
       render: (text) => {
         return text.createDate;
-      }
+      },
     },
     {
       title: 'Department',
       align: 'center',
       render: (text) => {
         return text.department;
-      }
+      },
     },
     {
       title: 'Section',
       align: 'center',
       render: (text) => {
         return text.section;
-      }
+      },
     },
     {
       title: 'Unit',
       align: 'center',
       render: (text) => {
         return text.unit;
-      }
+      },
     },
     {
       title: 'Created by',
       align: 'center',
       render: (text) => {
         return text.createBy;
-      }
+      },
     },
     {
       title: 'Processing by',
       align: 'center',
       render: (text) => {
         return text.Processing;
-      }
+      },
     },
   ];
 
@@ -146,28 +142,26 @@ const DocumentApproval = () => {
   };
 
   useEffect(() => {
-    setList(getPageData(currentPage, 10))
+    setList(getPageData(currentPage, 10));
     window.scrollTo(0, 0);
   }, []);
 
   // console.log(getPageData(currentPage,10))
   return (
-    <div className="list_request list_request_scroll">
+    <div className='list_request list_request_scroll'>
       <CustomTable
         list={getPageData(currentPage, 10)}
         totalItems={data.length}
-        className="documentApproval"
+        className='documentApproval'
         onChange={handleTablePageChange}
         no={currentPage}
         columns={columns}
         pageSize={limit}
         scroll={{ y: '500px' }}
         useText={true}
-      >
-
-      </CustomTable>
+      ></CustomTable>
     </div>
-  )
-}
+  );
+};
 
-export default DocumentApproval
+export default DocumentApproval;

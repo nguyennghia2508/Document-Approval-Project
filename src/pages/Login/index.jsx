@@ -1,102 +1,140 @@
-import styled from 'styled-components';
-import { Button, Input, Space } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100dvh;
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-    225deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(131, 164, 179, 1) 50%,
-    rgba(0, 212, 255, 1) 100%
-  );
-`;
+import { Button, Input, Space } from 'antd';
 
-const InnerContainer = styled.div`
-  display: flex;
-  position: relative;
-  width: 100%;
-  max-width: 56rem;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid;
-  border-radius: 16px;
-  background: #fff;
-`;
-
-const LeftContainer = styled.div`
-  display: block;
-  width: 50%;
-  height: 100%;
-`;
-
-const InnerLeftContainer = styled.div`
-  display: inline-block;
-  padding: 0.5rem;
-`;
-
-const Image = styled.img`
-  max-width: 400px;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 16px;
-`;
-
-const RightContainer = styled.div`
-  width: 50%;
-  padding: 0px 4rem;
-  margin: 1rem;
-`;
-
-const Title = styled.div`
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 32px;
-  text-align: center;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  margin-top: 32px;
-`;
+import image from '../../assets/LoginImage.avif';
+import {
+  Container,
+  Form,
+  Image,
+  InnerContainer,
+  InnerLeftContainer,
+  LeftContainer,
+  RightContainer,
+  Title,
+  ErrorContainer,
+  ErrorMessage,
+  Span,
+} from './login-style';
+import { WarningOutlined } from '@ant-design/icons';
+import authApi from '../../api/authApi';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setError] = useState({});
   const [passwordVisible, setPasswordVisible] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    if (id === 'email') {
+      setEmail(value);
+    }
+    if (id === 'password') {
+      setPassword(value);
+    }
+  };
+
+  const handleSubmit = () => {
+    let user = {
+      email: email,
+      password: password,
+    };
+    console.log(user);
+    login(user);
+  };
+
+  const handleError = (error) => {
+    let errors = {
+      email: error.Email || '',
+      password: error.Password || '',
+      error: '',
+    };
+
+    if (error.Email === undefined && error.Password === undefined) {
+      errors.error = error;
+    }
+
+    setError(errors);
+  };
+
+  const login = async (user) => {
+    try {
+      const response = await authApi.login(user);
+      console.log(response)
+      
+    } catch (error) {
+      console.log(error);
+      handleError(error.response.data.errors);
+    }
+  };
+
+  const toHomepage = () => {
+    let path = `/`;
+    navigate(path, { replace: true });
+  };
+
   return (
     <Container>
       <InnerContainer>
         <LeftContainer>
           <InnerLeftContainer>
-            <Image src='https://plus.unsplash.com/premium_photo-1683751113164-ba68afd98f6e?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'></Image>
+            <Image src={image}></Image>
           </InnerLeftContainer>
         </LeftContainer>
         <RightContainer>
           <Title>LOGIN</Title>
           <Form>
-            <Input placeholder='Email' />
+            <Input
+              id='email'
+              placeholder='Email'
+              onChange={(e) => {
+                handleInputChange(e);
+              }}
+            />
             <Space
               direction='horizontal'
               style={{ width: '100%', display: 'inline-block' }}
             >
               <Input.Password
+                id='password'
                 placeholder='Password'
                 visibilityToggle={{
                   visible: passwordVisible,
                   onVisibleChange: setPasswordVisible,
                 }}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
               />
             </Space>
 
-            <Button type='primary' block onClick={() => navigate('/')}>
+            {Object.keys(errors).length > 0 ? (
+              <ErrorContainer>
+                <Span>
+                  <WarningOutlined
+                    size={20}
+                    style={{
+                      marginRight: '8px',
+                      verticalAlign: 'text-bottom',
+                      color: 'red',
+                    }}
+                  />
+                </Span>
+                <ErrorMessage>
+                  {errors.email ? <p>{errors.email[0]}</p> : <></>}
+                  {errors.password ? <p>{errors.password[0]}</p> : <></>}
+                  {errors.error ? <p>{errors.error}</p> : <></>}
+                </ErrorMessage>
+              </ErrorContainer>
+            ) : (
+              <></>
+            )}
+
+            <Button type='primary' block onClick={handleSubmit}>
               LOGIN
             </Button>
           </Form>

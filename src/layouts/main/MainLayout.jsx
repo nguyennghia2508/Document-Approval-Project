@@ -1,29 +1,26 @@
 import React from 'react';
-import Header from '../../Components/Header';
-import Footer from '../../Components/Footer';
+import Header from '../../components/Header'
+import Footer from '../../components/Footer';
 
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../Components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 import { Col, Row } from 'antd';
-
+import "./MainStyle.scss"
 
 const MainLayout = () => {
     return (
         <>
-
-
-            {/* <div style={{ height: '100%' }}> */}
-            <div style={{ height: '100vh' }}>
+            <div className='wrapper'>
                 <Row span={24}>
                     <Header />
                 </Row>
-                <Row style={{ height: '100%' }}
+                <Row
 
                     span={24}>
-                    <Col span={3}>
+                    <Col span={4} className='sidebar'>
                         <Sidebar />
                     </Col>
-                    <Col span={21}>
+                    <Col span={20} className='main-content'>
                         <Outlet />
                     </Col>
                 </Row>
@@ -32,7 +29,6 @@ const MainLayout = () => {
                     <Footer />
                 </Row>
             </div>
-            {/* </div> */}
         </>
 
     )
