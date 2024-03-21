@@ -5,7 +5,7 @@ const Sidebar = () => {
     return (
         <div className='sidebar'>
             <div className='page-scroll'>
-                <CustomMenu/>
+                <CustomMenu />
             </div>
         </div>
     )

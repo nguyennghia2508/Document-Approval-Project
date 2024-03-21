@@ -1,10 +1,11 @@
-// .wrapper{
-//     .ant-col{
-//         .sidebar{
-//             display: flex;
-//         }
-//         .main-content{
-//             display: flex;
-//         }
-//     }
-// }
+.layout-wrapper {
+    min-width: calc(100%/3);
+}
+
+.layout-container {
+    display: flex;
+}
+
+.footer-layout {
+    margin-top: 30px;
+}

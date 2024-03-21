@@ -4,30 +4,27 @@ import Footer from '../../components/Footer';
 
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
-import { Col, Row } from 'antd';
+// import { Col, Row, Flex, Layout } from 'antd';
 import "./MainStyle.scss"
 
 const MainLayout = () => {
     return (
         <>
-            <div className='wrapper'>
-                <Row span={24}>
-                    <Header />
-                </Row>
-                <Row
-
-                    span={24}>
-                    <Col span={4} className='sidebar'>
-                        <Sidebar />
-                    </Col>
-                    <Col span={20} className='main-content'>
-                        <Outlet />
-                    </Col>
-                </Row>
-
-                <Row span={24}>
-                    <Footer />
-                </Row>
+            <div className='layout-wrapper'>
+                <div className='layout-header'>
+                    <div xs={24}>
+                        <Header />
+                    </div>
+                </div>
+                <div className='layout-container'>
+                    <div ><Sidebar /></div>
+                    <div><Outlet /></div>
+                </div>
+                <div className='layout-footer'>
+                    <div>
+                        <Footer />
+                    </div>
+                </div>
             </div>
         </>
 
