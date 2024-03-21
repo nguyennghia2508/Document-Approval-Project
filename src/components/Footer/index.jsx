@@ -21,7 +21,7 @@ const Footer = () => {
             </Row>
             <Row className='footer-right'>
                 <Col className='footer-lang' >
-                    <Image src='united-states.svg'></Image>
+                    <Image src='/united-states.svg'></Image>
                     <span>VN</span>
                 </Col>
                 <Col><a href='https://tasken.io/'>Website</a></Col>

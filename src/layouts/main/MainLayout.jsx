@@ -1,32 +1,30 @@
 import React from 'react';
-import Header from '../../Components/Header';
-import Footer from '../../Components/Footer';
+import Header from '../../components/Header'
+import Footer from '../../components/Footer';
 
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../Components/Sidebar';
-import { Col, Row } from 'antd';
-
+import Sidebar from '../../components/Sidebar';
+// import { Col, Row, Flex, Layout } from 'antd';
+import "./MainStyle.scss"
 
 const MainLayout = () => {
     return (
         <>
-
-
-            <div style={{ height: "100vh" }} >
-
-                <Row><Header /></Row>
-                <Row style={{ height: '100%' }}>
-                    <Col span={3}>
-                        <Sidebar />
-                    </Col>
-                    <Col span={21}>
-                        <Outlet />
-                    </Col>
-                </Row>
-                <Row span={24}>
-                    <Footer />
-                </Row>
-
+            <div className='layout-wrapper'>
+                <div className='layout-header'>
+                    <div xs={24}>
+                        <Header />
+                    </div>
+                </div>
+                <div className='layout-container'>
+                    <div ><Sidebar /></div>
+                    <div><Outlet /></div>
+                </div>
+                <div className='layout-footer'>
+                    <div>
+                        <Footer />
+                    </div>
+                </div>
             </div>
         </>
 

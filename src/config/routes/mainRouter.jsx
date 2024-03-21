@@ -3,8 +3,8 @@ import NotFound from '../../pages/404';
 import DocumentApproval from '../../pages/DocumentApproval';
 
 import Login from '../../pages/Login';
-
 import MainLayout from '../../layouts/main/MainLayout';
+import Navbar from '../../components/Navbar';
 
 
 const mainRouter = [
@@ -23,7 +23,10 @@ const mainRouter = [
     element: <Login />,
   },
   {
-
+    path: '/navbar',
+    element: <Navbar />,
+  },
+  {
     path: '*',
     element: <Navigate to='/404' />,
   },
