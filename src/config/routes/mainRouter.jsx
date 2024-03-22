@@ -10,11 +10,11 @@ import Navbar from '../../components/Navbar';
 
 const mainRouter = [
   {
-    path: '/',
+    path: '/avn/documentapproval',
     element: <MainLayout />,
     children: [
       {
-        path: '/avn/documentapproval',
+        path: '',
         Component: DocumentApproval,
       },
     ],
