@@ -17,13 +17,11 @@ const MainLayout = () => {
                     </div>
                 </div>
                 <div className='layout-container'>
-                    <div ><Sidebar /></div>
-                    <div><Outlet /></div>
+                    <div><Sidebar /></div>
+                    <div style={{ display: '', width: '100%' }}><Outlet /></div>
                 </div>
                 <div className='layout-footer'>
-                    <div>
-                        <Footer />
-                    </div>
+                    <Footer />
                 </div>
             </div>
         </>

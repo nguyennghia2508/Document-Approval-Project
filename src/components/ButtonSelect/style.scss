@@ -1,0 +1,45 @@
+.approve-sign {
+    padding-top: 10px;
+    display: flex;
+    width: 100%;
+    // justify-content: space-between;
+    flex-flow: row wrap;
+
+    .btn-add {
+        text-align: center;
+        justify-content: center;
+        height: 50px;
+        margin-top: 35PX;
+        width: calc(100%/8);
+        margin-left: 30PX;
+
+    }
+
+    .btn-selection-container {
+        padding-left: 30px;
+        padding-right: 30px;
+        display: flex;
+        flex-direction: column;
+        width: calc(100%/4);
+
+
+
+        .label {
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row;
+            font-weight: bold;
+        }
+
+        .selection {
+            .ant-select {
+                width: 100%;
+                height: 50px;
+            }
+
+
+        }
+
+
+    }
+}
