@@ -11,11 +11,11 @@ import NewApproval from '../../pages/NewApproval';
 
 const mainRouter = [
   {
-    path: '/',
+    path: '/avn/documentapproval',
     element: <MainLayout />,
     children: [
       {
-        path: '/avn/documentapproval/',
+        path: '/avn/documentapproval',
         Component: DocumentApproval,
       }
 

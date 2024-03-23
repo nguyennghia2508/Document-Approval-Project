@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { Button, Input, Space } from 'antd';
 
-import image from '../../assets/LoginImage.avif';
+import image from '../../assets/images/LoginImage.avif';
 import {
   Container,
   Form,
