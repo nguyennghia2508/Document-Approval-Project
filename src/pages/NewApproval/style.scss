@@ -1,0 +1,51 @@
+@media (max-width:767px) {}
+
+@media (min-width:768px) {
+    .newapproval-container {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 50px;
+
+            .input-top {
+                padding-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+
+                .input-element {
+                    width: calc(100%/5);
+                }
+            }
+
+            .input-bot {
+                display: flex;
+                justify-content: space-between;
+
+                .input-element {
+                    width: calc(100%/5);
+                }
+            }
+        }
+
+        .document {
+            width: 50%;
+
+
+            >div {
+                padding-bottom: 20PX;
+            }
+
+            .content {
+                .ant-input {
+                    height: 100px;
+
+                }
+            }
+
+        }
+    }
+
+}

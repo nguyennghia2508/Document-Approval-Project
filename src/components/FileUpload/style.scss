@@ -1,0 +1,19 @@
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+
+
+    >div {
+        display: flex;
+        flex-direction: row;
+    }
+
+}
+
+.file-upload-container label {
+    margin-bottom: 5px;
+}
+
+.bold-label {
+    font-weight: bold;
+}

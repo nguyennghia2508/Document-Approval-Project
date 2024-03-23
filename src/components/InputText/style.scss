@@ -1,0 +1,12 @@
+.text-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-input-container label {
+    margin-bottom: 5px;
+}
+
+.bold-label {
+    font-weight: bold;
+}
