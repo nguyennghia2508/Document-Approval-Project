@@ -11,7 +11,7 @@ import NewApproval from '../../pages/NewApproval';
 
 const mainRouter = [
   {
-    path: '/avn/documentapproval',
+    path: '/',
     element: <MainLayout />,
     children: [
       {

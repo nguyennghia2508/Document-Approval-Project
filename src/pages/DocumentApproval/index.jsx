@@ -1,4 +1,6 @@
+import CustomPagination from "../../components/CustomPagination";
 import CustomTable from "../../components/CustomTable/index"
+import TitleBody from "../../components/TitleBody";
 import "./style.scss"
 import { useState, useEffect } from "react";
 const DocumentApproval = () => {
@@ -148,7 +150,8 @@ const DocumentApproval = () => {
 
   // console.log(getPageData(currentPage,10))
   return (
-    <div className='list_request list_request_scroll'>
+    <>
+      <TitleBody label="eDocument Approval" isForm={false} />
       <CustomTable
         list={getPageData(currentPage, 10)}
         totalItems={data.length}
@@ -157,10 +160,17 @@ const DocumentApproval = () => {
         no={currentPage}
         columns={columns}
         pageSize={limit}
-        scroll={{ y: '500px' }}
         useText={true}
       ></CustomTable>
-    </div>
+      <CustomPagination 
+      list={getPageData(currentPage, 10)}
+      onChange={handleTablePageChange}
+      no={currentPage}
+      totalItems={data.length}
+      pageSize={limit}
+      useText={true}
+      />
+    </>
   );
 };
 

@@ -8,6 +8,7 @@ import FileUpload from '../../components/FileUpload';
 import { Divider } from 'antd';
 import Navbar from '../../components/Navbar';
 import ButtonSelect from '../../components/ButtonSelect';
+import TitleBody from '../../components/TitleBody';
 
 
 
@@ -34,6 +35,7 @@ const New = () => {
 
     return (
         <>
+            <TitleBody label="eDocument Approval" isForm={true} isApproval={false} />
             <div className='newapproval-container'>
                 <div className="new-title"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
                 <div className='input'>
