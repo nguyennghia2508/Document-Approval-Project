@@ -1,4 +1,5 @@
 import CustomTable from "../../components/CustomTable/index"
+import TitleBody from "../../components/TitleBody";
 import "./style.scss"
 import { useState, useEffect } from "react";
 const DocumentApproval = () => {
@@ -148,19 +149,22 @@ const DocumentApproval = () => {
 
   // console.log(getPageData(currentPage,10))
   return (
-    <div className='list_request list_request_scroll'>
-      <CustomTable
-        list={getPageData(currentPage, 10)}
-        totalItems={data.length}
-        className='documentApproval'
-        onChange={handleTablePageChange}
-        no={currentPage}
-        columns={columns}
-        pageSize={limit}
-        scroll={{ y: '500px' }}
-        useText={true}
-      ></CustomTable>
-    </div>
+    <>
+      <TitleBody label="eDocument Approval" isForm={false} />
+      <div className='list_request list_request_scroll'>
+        <CustomTable
+          list={getPageData(currentPage, 10)}
+          totalItems={data.length}
+          className='documentApproval'
+          onChange={handleTablePageChange}
+          no={currentPage}
+          columns={columns}
+          pageSize={limit}
+          scroll={{ y: '500px' }}
+          useText={true}
+        ></CustomTable>
+      </div>
+    </>
   );
 };
 

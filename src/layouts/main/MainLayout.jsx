@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer';
-import TitleBody from '../../components/TitleBody';
+// import TitleBody from '../../components/TitleBody';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 // import { Col, Row, Flex, Layout } from 'antd';
@@ -21,7 +21,7 @@ const MainLayout = ({
                 <div className='layout-container' >
                     <div><Sidebar /></div>
                     <div className='container-body'>
-                        <div className='body-title'><TitleBody label="ASDASD" /></div>
+                        {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}
                         <div className='body-main'><Outlet /></div>
                     </div>
 
