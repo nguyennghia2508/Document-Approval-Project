@@ -5,6 +5,17 @@
 .layout-container {
     display: flex;
     padding-bottom: 30px;
+    min-height: 100vh;
+    width: 100%;
+
+    .container-body {
+        .body-main {
+            padding-top: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+
 }
 
-.footer-layout {}
+// .footer-layout {}

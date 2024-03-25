@@ -9,7 +9,9 @@
 
     .page-scroll {
         background-color: #1D2A34;
-        height: calc(100vh - 80px);
+        // height: calc(100% - 80px);
+        height: 100%;
+
         overflow-y: auto;
         overflow-x: hidden;
 
