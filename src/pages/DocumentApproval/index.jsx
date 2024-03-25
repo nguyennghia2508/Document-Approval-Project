@@ -1,3 +1,4 @@
+import CustomPagination from "../../components/CustomPagination";
 import CustomTable from "../../components/CustomTable/index"
 import TitleBody from "../../components/TitleBody";
 import "./style.scss"
@@ -151,19 +152,24 @@ const DocumentApproval = () => {
   return (
     <>
       <TitleBody label="eDocument Approval" isForm={false} />
-      <div className='list_request list_request_scroll'>
-        <CustomTable
-          list={getPageData(currentPage, 10)}
-          totalItems={data.length}
-          className='documentApproval'
-          onChange={handleTablePageChange}
-          no={currentPage}
-          columns={columns}
-          pageSize={limit}
-          scroll={{ y: '500px' }}
-          useText={true}
-        ></CustomTable>
-      </div>
+      <CustomTable
+        list={getPageData(currentPage, 10)}
+        totalItems={data.length}
+        className='documentApproval'
+        onChange={handleTablePageChange}
+        no={currentPage}
+        columns={columns}
+        pageSize={limit}
+        useText={true}
+      ></CustomTable>
+      <CustomPagination 
+      list={getPageData(currentPage, 10)}
+      onChange={handleTablePageChange}
+      no={currentPage}
+      totalItems={data.length}
+      pageSize={limit}
+      useText={true}
+      />
     </>
   );
 };
