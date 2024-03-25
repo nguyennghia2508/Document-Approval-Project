@@ -1,13 +1,15 @@
 import React from 'react';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer';
-
+import TitleBody from '../../components/TitleBody';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 // import { Col, Row, Flex, Layout } from 'antd';
 import "./MainStyle.scss"
 
-const MainLayout = () => {
+const MainLayout = ({
+    isForm = false
+}) => {
     return (
         <>
             <div className='layout-wrapper'>
@@ -16,14 +18,39 @@ const MainLayout = () => {
                         <Header />
                     </div>
                 </div>
-                <div className='layout-container'>
+                <div className='layout-container' >
                     <div><Sidebar /></div>
-                    <div style={{ display: '', width: '100%' }}><Outlet /></div>
+                    <div className='container-body'>
+                        <div className='body-title'><TitleBody label="ASDASD" /></div>
+                        <div className='body-main'><Outlet /></div>
+                    </div>
+
                 </div>
                 <div className='layout-footer'>
                     <Footer />
                 </div>
             </div>
+
+
+            {/* <div className='layout-wrapper'>
+                <div className='layout-header'>
+                    <div xs={24}>
+                        <Header />
+                    </div>
+                </div>
+                <div className='layout-container'>
+                    <div className='sidebar'><Sidebar /></div>
+                    <div className='body'>
+                        <div className='body-title'><TitleBody /></div>
+                        <div className='body-container' style={{ width: '100%' }}><Outlet /></div>
+                    </div>
+                </div>
+                <div className='layout-footer'>
+                    <Footer />
+                </div>
+            </div> */}
+
+
         </>
 
     )

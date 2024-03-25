@@ -1,0 +1,19 @@
+.titlebody {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f5f6fa;
+    border-bottom: 1px solid #e1e1e1;
+    margin-left: 8px;
+    margin-right: 8px;
+    min-height: 61px;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+    .titlebody-left {
+        font-weight: bold;
+    }
+
+    .titlebody-right {}
+}
