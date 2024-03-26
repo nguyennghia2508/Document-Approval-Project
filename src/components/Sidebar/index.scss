@@ -8,83 +8,19 @@
     height: 100%;
 
     .page-scroll {
+        // background-color: #1D2A34;
+        // height: calc(100vh - 80px);
+        // overflow-y: auto;
+        // overflow-x: hidden;
         background-color: #1D2A34;
-        // height: calc(100% - 80px);
+    }
+}
+@media only screen and (min-device-width: 768px)
+{
+    .sidebar {
         height: 100%;
-
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        .list-menu {
-            background-color: #1D2A34;
-
-            .ant-menu-submenu-inline {
-                text-align: left;
-                text-decoration: none;
-                outline: none;
-                transition: all 0.3s;
-                cursor: pointer;
-
-                .ant-menu-submenu-title {
-                    border-radius: 0%;
-                    border-left: 5px solid #1D2A34;
-
-                    &:hover {
-                        background: #bce2e4;
-                    }
-
-                    svg {
-                        margin-right: 10px;
-                    }
-
-                    svg,
-                    i,
-                    span {
-                        color: #606060;
-                        font-weight: 700;
-                    }
-                }
-
-                .ant-menu-item {
-                    background-color: transparent;
-                    color: transparent;
-                }
-
-                // .ant-menu.ant-menu-item-selected{
-                //     color: transparent;
-                // }
-
-            }
-
-            .ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-open {
-                color: #FFFFFF;
-                background: #0F1922;
-
-                .ant-menu-submenu-title {
-                    border-left: 5px solid #4BA747;
-
-                    span {
-                        color: #FFFFFF;
-                    }
-
-                    svg {
-                        color: #4BA747;
-                    }
-
-                    &:hover {
-                        background: #0F1922;
-                    }
-                }
-
-                .ant-menu-item-selected {
-                    font-weight: bold;
-                    color: #FFFFFF;
-                }
-
-                .ant-menu-item:not(.ant-menu-item-selected) {
-                    color: #606060;
-                }
-            }
-        }
+    }
+    .list-menu {
+        margin-bottom: 43px;
     }
 }

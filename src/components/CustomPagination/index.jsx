@@ -3,19 +3,12 @@ import './style.scss';
 
 const CustomPagination = ({
   list = [],
-  listHavePages,
   onChange,
   no,
-  reload,
-  type,
   totalItems = 0,
   totalPages = 0,
-  arrData = null,
-  emptyText = null,
-  columns = null,
   className = null,
   pageSize = 5,
-  scroll = null,
   useText = false,
 }) => {
   const handleChangePage = (page) => {
@@ -31,7 +24,6 @@ const CustomPagination = ({
   // };
 
   const itemRender = (_, type, originalElement) => {
-    console.log(type)
     if (!useText) return originalElement;
 
     if (type === 'prev') {
@@ -53,22 +45,20 @@ const CustomPagination = ({
 
   return (
     <>
-        <div className='pagination_view'>
-            {list.length > 0 ? (
-            <div className={`table_pagination ${className ? className : ''}`}>
-                <Pagination
-                itemRender={itemRender}
-                current={no}
-                onChange={handleChangePage}
-                total={totalItems}
-                pageSize={pageSize}
-                showSizeChanger={false}
-                />
-            </div>
-            ) : (
-            <></>
-            )}
+        {list.length > 0 ? (
+        <div className={`table_pagination ${className ? className : ''}`}>
+            <Pagination
+            itemRender={itemRender}
+            current={no}
+            onChange={handleChangePage}
+            total={totalItems}
+            pageSize={pageSize}
+            showSizeChanger={false}
+            />
         </div>
+        ) : (
+        <></>
+        )}
     </>
   );
 };

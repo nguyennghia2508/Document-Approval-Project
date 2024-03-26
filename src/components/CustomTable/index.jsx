@@ -3,20 +3,10 @@ import './style.scss';
 
 const CustomTable = ({
   list = [],
-  listHavePages,
-  onChange,
-  no,
-  reload,
-  type,
-  totalItems = 0,
-  totalPages = 0,
-  arrData = null,
   emptyText = null,
   columns = null,
   className = null,
-  pageSize = 5,
   scroll = null,
-  useText = false,
 }) => {
   
   // const showTotal = () => {
