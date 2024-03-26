@@ -127,18 +127,18 @@ const New = () => {
 
                         </div>
                         <div className='input-bot'>
-                            {/* <div className='input-element'>
+                            <div className='input-element'>
                                 <InputSelection label="Categories" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
                             </div>
                             <div className='input-element'>
                                 <InputSelection label="Document Type" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
-                            </div> */}
+                            </div>
                             <div className='input-element'>
                                 <InputSearch label="Related Proposal (if any)" />
                             </div>
-                            {/* <div className='input-element'>
+                            <div className='input-element'>
                                 <InputText label="Date" value={username} onChange={handleUsernameChange} required disabled={true} />
-                            </div> */}
+                            </div>
 
                         </div>
                     </div>
