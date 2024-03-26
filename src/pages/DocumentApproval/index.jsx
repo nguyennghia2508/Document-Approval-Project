@@ -1,6 +1,7 @@
 import CustomPagination from "../../components/CustomPagination";
 import CustomTable from "../../components/CustomTable/index"
 import TitleBody from "../../components/TitleBody";
+import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
 const DocumentApproval = () => {
@@ -59,9 +60,10 @@ const DocumentApproval = () => {
   const columns = [
     {
       title: 'Request Code',
-      align: 'center',
+      align: 'left',
+      width: '13%',
       render: (text, record, index) => {
-        return <span>{(currentPage - 1) * limit + (index + 1)}</span>;
+        return <span>02-00157-2024-AVN</span>;
       },
     },
     {
@@ -152,23 +154,15 @@ const DocumentApproval = () => {
   return (
     <>
       <TitleBody label="eDocument Approval" isForm={false} />
-      <CustomTable
+      <TablePagination
         list={getPageData(currentPage, 10)}
         totalItems={data.length}
         className='documentApproval'
+        columns={columns}
         onChange={handleTablePageChange}
         no={currentPage}
-        columns={columns}
         pageSize={limit}
         useText={true}
-      ></CustomTable>
-      <CustomPagination 
-      list={getPageData(currentPage, 10)}
-      onChange={handleTablePageChange}
-      no={currentPage}
-      totalItems={data.length}
-      pageSize={limit}
-      useText={true}
       />
     </>
   );

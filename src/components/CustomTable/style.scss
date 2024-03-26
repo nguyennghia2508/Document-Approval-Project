@@ -2,7 +2,7 @@
     margin-top: 15px;
     margin-right: -20px;
     padding-right: 15px;
-    height: calc(100vh - 230px);
+    height: calc(100vh - 247px);
     overflow-y: auto;
     overflow-x: hidden;
     .table_container {
@@ -10,12 +10,39 @@
         // min-width: 550px;
         .table_content {
             .ant-table-container {
-                .ant-table-header {
+                .ant-table-content {
+                    table{
+                        width: 100%;
+                        max-width: 100%;
+                        margin-bottom: 20px;
+                    }
+                    .ant-table-thead > tr > th,.ant-table-tbody > tr > td{
+                        padding: 8px;
+                        line-height: 1.42857143;
+                        vertical-align: top;
+                    }
+                    .ant-table-thead{
+                        tr > th{
+                            vertical-align: bottom;
+                        }
+                        tr:first-child >*:first-child,tr:first-child >*:last-child
+                        {
+                            border-radius: 0px;
+                        }
+                    }
+                    .ant-table-tbody>tr:first-child>td
+                    {
+                        border-top: none;
+                    }
                     .ant-table-thead {
                         .ant-table-cell {
+                            border-bottom: none;
                             background-color: #EBEEF0;
                             color: #A3A6B4;
                         }
+                    }
+                    .ant-table-row{
+                        font-weight: bold;
                     }
                 }
             }
