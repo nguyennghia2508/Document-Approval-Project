@@ -39,14 +39,14 @@ const TitleBody = ({
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><SaveOutlined />Save draft</Link>
-                                <Link><SendOutlined />Submit</Link>
+                                <Link ><SendOutlined />Submit</Link>
                             </>
                     }
 
                 </div>
                 <div className='titlebody-right'>
                 </div>
-            </div>
+            </div >
 
             :
             <div className='titlebody-nonform'>
@@ -54,8 +54,7 @@ const TitleBody = ({
                 <div className='titlebody-right'>
                     <Button><VerticalAlignBottomOutlined style={{ transform: 'rotate(-90deg)' }} />Export excel</Button>
                     <Button><FilterOutlined />Filer</Button>
-                    <Button className='btn-create'>
-                        <Link to='/avn/documentapproval/new'><PlusOutlined />Create new</Link></Button>
+                    <Link className='link-create' to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
                 </div>
             </div>
     )
