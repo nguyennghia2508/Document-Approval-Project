@@ -57,6 +57,8 @@ const DocumentApproval = () => {
     data.push(newElement);
   }
 
+  console.log(data)
+
   const columns = [
     {
       title: 'Request Code',

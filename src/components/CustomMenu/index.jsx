@@ -37,7 +37,7 @@ const CustomMenu = () => {
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
       ['All requests', 'Send to me', 'Send to others', 'Shared with me'],
-      { paddingLeft: '67.5px' }
+      { paddingLeft: '70.5px' }
     ), // 4 mục con trong submenu
     getItem(
       'Status',
@@ -52,7 +52,7 @@ const CustomMenu = () => {
         'Digitally Signed',
         'Signed',
       ],
-      { paddingLeft: '67.5px' }
+      { paddingLeft: '70.5px' }
     ), // 2 mục con trong submenu
     getItem(
       'Report',
@@ -60,7 +60,7 @@ const CustomMenu = () => {
       <FontAwesomeIcon icon='fa-solid fa-chart-column' />,
       'submenu',
       ['Chart'],
-      { paddingLeft: '67.5px' }
+      { paddingLeft: '70.5px' }
     ), // 3 mục con trong submenu
     // getItem('Budget Management', 'sub4',  <Icon icon="ion:md-wallet" />, 'submenu', ['Option 10', 'Option 11', 'Option 12']), // 3 mục con trong submenu
   ];

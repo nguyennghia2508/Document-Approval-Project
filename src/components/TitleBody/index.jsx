@@ -17,13 +17,9 @@ import { Link, useNavigate } from "react-router-dom";
 const TitleBody = ({
     label,
     isForm = false,
-    isApproval = false
+    isApproval = false,
+    href
 }) => {
-
-    const navigate = useNavigate("")
-    const handleBackLink = () => {
-        navigate(-1)
-    }
 
     return (
         isForm ?
@@ -32,7 +28,7 @@ const TitleBody = ({
                     {
                         isApproval ?
                             <>
-                                <Link onClick={handleBackLink}><SwapLeftOutlined /> Return</Link>
+                                <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><FileTextOutlined /> Download file</Link>
                                 <Link><ShareAltOutlined />Share</Link>
                                 <Link><CheckOutlined />Approve</Link>
@@ -41,7 +37,7 @@ const TitleBody = ({
                             </>
                             :
                             <>
-                                <Link onClick={handleBackLink}><SwapLeftOutlined /> Return</Link>
+                                <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><SaveOutlined />Save draft</Link>
                                 <Link><SendOutlined />Submit</Link>
                             </>
