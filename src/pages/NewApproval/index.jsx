@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import './style.scss'
 import FileUpload from '../../components/FileUpload';
 import { Divider } from 'antd';
-import Navbar from '../../components/Navbar';
 import ButtonSelect from '../../components/ButtonSelect';
 import TitleBody from '../../components/TitleBody';
 

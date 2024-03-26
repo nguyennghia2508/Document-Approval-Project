@@ -5,7 +5,6 @@ import DocumentApproval from '../../pages/DocumentApproval';
 
 import Login from '../../pages/Login';
 import MainLayout from '../../layouts/main/MainLayout';
-import Navbar from '../../components/Navbar';
 import NewApproval from '../../pages/NewApproval';
 
 
@@ -36,10 +35,6 @@ const mainRouter = [
   {
     path: '/login',
     element: <Login />,
-  },
-  {
-    path: '/navbar',
-    element: <Navbar />,
   },
   {
     path: '*',
