@@ -2,40 +2,109 @@
 import InputText from '../../components/InputText'
 import InputSelection from '../../components/InputSelection'
 import InputSearch from '../../components/InputSearch'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.scss'
 import FileUpload from '../../components/FileUpload';
 import { Divider } from 'antd';
 import Navbar from '../../components/Navbar';
 import ButtonSelect from '../../components/ButtonSelect';
 import TitleBody from '../../components/TitleBody';
+import departmentApi from '../../api/departmentApi';
 
 
 
 
 const New = () => {
     const [username, setUsername] = useState('');
+    const [departmentData, setDepartmentData] = useState([]);
+    const [sectionOptions, setSectionOptions] = useState([]);
+    const [unitOptions, setUnitOptions] = useState([]);
+
+    useEffect(() => {
+        const getDepartment = async () => {
+            try {
+                const data = await departmentApi.getAllDepartment()
+                setDepartmentData(data.departmentHierarchy)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getDepartment();
+    }, []);
+    
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
 
-    const [selectedOption, setSelectedOption] = useState('option1');
-    const handleSelectionChange = (value) => {
-        setSelectedOption(value);
+    const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
+    const [selectedSection, setSelectedSection] = useState('Select Section');
+    const [selectedUnit, setSelectedUnit] = useState('Select Unit');
+    
+    const department = departmentData
+    .filter(value => value.DepartmentLevel === 1)
+    .map(value => ({
+        value: value.Id,
+        label: value.DepartmentName
+    }));
+
+    const handleDepartmentChange = (value) => {
+        setSelectedDepartment(value);
+        setSelectedSection('Select Section');
+        setSelectedUnit('Select Unit');
+    
+        const selectedDepartment = departmentData.find(department => department.Id === value);
+    
+        if (selectedDepartment) {
+            const sections = (selectedDepartment.Children || [])
+                .filter(child => child.DepartmentLevel === 2)
+                .map(section => ({
+                    value: section.Id,
+                    label: section.DepartmentName
+                }));
+            setSectionOptions(sections);
+        } else {
+            setSectionOptions([]);
+        }
     };
-    const selectionOptions = [
-        { value: 'option1', label: 'Option 1' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' }
-    ];
+    
+    const handleSectionChange = (value) => {
+        setSelectedSection(value);
+        setSelectedUnit('Select Unit');
+    
+        const selectedSection = departmentData
+            .flatMap(department => department.Children || [])
+            .find(section => section.Id === value);
+    
+        if (selectedSection) {
+            const units = (selectedSection.Children || [])
+                .filter(unit => unit.DepartmentLevel === 3)
+                .map(unit => ({
+                    value: unit.Id,
+                    label: unit.DepartmentName
+                }));
+            setUnitOptions(units);
+        } else {
+            setUnitOptions([]);
+        }
+    };
+    
+    const handleUnitChange = (value) => {
+        setSelectedUnit(value);
+    };
+    
 
+    // const unit = departmentData
+    // .filter(value => value.DepartmentLevel === 2)
+    // .map(value => ({
+    //     value: value.Id,
+    //     label: value.DepartmentName
+    // }));
 
-
-
+    // console.log(department)
 
     return (
         <>
-            <TitleBody label="eDocument Approval" isForm={true} isApproval={false} />
+            <TitleBody label="eDocument Approval" isForm={true} isApproval={false} href={"/avn/documentapproval"}/>
             <div className='newapproval-container'>
                 <div className="new-title"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
                 <div className='input'>
@@ -44,18 +113,18 @@ const New = () => {
                             <InputText label="Applicant" value={username} onChange={handleUsernameChange} required disabled={true} />
                         </div>
                         <div className='input-element'>
-                            <InputSelection label="Department" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                            <InputSelection label="Department" value={selectedDepartment} onChange={handleDepartmentChange} options={department} required />
                         </div>
                         <div className='input-element'>
-                            <InputSelection label="Section" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                            <InputSelection label="Section" value={selectedSection} onChange={handleSectionChange} options={sectionOptions} required />
                         </div>
                         <div className='input-element'>
-                            <InputSelection label="Section" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                            <InputSelection label="Unit" value={selectedUnit} onChange={handleUnitChange} options={unitOptions} required />
                         </div>
 
                     </div>
                     <div className='input-bot'>
-                        <div className='input-element'>
+                        {/* <div className='input-element'>
                             <InputSelection label="Categories" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
                         </div>
                         <div className='input-element'>
@@ -66,7 +135,7 @@ const New = () => {
                         </div>
                         <div className='input-element'>
                             <InputText label="Date" value={username} onChange={handleUsernameChange} required disabled={true} />
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
