@@ -4,24 +4,39 @@ import { Input } from 'antd';
 import { Controller } from 'react-hook-form';
 
 
-const InputText = ({ label, onChange, required, disabled, type, name, id, field, control }) => {
+const InputText = ({ 
+  label,
+  required, 
+  disabled, 
+  type, 
+  name, 
+  id, 
+  control 
+}) => {
 
   const [value, setValue] = useState('');
 
   const handleChange = (e) => {
-    console.log(e)
+    setValue(e.target.value)
   };
 
   return (
     <div className="text-input-container"> {/* Wrapper container */}
       <label className="bold-label">{label} {required && <span style={{ color: 'red' }}>*</span>}</label>
       <Controller
-        id="applicant"
-        name='applicant'
+        name={name}
         control={control}
         render={({ field }) => {
-          <Input type={type} value={value} onChange={handleChange(field)} disabled={disabled} />
-
+          return (
+            <Input 
+            type={type}
+            id={id}
+            onChange={(e) => handleChange(e)} 
+            value={value}
+            disabled={disabled} 
+            {...field}
+            />
+          )
         }}
       >
       </Controller>

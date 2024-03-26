@@ -8,14 +8,21 @@ import FileUpload from '../../components/FileUpload';
 import { Divider } from 'antd';
 import ButtonSelect from '../../components/ButtonSelect';
 import TitleBody from '../../components/TitleBody';
+import { useForm } from 'react-hook-form';
 import departmentApi from '../../api/departmentApi';
+import categoryApi from '../../api/categoryApi'
 
 
 
 
 const New = () => {
-    const { register, handleSubmit, formState: { errors }, control } = useForm({ mode: "all" });
-    // const { control, handleSubmit } = useForm({ mode: "all" });
+    const { 
+        register, 
+        handleSubmit, 
+        formState: { errors }, 
+        control 
+    } = useForm({ mode: "all" });
+
     const onSubmit = (data) => {
         console.log('submit data', data); // Dữ liệu form được gửi
     };
@@ -24,6 +31,13 @@ const New = () => {
     const [departmentData, setDepartmentData] = useState([]);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([])
+    const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
+    const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
+    const [selectedSection, setSelectedSection] = useState('Select Section');
+    const [selectedUnit, setSelectedUnit] = useState('Select Unit');
+    const [selectedCategory, setSelectedCategory] = useState('Choose category');
+    const [selectedDocumentType, setSelectedDocumentType] = useState('Choose document type');
 
     useEffect(() => {
         const getDepartment = async () => {
@@ -37,29 +51,20 @@ const New = () => {
         getDepartment();
     }, []);
 
-    const handleUsernameChange = (e) => {
-        console.log(e.target)
-        setUsername(e.target.value);
-    };
-
-    const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
-    const [selectedSection, setSelectedSection] = useState('Select Section');
-    const [selectedUnit, setSelectedUnit] = useState('Select Unit');
-
     const department = departmentData
-        .filter(value => value.DepartmentLevel === 1)
-        .map(value => ({
-            value: value.Id,
-            label: value.DepartmentName
-        }));
+    .filter(value => value.DepartmentLevel === 1)
+    .map(value => ({
+        value: value.Id,
+        label: value.DepartmentName
+    }));
 
     const handleDepartmentChange = (value) => {
         setSelectedDepartment(value);
         setSelectedSection('Select Section');
         setSelectedUnit('Select Unit');
-
+    
         const selectedDepartment = departmentData.find(department => department.Id === value);
-
+    
         if (selectedDepartment) {
             const sections = (selectedDepartment.Children || [])
                 .filter(child => child.DepartmentLevel === 2)
@@ -72,15 +77,15 @@ const New = () => {
             setSectionOptions([]);
         }
     };
-
+    
     const handleSectionChange = (value) => {
         setSelectedSection(value);
         setSelectedUnit('Select Unit');
-
+    
         const selectedSection = departmentData
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
-
+    
         if (selectedSection) {
             const units = (selectedSection.Children || [])
                 .filter(unit => unit.DepartmentLevel === 3)
@@ -93,21 +98,52 @@ const New = () => {
             setUnitOptions([]);
         }
     };
-
+    
     const handleUnitChange = (value) => {
         setSelectedUnit(value);
-    };
+    };    
 
+    useEffect(() => {
+        const getCategory = async () => {
+            try {
+                const data = await categoryApi.getAllCategory()
+                const listCategory = data.listDocumentType
+                setCategoryOptions(listCategory.map(value => ({
+                    value: value.Id,
+                    label: value.CategoryName
+                })))
+                if (listCategory.length > 0) {
+                    const initialSelectedCategory = categoryOptions.length > 0 ? selectedCategory : listCategory[0].Id;
 
-    // const unit = departmentData
-    // .filter(value => value.DepartmentLevel === 2)
-    // .map(value => ({
-    //     value: value.Id,
-    //     label: value.DepartmentName
-    // }));
+                    setSelectedCategory(initialSelectedCategory);
 
-    // console.log(department)
+                    const selectedCategoryObject = listCategory.find(item => item.Id === initialSelectedCategory);
+                    const documentType = selectedCategoryObject?.Children.map(dctype => ({
+                        value: dctype.Id,
+                        label: dctype.DocumentTypeName
+                    })) || [];
 
+                    setDocumentTypeOptions(documentType);
+                    if(documentType.length > 0)
+                    {
+                        setSelectedDocumentType(documentType[0].value)
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getCategory();
+    }, [selectedCategory]);
+
+    const handleCategoryChange = (value) => {
+        setSelectedCategory(value);
+    };    
+
+    const handleDocumentTypeChange = (value) => {
+        setSelectedDocumentType(value);
+    };    
+    
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -117,25 +153,25 @@ const New = () => {
                     <div className='input'>
                         <div className='input-top'>
                             <div className='input-element'>
-                                <InputText label="Applicant" control={control} />
+                                <InputText label="Applicant" id="applicant" name="applicant" control={control}/>
                             </div>
                             <div className='input-element'>
-                                <InputSelection label="Department" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Department" value={selectedDepartment} onChange={handleDepartmentChange} options={department} required />
                             </div>
                             <div className='input-element'>
-                                <InputSelection label="Section" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Section" value={selectedSection} onChange={handleSectionChange} options={sectionOptions} required />
                             </div>
                             <div className='input-element'>
-                                <InputSelection label="Section" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Unit" value={selectedUnit} onChange={handleUnitChange} options={unitOptions} required />
                             </div>
 
                         </div>
                         <div className='input-bot'>
                             <div className='input-element'>
-                                <InputSelection label="Categories" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Categories" value={selectedCategory} onChange={handleCategoryChange} options={categoryOptions} required />
                             </div>
                             <div className='input-element'>
-                                <InputSelection label="Document Type" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Document Type" value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                             </div>
                             <div className='input-element'>
                                 <InputSearch label="Related Proposal (if any)" />
@@ -181,7 +217,7 @@ const New = () => {
                         <ButtonSelect label1="ASD" label2="2132" />
                     </div>
                 </div>
-                <button htmlType="submit">submit</button>
+                <button type="submit">submit</button>
             </form >
         </>
 
