@@ -10,6 +10,7 @@ import ButtonSelect from '../../components/ButtonSelect';
 import TitleBody from '../../components/TitleBody';
 import { useForm } from 'react-hook-form';
 import departmentApi from '../../api/departmentApi';
+import categoryApi from '../../api/categoryApi'
 
 
 
@@ -30,6 +31,13 @@ const New = () => {
     const [departmentData, setDepartmentData] = useState([]);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([])
+    const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
+    const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
+    const [selectedSection, setSelectedSection] = useState('Select Section');
+    const [selectedUnit, setSelectedUnit] = useState('Select Unit');
+    const [selectedCategory, setSelectedCategory] = useState('Choose category');
+    const [selectedDocumentType, setSelectedDocumentType] = useState('Choose document type');
 
     useEffect(() => {
         const getDepartment = async () => {
@@ -43,29 +51,20 @@ const New = () => {
         getDepartment();
     }, []);
 
-    const handleUsernameChange = (e) => {
-        console.log(e.target)
-        setUsername(e.target.value);
-    };
-
-    const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
-    const [selectedSection, setSelectedSection] = useState('Select Section');
-    const [selectedUnit, setSelectedUnit] = useState('Select Unit');
-
     const department = departmentData
-        .filter(value => value.DepartmentLevel === 1)
-        .map(value => ({
-            value: value.Id,
-            label: value.DepartmentName
-        }));
+    .filter(value => value.DepartmentLevel === 1)
+    .map(value => ({
+        value: value.Id,
+        label: value.DepartmentName
+    }));
 
     const handleDepartmentChange = (value) => {
         setSelectedDepartment(value);
         setSelectedSection('Select Section');
         setSelectedUnit('Select Unit');
-
+    
         const selectedDepartment = departmentData.find(department => department.Id === value);
-
+    
         if (selectedDepartment) {
             const sections = (selectedDepartment.Children || [])
                 .filter(child => child.DepartmentLevel === 2)
@@ -78,15 +77,15 @@ const New = () => {
             setSectionOptions([]);
         }
     };
-
+    
     const handleSectionChange = (value) => {
         setSelectedSection(value);
         setSelectedUnit('Select Unit');
-
+    
         const selectedSection = departmentData
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
-
+    
         if (selectedSection) {
             const units = (selectedSection.Children || [])
                 .filter(unit => unit.DepartmentLevel === 3)
@@ -99,11 +98,52 @@ const New = () => {
             setUnitOptions([]);
         }
     };
-
+    
     const handleUnitChange = (value) => {
         setSelectedUnit(value);
-    };
+    };    
 
+    useEffect(() => {
+        const getCategory = async () => {
+            try {
+                const data = await categoryApi.getAllCategory()
+                const listCategory = data.listDocumentType
+                setCategoryOptions(listCategory.map(value => ({
+                    value: value.Id,
+                    label: value.CategoryName
+                })))
+                if (listCategory.length > 0) {
+                    const initialSelectedCategory = categoryOptions.length > 0 ? selectedCategory : listCategory[0].Id;
+
+                    setSelectedCategory(initialSelectedCategory);
+
+                    const selectedCategoryObject = listCategory.find(item => item.Id === initialSelectedCategory);
+                    const documentType = selectedCategoryObject?.Children.map(dctype => ({
+                        value: dctype.Id,
+                        label: dctype.DocumentTypeName
+                    })) || [];
+
+                    setDocumentTypeOptions(documentType);
+                    if(documentType.length > 0)
+                    {
+                        setSelectedDocumentType(documentType[0].value)
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getCategory();
+    }, [selectedCategory]);
+
+    const handleCategoryChange = (value) => {
+        setSelectedCategory(value);
+    };    
+
+    const handleDocumentTypeChange = (value) => {
+        setSelectedDocumentType(value);
+    };    
+    
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -128,17 +168,17 @@ const New = () => {
                         </div>
                         <div className='input-bot'>
                             <div className='input-element'>
-                                <InputSelection label="Categories" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Categories" value={selectedCategory} onChange={handleCategoryChange} options={categoryOptions} required />
                             </div>
                             <div className='input-element'>
-                                <InputSelection label="Document Type" value={selectedOption} onChange={handleSelectionChange} options={selectionOptions} required />
+                                <InputSelection label="Document Type" value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                             </div>
                             <div className='input-element'>
                                 <InputSearch label="Related Proposal (if any)" />
                             </div>
-                            <div className='input-element'>
+                            {/* <div className='input-element'>
                                 <InputText label="Date" value={username} onChange={handleUsernameChange} required disabled={true} />
-                            </div>
+                            </div> */}
 
                         </div>
                     </div>
