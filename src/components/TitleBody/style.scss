@@ -72,10 +72,14 @@
             margin-left: 10PX;
         }
 
-        .btn-create {
+        .link-create {
+            margin-left: 10px;
             background-color: #5cb85c;
             color: #FFF;
-
+            text-decoration: none;
+            padding-top: 4PX;
+            padding-bottom: 7PX;
+            border-radius: 5PX;
 
             // font-size: 16;
             .anticon {

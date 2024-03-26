@@ -40,7 +40,7 @@ const DocumentApproval = () => {
   const data = [
     {
       key: '1',
-      categories: 'John Brown',
+      categories: 'John BrownASDASDAS',
       documentType: 'AAA',
       subject: 'New York No. 1 Lake Park',
       createDate: '25/03/2022',
