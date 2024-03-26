@@ -91,16 +91,6 @@ const New = () => {
     const handleUnitChange = (value) => {
         setSelectedUnit(value);
     };
-    
-
-    // const unit = departmentData
-    // .filter(value => value.DepartmentLevel === 2)
-    // .map(value => ({
-    //     value: value.Id,
-    //     label: value.DepartmentName
-    // }));
-
-    // console.log(department)
 
     return (
         <>
