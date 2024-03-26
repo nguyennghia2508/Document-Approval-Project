@@ -19,10 +19,16 @@ const MainLayout = ({
                     </div>
                 </div>
                 <div className='layout-container' >
-                    <div><Sidebar /></div>
+                    <Sidebar/>
                     <div className='container-body'>
                         {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}
-                        <div className='body-main'><Outlet /></div>
+                        <div className='page-scroll'>
+                            <div className='main-content'>
+                                <div className='content-view'>
+                                    <Outlet />
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

@@ -3,9 +3,10 @@
     justify-content: space-between;
     background-color: #f5f6fa;
     border-bottom: 1px solid #e1e1e1;
-    margin-left: -13px;
-    margin-right: -13px;
-    margin-bottom: 20PX;
+    margin-left: -15px;
+    margin-right: -15px;
+    // margin-bottom: 20PX;
+    margin-top: -10px;
     min-height: 61px;
     align-items: center;
     // padding-left: 20px;
@@ -49,9 +50,10 @@
     justify-content: space-between;
     background-color: #f5f6fa;
     border-bottom: 1px solid #e1e1e1;
-    margin-left: -13px;
-    margin-right: -13px;
-    margin-bottom: 20PX;
+    margin-left: -15px;
+    margin-right: -15px;
+    // margin-bottom: 20PX;
+    margin-top: -10px;
     min-height: 61px;
     align-items: center;
     padding-left: 20px;
@@ -70,10 +72,14 @@
             margin-left: 10PX;
         }
 
-        .btn-create {
+        .link-create {
+            margin-left: 10px;
             background-color: #5cb85c;
             color: #FFF;
-
+            text-decoration: none;
+            padding-top: 4PX;
+            padding-bottom: 7PX;
+            border-radius: 5PX;
 
             // font-size: 16;
             .anticon {

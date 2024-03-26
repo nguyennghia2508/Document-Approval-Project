@@ -1,5 +1,7 @@
+import CustomPagination from "../../components/CustomPagination";
 import CustomTable from "../../components/CustomTable/index"
 import TitleBody from "../../components/TitleBody";
+import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
 const DocumentApproval = () => {
@@ -38,7 +40,7 @@ const DocumentApproval = () => {
   const data = [
     {
       key: '1',
-      categories: 'John Brown',
+      categories: 'John BrownASDASDAS',
       documentType: 'AAA',
       subject: 'New York No. 1 Lake Park',
       createDate: '25/03/2022',
@@ -58,9 +60,10 @@ const DocumentApproval = () => {
   const columns = [
     {
       title: 'Request Code',
-      align: 'center',
+      align: 'left',
+      width: '13%',
       render: (text, record, index) => {
-        return <span>{(currentPage - 1) * limit + (index + 1)}</span>;
+        return <span>02-00157-2024-AVN</span>;
       },
     },
     {
@@ -151,19 +154,16 @@ const DocumentApproval = () => {
   return (
     <>
       <TitleBody label="eDocument Approval" isForm={false} />
-      <div className='list_request list_request_scroll'>
-        <CustomTable
-          list={getPageData(currentPage, 10)}
-          totalItems={data.length}
-          className='documentApproval'
-          onChange={handleTablePageChange}
-          no={currentPage}
-          columns={columns}
-          pageSize={limit}
-          scroll={{ y: '500px' }}
-          useText={true}
-        ></CustomTable>
-      </div>
+      <TablePagination
+        list={getPageData(currentPage, 10)}
+        totalItems={data.length}
+        className='documentApproval'
+        columns={columns}
+        onChange={handleTablePageChange}
+        no={currentPage}
+        pageSize={limit}
+        useText={true}
+      />
     </>
   );
 };

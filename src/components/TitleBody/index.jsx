@@ -17,7 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 const TitleBody = ({
     label,
     isForm = false,
-    isApproval = false
+    isApproval = false,
+    href
 }) => {
 
     const navigate = useNavigate("")
@@ -32,7 +33,7 @@ const TitleBody = ({
                     {
                         isApproval ?
                             <>
-                                <Link onClick={handleBackLink}><SwapLeftOutlined /> Return</Link>
+                                <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><FileTextOutlined /> Download file</Link>
                                 <Link><ShareAltOutlined />Share</Link>
                                 <Link><CheckOutlined />Approve</Link>
@@ -41,16 +42,16 @@ const TitleBody = ({
                             </>
                             :
                             <>
-                                <Link onClick={handleBackLink}><SwapLeftOutlined /> Return</Link>
+                                <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><SaveOutlined />Save draft</Link>
-                                <Link><SendOutlined />Submit</Link>
+                                <Link ><SendOutlined />Submit</Link>
                             </>
                     }
 
                 </div>
                 <div className='titlebody-right'>
                 </div>
-            </div>
+            </div >
 
             :
             <div className='titlebody-nonform'>
@@ -58,8 +59,7 @@ const TitleBody = ({
                 <div className='titlebody-right'>
                     <Button><VerticalAlignBottomOutlined style={{ transform: 'rotate(-90deg)' }} />Export excel</Button>
                     <Button><FilterOutlined />Filer</Button>
-                    <Button className='btn-create'>
-                        <Link to='/avn/documentapproval/new'><PlusOutlined />Create new</Link></Button>
+                    <Link className='link-create' to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
                 </div>
             </div>
     )
