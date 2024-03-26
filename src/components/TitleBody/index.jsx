@@ -21,11 +21,6 @@ const TitleBody = ({
     href
 }) => {
 
-    const navigate = useNavigate("")
-    const handleBackLink = () => {
-        navigate(-1)
-    }
-
     return (
         isForm ?
             <div className='titlebody-form'>
