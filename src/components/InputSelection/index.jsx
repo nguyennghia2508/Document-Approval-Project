@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import './style.scss'
-const InputSelection = ({ label, value, onChange, options, required, control, name }) => {
+import { Controller } from 'react-hook-form';
+const InputSelection = ({
+    label,
+    value,
+    name,
+    id,
+    onChange,
+    options,
+    required,
+    control,
+}) => {
+
+    const [inputValue, setInputValue] = useState(null)
 
     const handleSelected = (e, field) => {
         field.onChange(e)
@@ -12,7 +23,6 @@ const InputSelection = ({ label, value, onChange, options, required, control, na
     return (
         <div className="antd-select-container">
             <label className="bold-label">{label} {required && <span style={{ color: 'red' }}>*</span>}</label>
-
             <Controller
                 name={name}
                 control={control}
@@ -23,7 +33,7 @@ const InputSelection = ({ label, value, onChange, options, required, control, na
                             onChange={(e) => handleSelected(e, field)}
                         >
                             {options.map(option => (
-                                <Select.Option key={option.value} value={option.value}> {option.label}</Select.Option>
+                                <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
                             ))}
                         </Select>
                     )

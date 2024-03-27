@@ -6,6 +6,7 @@ import DocumentApproval from '../../pages/DocumentApproval';
 import Login from '../../pages/Login';
 import MainLayout from '../../layouts/main/MainLayout';
 import NewApproval from '../../pages/NewApproval';
+import Test from '../../components/Test';
 
 
 const mainRouter = [
@@ -35,6 +36,10 @@ const mainRouter = [
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/test',
+    element: <Test />,
   },
   {
     path: '*',

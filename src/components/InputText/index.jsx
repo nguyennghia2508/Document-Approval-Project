@@ -11,7 +11,8 @@ const InputText = ({
   type,
   name,
   id,
-  control
+  control,
+  defaultValue
 }) => {
 
   const [value, setValue] = useState('');
@@ -26,6 +27,7 @@ const InputText = ({
       <Controller
         name={name}
         control={control}
+        defaultValue={defaultValue}
         render={({ field }) => {
           return (
             <Input
