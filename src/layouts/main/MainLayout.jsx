@@ -6,6 +6,8 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 // import { Col, Row, Flex, Layout } from 'antd';
 import "./MainStyle.scss"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MainLayout = ({
     isForm = false
@@ -19,7 +21,7 @@ const MainLayout = ({
                     </div>
                 </div>
                 <div className='layout-container' >
-                    <Sidebar/>
+                    <Sidebar />
                     <div className='container-body'>
                         {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}
                         <div className='page-scroll'>
@@ -56,8 +58,22 @@ const MainLayout = ({
                 </div>
             </div> */}
 
-
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" />
+            {/* Same as */}
+            <ToastContainer />
         </>
+
+
 
     )
 }
