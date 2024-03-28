@@ -239,9 +239,8 @@ const New = () => {
                         </div>
                         <div className='reference'>
                             <FileUpload label="Documents for reference" id="reference" name="reference" control={control} type="primary" />
-
                         </div>
-
+                        <div></div>
                     </div>
                     <Divider style={{
                         backgroundColor: 'GREY',
