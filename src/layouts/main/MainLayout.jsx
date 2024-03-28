@@ -16,12 +16,12 @@ const MainLayout = ({
         <>
             <div className='layout-wrapper'>
                 <div className='layout-header'>
-                    <div xs={24}>
-                        <Header />
-                    </div>
+                    <Header />
                 </div>
                 <div className='layout-container' >
-                    <Sidebar />
+                    <div className='container-sidebar'>
+                        <Sidebar />
+                    </div>
                     <div className='container-body'>
                         {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}
                         <div className='page-scroll'>
@@ -38,39 +38,6 @@ const MainLayout = ({
                     <Footer />
                 </div>
             </div>
-
-
-            {/* <div className='layout-wrapper'>
-                <div className='layout-header'>
-                    <div xs={24}>
-                        <Header />
-                    </div>
-                </div>
-                <div className='layout-container'>
-                    <div className='sidebar'><Sidebar /></div>
-                    <div className='body'>
-                        <div className='body-title'><TitleBody /></div>
-                        <div className='body-container' style={{ width: '100%' }}><Outlet /></div>
-                    </div>
-                </div>
-                <div className='layout-footer'>
-                    <Footer />
-                </div>
-            </div> */}
-
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light" />
-            {/* Same as */}
-            <ToastContainer />
         </>
 
 

@@ -6,6 +6,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
 
 library.add(fas, far, fab);
 
@@ -13,7 +15,13 @@ const CustomMenu = () => {
   const [openKeys, setOpenKeys] = useState(['sub1']);
   const rootSubmenuKeys = ['sub1', 'sub2', 'sub3', 'sub4'];
 
+
+
   const getItem = (label, key, icon, type, childrenLabels, styles = []) => {
+
+
+
+
     const children = childrenLabels.map((childLabel, index) => {
       return {
         key: `${key}-${index + 1}`,
@@ -22,6 +30,7 @@ const CustomMenu = () => {
       };
     });
     return {
+
       key: key,
       icon: icon,
       children: children,
@@ -36,7 +45,10 @@ const CustomMenu = () => {
       'sub1',
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
-      ['All requests', 'Send to me', 'Send to others', 'Shared with me'],
+      [<NavLink to={"/avn/documentapproval"}>All requests</NavLink >,
+        'Send to me',
+        'Send to others',
+        'Shared with me'],
       { paddingLeft: '70.5px' }
     ), // 4 mục con trong submenu
     getItem(
@@ -74,18 +86,21 @@ const CustomMenu = () => {
     }
   };
 
+
   return (
     <Menu
       className='list-menu'
       mode='inline'
-      style={{borderInlineEnd:'none'}}
+      style={{ borderInlineEnd: 'none' }}
       defaultSelectedKeys={['sub1-1']}
       defaultOpenKeys={['sub1']}
       inlineIndent={10}
       items={items}
       openKeys={openKeys}
       onOpenChange={onOpenChange}
-    />
+    >
+    </Menu>
+
   );
 };
 

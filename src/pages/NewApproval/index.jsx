@@ -66,6 +66,7 @@ const New = () => {
         setSelectedDepartment(value);
         setSelectedSection('Select Section');
         setSelectedUnit('Select Unit');
+        setUnitOptions([])
         setValue("section", undefined)
         setValue("unit", undefined)
 
@@ -240,7 +241,7 @@ const New = () => {
                         <div className='reference'>
                             <FileUpload label="Documents for reference" id="reference" name="reference" control={control} type="primary" />
                         </div>
-                        <div></div>
+
                     </div>
                     <Divider style={{
                         backgroundColor: 'GREY',
