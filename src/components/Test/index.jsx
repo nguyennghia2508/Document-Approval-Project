@@ -1,19 +1,23 @@
 import React from 'react';
-import { Input, DatePicker } from 'antd';
-import moment from 'moment'
+import { Dropdown, Button, Menu } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 const Test = () => {
-
+    const menu = (
+        <Menu>
+            <Menu.Item key="1">Option 1</Menu.Item>
+            <Menu.Item key="2">Option 2</Menu.Item>
+            <Menu.Item key="3">Option 3</Menu.Item>
+        </Menu>
+    );
 
     return (
-
-
-        <Input
-            defaultValue={moment().format('YYYY-MM-DDTHH:mm:ss')}
-        ></Input>
-
-
-    )
+        <Dropdown overlay={menu} placement="bottomLeft" arrow trigger={['click']}>
+            <Button>
+                Dropdown <DownOutlined />
+            </Button>
+        </Dropdown>
+    );
 };
 
 export default Test;

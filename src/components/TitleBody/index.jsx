@@ -6,6 +6,7 @@ import {
 import React from 'react'
 import './style.scss'
 import { Link, useNavigate } from "react-router-dom";
+import ButtonFiler from '../ButtonFiler';
 
 // import Link from 'antd/es/typography/Link'
 
@@ -53,7 +54,8 @@ const TitleBody = ({
                 <label className='titlebody-left'>{label}</label>
                 <div className='titlebody-right'>
                     <Button><VerticalAlignBottomOutlined style={{ transform: 'rotate(-90deg)' }} />Export excel</Button>
-                    <Button><FilterOutlined />Filer</Button>
+                    <ButtonFiler />
+
                     <Link className='link-create' to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
                 </div>
             </div>

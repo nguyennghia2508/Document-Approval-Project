@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-
-import { Button, Input, Space } from 'antd';
+import { ToastContainer, toast } from 'react-toastify';
+import { Button, Input, Space, Spin } from 'antd';
 
 import image from '../../assets/images/LoginImage.avif';
 import {
@@ -23,8 +23,13 @@ import authApi from '../../api/authApi';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
   const [errors, setError] = useState({});
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+
 
   const navigate = useNavigate();
 
@@ -39,12 +44,26 @@ const Login = () => {
   };
 
   const handleSubmit = () => {
-    let user = {
-      email: email,
-      password: password,
-    };
-    console.log(user);
-    login(user);
+
+    if (!email) {
+      toast.error("Nhập Email đêyy")
+      return
+    }
+    if (!password) {
+      toast.error("Nhập password đêyy")
+      return
+    }
+
+    else {
+
+      let user = {
+        email: email,
+        password: password,
+      };
+      login(user);
+
+    }
+
   };
 
   const handleError = (error) => {
@@ -52,7 +71,9 @@ const Login = () => {
       email: error.Email || '',
       password: error.Password || '',
       error: '',
-    };
+
+    }
+      ;
 
     if (error.Email === undefined && error.Password === undefined) {
       errors.error = error;
@@ -62,14 +83,22 @@ const Login = () => {
   };
 
   const login = async (user) => {
+
     try {
       const response = await authApi.login(user);
-      console.log(response)
-      
+      if (response.state === "true") {
+        navigate("/")
+        toast.success(response.msg)
+      }
+      else {
+        navigate("/login")
+        toast.error(response.msg)
+      }
     } catch (error) {
       console.log(error.response.data);
       handleError(error.response.data);
     }
+
   };
 
   // const toHomepage = () => {
@@ -94,6 +123,7 @@ const Login = () => {
               onChange={(e) => {
                 handleInputChange(e);
               }}
+
             />
             <Space
               direction='horizontal'
@@ -135,12 +165,15 @@ const Login = () => {
             )}
 
             <Button type='primary' block onClick={handleSubmit}>
+              <Spin />
               LOGIN
             </Button>
           </Form>
         </RightContainer>
       </InnerContainer>
+
     </Container>
+
   );
 };
 
