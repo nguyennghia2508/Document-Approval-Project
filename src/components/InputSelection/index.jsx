@@ -11,13 +11,21 @@ const InputSelection = ({
     options,
     required,
     control,
+    defaultValue,
+    multifield = false,
+    indexInput,
 }) => {
 
-    const [inputValue, setInputValue] = useState(null)
-
     const handleSelected = (e, field) => {
-        field.onChange(e)
-        onChange(e);
+        if(multifield)
+        {
+            onChange(indexInput,e);
+        }
+        else
+        {
+            field.onChange(e)
+            onChange(e);
+        }
     };
 
     return (
@@ -29,7 +37,9 @@ const InputSelection = ({
                 render={({ field }) => {
                     return (
                         <Select
+                            id={id}
                             value={value}
+                            defaultValue={defaultValue}
                             onChange={(e) => handleSelected(e, field)}
                         >
                             {options.map(option => (

@@ -1,27 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, Button, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
 import './style.scss'
+import InputSelection from '../InputSelection';
 
 const { Option } = Select;
 
-const ButtonSelect = () => {
+const ButtonSelect = ({
+    labelName,
+    data,
+    id,
+    name,
+    control,
+    setValue,
+}) => {
+
+    const userData = data
+    .map(value => ({
+        value: value.Id,
+        label: value.Email
+    }));
+
     const [inputSelects, setInputSelects] = useState([]);
     const [editLabelIndex, setEditLabelIndex] = useState(null);
 
     const handleAddInputSelect = () => {
-        setInputSelects([...inputSelects, { id: inputSelects.length, label: 'Label', selectedOption: 'option1' }]);
+        let maxLabelNumber = 0;
+        inputSelects.forEach(inputSelect => {
+            const labelNumber = parseInt(inputSelect.label.split(' ')[1]);
+            if (!isNaN(labelNumber) && labelNumber > maxLabelNumber) {
+                maxLabelNumber = labelNumber;
+            }
+        });
+    
+        const newLabel = `${labelName} ${maxLabelNumber + 1}`;
+    
+        setInputSelects(prevInputSelects => {
+            const newId = prevInputSelects.length;
+            return [...prevInputSelects, { id: newId, userName: undefined, label: newLabel, selectedOption: undefined }];
+        });
     };
+    
 
     const handleDeleteInputSelect = id => {
-        setInputSelects(inputSelects.filter(inputSelect => inputSelect.id !== id));
-    };
+        setInputSelects(prevInputSelects => {
+            const filteredInputSelects = prevInputSelects.filter(inputSelect => inputSelect.id !== id);
+            return filteredInputSelects.map((inputSelect, index) => ({
+                ...inputSelect,
+                id: index,
+            }));
+        });
+    }; 
 
     const handleEditLabel = id => {
         setEditLabelIndex(id);
     };
 
     const handleSaveLabel = (id, newLabel) => {
+        console.log(newLabel)
         setInputSelects(inputSelects.map(inputSelect => {
             if (inputSelect.id === id) {
                 return { ...inputSelect, label: newLabel };
@@ -34,11 +70,15 @@ const ButtonSelect = () => {
     const handleSelectChange = (id, value) => {
         setInputSelects(inputSelects.map(inputSelect => {
             if (inputSelect.id === id) {
-                return { ...inputSelect, selectedOption: value };
+                return { ...inputSelect, userName: userData[value].label, selectedOption: value };
             }
             return inputSelect;
         }));
     };
+
+    useEffect(()=>{
+        setValue(name,inputSelects)
+    },[inputSelects])
 
     return (
         <>
@@ -58,7 +98,7 @@ const ButtonSelect = () => {
                             )}
 
                             {editLabelIndex === inputSelect.id ? (
-                                <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id)}>
+                                <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id,inputSelect.label)}>
                                 </Button>
                             ) : (
                                 <Button type="danger" icon={<EditOutlined />} onClick={() => handleEditLabel(inputSelect.id)} />
@@ -70,14 +110,19 @@ const ButtonSelect = () => {
 
                         <div className='selection'>
 
-                            <Select
-                                value={inputSelect.selectedOption}
-                                onChange={(value) => handleSelectChange(inputSelect.id, value)}
+                            <InputSelection
+                            label="Document Type" 
+                            id={id}
+                            name={name}
+                            defaultValue="--Select approver--"
+                            control={control}
+                            value={inputSelect.selectedOption} 
+                            onChange={handleSelectChange}
+                            indexInput={inputSelect.id}
+                            options={userData}
+                            multifield={true}
                             >
-                                <Option value="option1">Option 1</Option>
-                                <Option value="option2">Option 2</Option>
-                                <Option value="option3">Option 3</Option>
-                            </Select>
+                            </InputSelection>
 
                         </div>
 
