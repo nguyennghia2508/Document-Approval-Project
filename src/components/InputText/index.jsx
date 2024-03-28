@@ -4,14 +4,15 @@ import { Input } from 'antd';
 import { Controller } from 'react-hook-form';
 
 
-const InputText = ({ 
+const InputText = ({
   label,
-  required, 
-  disabled, 
-  type, 
-  name, 
-  id, 
-  control 
+  required,
+  disabled,
+  type,
+  name,
+  id,
+  control,
+  defaultValue
 }) => {
 
   const [value, setValue] = useState('');
@@ -26,15 +27,16 @@ const InputText = ({
       <Controller
         name={name}
         control={control}
+        defaultValue={defaultValue}
         render={({ field }) => {
           return (
-            <Input 
-            type={type}
-            id={id}
-            onChange={(e) => handleChange(e)} 
-            value={value}
-            disabled={disabled} 
-            {...field}
+            <Input
+              type={type}
+              id={id}
+              onChange={(e) => handleChange(e)}
+              value={value}
+              disabled={disabled}
+              {...field}
             />
           )
         }}
