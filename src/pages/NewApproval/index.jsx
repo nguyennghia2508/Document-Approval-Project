@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import departmentApi from '../../api/departmentApi';
 import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
+import userApi from "../../api/userApi"
 import moment from 'moment'
 
 
@@ -38,10 +39,9 @@ const New = () => {
     const [selectedCategory, setSelectedCategory] = useState('Choose category');
     const [selectedDocumentType, setSelectedDocumentType] = useState('Choose document type');
     const [initialCategorySet, setInitialCategorySet] = useState(false);
+    const [userData, setUserData] = useState([])
 
     useEffect(() => {
-
-
         const getDepartment = async () => {
             try {
                 const data = await departmentApi.getAllDepartment()
@@ -87,12 +87,12 @@ const New = () => {
     const handleSectionChange = (value) => {
         setSelectedSection(value);
         setSelectedUnit('Select Unit');
+        setUnitOptions([])
         setValue("unit", undefined)
 
         const selectedSection = departmentData
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
-        console.log("asdasd", selectedSection)
         if (selectedSection) {
             const units = (selectedSection.Children || [])
                 .filter(unit => unit.DepartmentLevel === 3)
@@ -158,35 +158,61 @@ const New = () => {
 
 
 
+    useEffect(() => {
+        const getAllUser = async () => {
+            try {
+                const data = await userApi.getAll()
+                setUserData(data.listUser)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getAllUser();
+    }, []);
+
     const defaultDate = moment().format('YYYY-MM-DDTHH:mm:ss')
 
     const onSubmit = async (data) => {
-        console.log(data)
         data.date = defaultDate;
-        // const formData = new FormData();
-        // const dataObject = {
-        //     applicant: data.applicant,
-        //     category: data.category,
-        //     department: data.department,
-        //     documentType: data.documentType,
-        //     section: data.section,
-        //     unit: data.unit
-        //
-        // };
+        const formData = new FormData();
+        const dataObject = {
+            ApplicantName: data.applicant,
+            CategoryId: data.category,
+            DocumentTypeId: data.documentType,
+            DepartmentId: data.department,
+            SectionId: data.section,
+            UnitId: data.unit,
+            RelatedProposal:data.proposal,
+            CreateDate:data.date,
+            Subject:data.subject,
+            ContentSum:data.content
+        };
 
-        // formData.append("Data", JSON.stringify(dataObject));
+        formData.append("Data", JSON.stringify(dataObject));
 
-        // if (data.approve && data.approve.length > 0) {
-        //     for (let i = 0; i < data.approve.length; i++) {
-        //         formData.append('approve', data.approve[i]);
-        //     }
-        // }
-        // if (data.reference && data.reference.length > 0) {
-        //     for (let i = 0; i < data.reference.length; i++) {
-        //         formData.append('reference', data.reference[i]);
-        //     }
-        // }
-        // const res = await  documentApprovalApi.addDocumentApproval(formData)
+        if (data.approve && data.approve.length > 0) {
+            for (let i = 0; i < data.approve.length; i++) {
+                formData.append('approve', data.approve[i]);
+            }
+        }
+        if (data.reference && data.reference.length > 0) {
+            for (let i = 0; i < data.reference.length; i++) {
+                formData.append('reference', data.reference[i]);
+            }
+        }
+
+        const approvalPerson = {
+            approvers:data.approvers.map(value => ({
+                ApprovalPersonId: value.selectedOption,
+                ApprovalPersonName: value.userName,
+            })),
+            signers:data.signers.map(value => ({
+                ApprovalPersonId: value.selectedOption,
+                ApprovalPersonName: value.userName,
+            }))
+        }
+        formData.append('ApprovalPerson', JSON.stringify(approvalPerson))
+        const res = await  documentApprovalApi.addDocumentApproval(formData)
     };
 
     return (
@@ -254,12 +280,12 @@ const New = () => {
                 <div className='signapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Aprover</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>
-                        <ButtonSelect label1="ASD" label2="2132" />
+                        <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A"/>
                     </div>
-                    <label className='label' style={{ fontWeight: "bold", }}>Aprover</label>
+                    <label className='label' style={{ fontWeight: "bold", }}>Signers</label>
 
                     <div className='sign-email'>
-                        <ButtonSelect label1="ASD" label2="2132" />
+                        <ButtonSelect  id="signers" name="signers" control={control} data={userData}  setValue={setValue} labelName="S"/>
                     </div>
                 </div>
                 <button type="submit">submit</button>

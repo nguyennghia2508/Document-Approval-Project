@@ -1,63 +1,29 @@
-import CustomPagination from "../../components/CustomPagination";
-import CustomTable from "../../components/CustomTable/index"
 import TitleBody from "../../components/TitleBody";
 import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
+import documentApprovalApi from "../../api/documentApprovalApi";
 const DocumentApproval = () => {
+
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
 
+  const limit = 10
   // Hàm để tạo ngẫu nhiên một phần tử mới dựa trên cấu trúc của phần tử đầu tiên
-  const generateRandomElement = () => {
-    const categories = 'Random Category';
-    const documentType = 'BBB';
-    const subject = 'Random Subject';
-    const createDate = '27/03/2022';
-    const department = 'Random Department';
-    const section = 'Random Section';
-    const unit = 'Random Unit';
-    const createBy = 'Random Creator';
-    const Processing = 'Random Processor';
 
-    return {
-      categories,
-      documentType,
-      subject,
-      createDate,
-      department,
-      section,
-      unit,
-      createBy,
-      Processing,
-    };
-  };
+  useEffect(() => {
+    const getAllDocument = async () => {
+        try {
+            const data = await documentApprovalApi.getListDocument(currentPage)
+            setList(data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    getAllDocument();
+    window.scrollTo(0, 0);
+  }, []);
 
-  const numberOfNewElements = 21;
-
-  const limit = 10;
-
-  const data = [
-    {
-      key: '1',
-      categories: 'John BrownASDASDAS',
-      documentType: 'AAA',
-      subject: 'New York No. 1 Lake Park',
-      createDate: '25/03/2022',
-      department: 'AADSAD',
-      section: 'DDSD',
-      unit: 'DSADd',
-      createBy: 'Nguyen',
-      Processing: 'Nguyen',
-    },
-  ];
-  for (let i = 2; i <= numberOfNewElements; i++) {
-    const newElement = generateRandomElement();
-    newElement.key = String(i); // Assigning keys from 1 to 22
-    data.push(newElement);
-  }
-
-  console.log(data)
 
   const columns = [
     {
@@ -65,7 +31,7 @@ const DocumentApproval = () => {
       align: 'left',
       width: '13%',
       render: (text, record, index) => {
-        return <span>02-00157-2024-AVN</span>;
+        return text.DocumentApprovalId
       },
     },
     {
@@ -133,32 +99,22 @@ const DocumentApproval = () => {
     },
   ];
 
-  const handleTablePageChange = (page, additionalData) => {
+  const handleTablePageChange = async (page) => {
     // Do something with the page number and additional data
     if (page !== undefined) {
-      // dispatch(getDiscountsThunk({ no: page, limit: limit }));
+      const data = await documentApprovalApi.getListDocument(page)
+      setList(data)
       setCurrentPage(page);
     }
   };
-
-  const getPageData = (pageNumber, pageSize) => {
-    const startIndex = (pageNumber - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return data.slice(startIndex, endIndex);
-  };
-
-  useEffect(() => {
-    setList(getPageData(currentPage, 10));
-    window.scrollTo(0, 0);
-  }, []);
 
   // console.log(getPageData(currentPage,10))
   return (
     <>
       <TitleBody label="eDocument Approval" isForm={false} />
       <TablePagination
-        list={getPageData(currentPage, 10)}
-        totalItems={data.length}
+        list={list?.listDcapproval}
+        totalItems={list?.totalItems}
         className='documentApproval'
         columns={columns}
         onChange={handleTablePageChange}
