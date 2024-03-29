@@ -3,6 +3,7 @@ import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
+import { useSelector } from "react-redux";
 const DocumentApproval = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,11 +11,13 @@ const DocumentApproval = () => {
 
   const limit = 10
   // Hàm để tạo ngẫu nhiên một phần tử mới dựa trên cấu trúc của phần tử đầu tiên
+  const user = useSelector((state) => state.user.value)
+  const tabView = useSelector((state) => state.tabview.value)
 
   useEffect(() => {
     const getAllDocument = async () => {
         try {
-            const data = await documentApprovalApi.getListDocument(currentPage)
+            const data = await documentApprovalApi.getListDocument(user.Id,tabView.tabName,currentPage)
             setList(data)
         } catch (err) {
             console.log(err)
@@ -22,8 +25,12 @@ const DocumentApproval = () => {
     }
     getAllDocument();
     window.scrollTo(0, 0);
-  }, []);
+  }, [tabView,currentPage]);
 
+  useEffect(() => {
+    setCurrentPage(1)
+    window.scrollTo(0, 0);
+  }, [tabView]);
 
   const columns = [
     {
@@ -102,7 +109,7 @@ const DocumentApproval = () => {
   const handleTablePageChange = async (page) => {
     // Do something with the page number and additional data
     if (page !== undefined) {
-      const data = await documentApprovalApi.getListDocument(page)
+      const data = await documentApprovalApi.getListDocument(user.Id,tabView.tabName,currentPage)
       setList(data)
       setCurrentPage(page);
     }

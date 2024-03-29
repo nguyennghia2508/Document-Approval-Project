@@ -1,7 +1,27 @@
+import { useDispatch } from "react-redux";
 import { publicRouter } from "./config/routes/index"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
+import { resetTabview } from "./redux/features/tabviewSlice"
+import { useEffect } from "react";
+
 function App() {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Dispatch the reset action when the tab is closed
+      dispatch(resetTabview());
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [dispatch]);
+
   return (
     <Router>
       <Routes>

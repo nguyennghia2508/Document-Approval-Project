@@ -9,28 +9,33 @@ import "./MainStyle.scss"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import authUtils from "../../utils/authUtils"
-
+import { useDispatch } from 'react-redux';
+import { resetUser, setUser } from '../../redux/features/userSlice'
 const MainLayout = ({
-    isForm = false
+    isForm = false,
+    href
 }) => {
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
         const checkAuth = async () => {
           const user = await authUtils.isAuthenticated()
           if (user) {
-            // dispatch(setUser(user))
-            console.log(user)
-          }
+
+            dispatch(setUser(user))
+        }
           else
           {
             navigate('/login');
-            // dispatch(resetUser())
+            dispatch(resetUser())
           }
         }
         checkAuth()
     }, [navigate])
+
+    
 
     return (
         <>
@@ -40,7 +45,7 @@ const MainLayout = ({
                 </div>
                 <div className='layout-container' >
                     <div className='container-sidebar'>
-                        <Sidebar />
+                        <Sidebar href={href}/>
                     </div>
                     <div className='container-body'>
                         {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}
