@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import { Button, Input, Space, Spin } from 'antd';
+import authUtils from "../../utils/authUtils"
 
 import image from '../../assets/images/LoginImage.avif';
 import {
@@ -32,6 +33,18 @@ const Login = () => {
 
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isAuth = await authUtils.isAuthenticated()
+      if (!isAuth) {
+
+      } else {
+        navigate('/')
+      }
+    }
+    checkAuth()
+  }, [navigate])
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -86,6 +99,7 @@ const Login = () => {
 
     try {
       const response = await authApi.login(user);
+      localStorage.setItem('token', response.token)
       if (response.state === "true") {
         navigate("/")
         toast.success(response.msg)

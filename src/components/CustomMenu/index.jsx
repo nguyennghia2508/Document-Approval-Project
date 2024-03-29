@@ -6,7 +6,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 
 library.add(fas, far, fab);
@@ -39,14 +39,22 @@ const CustomMenu = () => {
     };
   };
 
+  const handleTableView = async () => {
+    // if (page !== undefined) {
+    //   const data = await documentApprovalApi.getListDocument(page)
+    //   setList(data)
+    //   setCurrentPage(page);
+    // }
+  };
+
   const items = [
     getItem(
       'Requests',
       'sub1',
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
-      [<NavLink to={"/avn/documentapproval"}>All requests</NavLink >,
-        'Send to me',
+      [<Link to={"/avn/documentapproval"}>All requests</Link >,
+        <Link onClick={handleTableView}>Send to me</Link >,
         'Send to others',
         'Shared with me'],
       { paddingLeft: '70.5px' }
