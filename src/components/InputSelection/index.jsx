@@ -17,6 +17,7 @@ const InputSelection = ({
 }) => {
 
     const handleSelected = (e, field) => {
+        console.log(e)
         if(multifield)
         {
             onChange(indexInput,e);
@@ -40,7 +41,7 @@ const InputSelection = ({
                             id={id}
                             value={value}
                             defaultValue={defaultValue}
-                            onChange={(e) => handleSelected(e, field)}
+                            onChange={e => handleSelected(e, field)}
                         >
                             {options.map(option => (
                                 <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>

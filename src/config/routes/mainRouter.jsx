@@ -11,26 +11,23 @@ import Test from '../../components/Test';
 
 const mainRouter = [
   {
-    path: '/',
-    element: <MainLayout />,
+    path: '/avn',
+    element: <MainLayout href="/avn/documentapproval"/>,
     children: [
       {
         path: '/avn/documentapproval',
         Component: DocumentApproval,
-      }
-
-    ],
-  },
-
-  {
-    path: '/',
-    element: <MainLayout />,
-    children: [
+      },
       {
         path: '/avn/documentapproval/new',
         Component: NewApproval,
       },
     ],
+  },
+
+  {
+    path: '/',
+    element: <MainLayout />
   },
 
   {

@@ -14,6 +14,7 @@ import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
+import { useSelector } from 'react-redux';
 
 
 
@@ -27,7 +28,9 @@ const New = () => {
         setValue
     } = useForm({ mode: "all" });
 
-    const [departmentData, setDepartmentData] = useState([]);
+    const user = useSelector((state) => state.user.value)
+    const departments = useSelector((state) => state.department.value)
+
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
     const [categoryData, setCategoryData] = useState(null);
@@ -41,19 +44,7 @@ const New = () => {
     const [initialCategorySet, setInitialCategorySet] = useState(false);
     const [userData, setUserData] = useState([])
 
-    useEffect(() => {
-        const getDepartment = async () => {
-            try {
-                const data = await departmentApi.getAllDepartment()
-                setDepartmentData(data.departmentHierarchy)
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        getDepartment();
-    }, []);
-
-    const department = departmentData
+    const department = departments
         .filter(value => value.DepartmentLevel === 1)
         .map(value => ({
             value: value.Id,
@@ -70,7 +61,7 @@ const New = () => {
         setValue("section", undefined)
         setValue("unit", undefined)
 
-        const selectedDepartment = departmentData.find(department => department.Id === value);
+        const selectedDepartment = departments.find(department => department.Id === value);
         if (selectedDepartment) {
             const sections = (selectedDepartment.Children || [])
                 .filter(child => child.DepartmentLevel === 2)
@@ -90,7 +81,7 @@ const New = () => {
         setUnitOptions([])
         setValue("unit", undefined)
 
-        const selectedSection = departmentData
+        const selectedSection = departments
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
         if (selectedSection) {
@@ -173,9 +164,11 @@ const New = () => {
     const defaultDate = moment().format('YYYY-MM-DDTHH:mm:ss')
 
     const onSubmit = async (data) => {
+        console.log(data)
         data.date = defaultDate;
         const formData = new FormData();
         const dataObject = {
+            ApplicantId:  user.Id,
             ApplicantName: data.applicant,
             CategoryId: data.category,
             DocumentTypeId: data.documentType,
@@ -224,7 +217,7 @@ const New = () => {
                     <div className='input'>
                         <div className='input-top'>
                             <div className='input-element'>
-                                <InputText label="Applicant" id="applicant" name="applicant" control={control} />
+                                <InputText label="Applicant" id="applicant" name="applicant" disabled={true} defaultValue={user.Username} control={control} />
                             </div>
                             <div className='input-element'>
                                 <InputSelection label="Department" id="department" name="department" value={selectedDepartment} control={control} onChange={handleDepartmentChange} options={department} required />
