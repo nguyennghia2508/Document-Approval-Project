@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer';
 // import TitleBody from '../../components/TitleBody';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 // import { Col, Row, Flex, Layout } from 'antd';
 import "./MainStyle.scss"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import authUtils from "../../utils/authUtils"
 
 const MainLayout = ({
     isForm = false
 }) => {
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const checkAuth = async () => {
+          const user = await authUtils.isAuthenticated()
+          if (user) {
+            // dispatch(setUser(user))
+            console.log(user)
+          }
+          else
+          {
+            navigate('/login');
+            // dispatch(resetUser())
+          }
+        }
+        checkAuth()
+    }, [navigate])
+
     return (
         <>
             <div className='layout-wrapper'>
