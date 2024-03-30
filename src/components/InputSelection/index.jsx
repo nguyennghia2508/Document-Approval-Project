@@ -17,7 +17,6 @@ const InputSelection = ({
 }) => {
 
     const handleSelected = (e, field) => {
-        console.log(e)
         if(multifield)
         {
             onChange(indexInput,e);

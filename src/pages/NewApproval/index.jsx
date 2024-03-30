@@ -15,7 +15,10 @@ import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
 import { useSelector } from 'react-redux';
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import {schema} from './data';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -25,9 +28,14 @@ const New = () => {
         handleSubmit,
         formState: { errors },
         control,
-        setValue
-    } = useForm({ mode: "all" });
+        setValue,
+    } = useForm({ 
+        mode: "onsubmit" ,
+        resolver: yupResolver(schema()),
+        shouldFocusError: false,
+    });
 
+    const navigate = useNavigate()
     const user = useSelector((state) => state.user.value)
     const departments = useSelector((state) => state.department.value)
 
@@ -163,8 +171,15 @@ const New = () => {
 
     const defaultDate = moment().format('YYYY-MM-DDTHH:mm:ss')
 
+    useEffect(() => {
+        if (errors && Object.keys(errors).length > 0) {
+            const firstErrorMessage = Object.values(errors)[0].message;
+            toast.error(firstErrorMessage);
+        }
+    }, [errors]);   
+
     const onSubmit = async (data) => {
-        console.log(data)
+        // Tiếp tục xử lý dữ liệu
         data.date = defaultDate;
         const formData = new FormData();
         const dataObject = {
@@ -175,10 +190,10 @@ const New = () => {
             DepartmentId: data.department,
             SectionId: data.section,
             UnitId: data.unit,
-            RelatedProposal:data.proposal,
-            CreateDate:data.date,
-            Subject:data.subject,
-            ContentSum:data.content
+            RelatedProposal: data.proposal,
+            CreateDate: data.date,
+            Subject: data.subject,
+            ContentSum: data.content
         };
 
         formData.append("Data", JSON.stringify(dataObject));
@@ -195,18 +210,23 @@ const New = () => {
         }
 
         const approvalPerson = {
-            approvers:data.approvers.map(value => ({
+            approvers: data.approvers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
             })),
-            signers:data.signers.map(value => ({
+            signers: data.signers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
             }))
+        };
+        formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
+        const res = await  documentApprovalApi.addDocumentApproval(formData);
+        if(res.state === "true")
+        {
+            const dc = res.dc
+            navigate(`/avn/documentapproval/view/${dc.Id}`)
         }
-        formData.append('ApprovalPerson', JSON.stringify(approvalPerson))
-        const res = await  documentApprovalApi.addDocumentApproval(formData)
-    };
+    };    
 
     return (
         <>
@@ -255,10 +275,12 @@ const New = () => {
                             <InputText label="Content summary" id="content" name="content" control={control} />
                         </div>
                         <div className='approve-sign'>
-                            <FileUpload label="Documents to be approved/signed" id="approve" name="approve" control={control} type="primary" />
+                            <FileUpload maxSize={50} label="Documents to be approved/signed" id="approve" name="approve" 
+                            setValue={setValue} control={control} type="primary" />
                         </div>
                         <div className='reference'>
-                            <FileUpload label="Documents for reference" id="reference" name="reference" control={control} type="primary" />
+                            <FileUpload maxSize={50} label="Documents for reference" id="reference" name="reference" 
+                            setValue={setValue} control={control} type="primary" />
                         </div>
 
                     </div>
@@ -271,11 +293,11 @@ const New = () => {
 
                 </div >
                 <div className='signapproval-container'>
-                    <label className='label' style={{ fontWeight: "bold", }}>Aprover</label>
+                    <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>
                         <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A"/>
                     </div>
-                    <label className='label' style={{ fontWeight: "bold", }}>Signers</label>
+                    <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
 
                     <div className='sign-email'>
                         <ButtonSelect  id="signers" name="signers" control={control} data={userData}  setValue={setValue} labelName="S"/>
