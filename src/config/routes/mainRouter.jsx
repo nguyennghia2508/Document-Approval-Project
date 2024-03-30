@@ -22,6 +22,10 @@ const mainRouter = [
         path: '/avn/documentapproval/new',
         Component: NewApproval,
       },
+      {
+        path: '/avn/documentapproval/view/:id',
+        Component: Test,
+      },
     ],
   },
 
