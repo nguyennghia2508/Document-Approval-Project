@@ -40,8 +40,10 @@ const InputSelection = ({
                             id={id}
                             value={value}
                             defaultValue={defaultValue}
+
                             disabled={disabled}
                             onChange={(e) => handleSelected(e, field)}
+
                         >
                             {filter ?? <Select.Option key="all" value="all">All</Select.Option>}
                             {options.map(option => (
