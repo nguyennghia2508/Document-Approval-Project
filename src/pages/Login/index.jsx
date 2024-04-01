@@ -99,8 +99,8 @@ const Login = () => {
 
     try {
       const response = await authApi.login(user);
-      localStorage.setItem('token', response.token)
       if (response.state === "true") {
+        localStorage.setItem('token', response.token)
         navigate("/")
         toast.success(response.msg)
       }

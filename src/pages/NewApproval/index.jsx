@@ -14,6 +14,7 @@ import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -27,6 +28,7 @@ const New = () => {
         setValue
     } = useForm({ mode: "all" });
 
+    const navigate = useNavigate();
     const [departmentData, setDepartmentData] = useState([]);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
@@ -182,12 +184,12 @@ const New = () => {
             DepartmentId: data.department,
             SectionId: data.section,
             UnitId: data.unit,
-            RelatedProposal:data.proposal,
-            CreateDate:data.date,
-            Subject:data.subject,
-            ContentSum:data.content
-        };
-
+            RelatedProposal: data.proposal,
+            CreateDate: data.date,
+            Subject: data.subject,
+            ContentSum: data.content
+        }
+            ;
         formData.append("Data", JSON.stringify(dataObject));
 
         if (data.approve && data.approve.length > 0) {
@@ -202,23 +204,25 @@ const New = () => {
         }
 
         const approvalPerson = {
-            approvers:data.approvers.map(value => ({
+            approvers: data.approvers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
             })),
-            signers:data.signers.map(value => ({
+            signers: data.signers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
             }))
         }
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson))
-        const res = await  documentApprovalApi.addDocumentApproval(formData)
+        const res = await documentApprovalApi.addDocumentApproval(formData)
+        navigate("/avn/documentapproval/new")
+
     };
 
     return (
         <>
             <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
-                <TitleBody label="eDocument Approval" isForm={true} isApproval={false} href={"/avn/documentapproval"} />
+                <TitleBody label="eDocument Approval" onSubmit={handleSubmit(onSubmit)} isForm={true} isApproval={false} href={"/avn/documentapproval"} />
                 <div className='newapproval-container'>
                     <div className="new-title"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
                     <div className='input'>
@@ -280,15 +284,14 @@ const New = () => {
                 <div className='signapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Aprover</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>
-                        <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A"/>
+                        <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
                     </div>
                     <label className='label' style={{ fontWeight: "bold", }}>Signers</label>
 
                     <div className='sign-email'>
-                        <ButtonSelect  id="signers" name="signers" control={control} data={userData}  setValue={setValue} labelName="S"/>
+                        <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div>
                 </div>
-                <button type="submit">submit</button>
             </form >
         </>
 

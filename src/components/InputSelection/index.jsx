@@ -3,6 +3,7 @@ import { Select } from 'antd';
 import './style.scss'
 import { Controller } from 'react-hook-form';
 const InputSelection = ({
+    disabled,
     label,
     value,
     name,
@@ -14,15 +15,14 @@ const InputSelection = ({
     defaultValue,
     multifield = false,
     indexInput,
+    filter,
 }) => {
 
     const handleSelected = (e, field) => {
-        if(multifield)
-        {
-            onChange(indexInput,e);
+        if (multifield) {
+            onChange(indexInput, e);
         }
-        else
-        {
+        else {
             field.onChange(e)
             onChange(e);
         }
@@ -40,10 +40,12 @@ const InputSelection = ({
                             id={id}
                             value={value}
                             defaultValue={defaultValue}
+                            disabled={disabled}
                             onChange={(e) => handleSelected(e, field)}
                         >
+                            {filter ?? <Select.Option key="all" value="all">All</Select.Option>}
                             {options.map(option => (
-                                <Select.Option key={option.value} value={option.value}>{option.label}</Select.Option>
+                                <Select.Option key={option.value} value={option.value} >{option.label} </Select.Option>
                             ))}
                         </Select>
                     )

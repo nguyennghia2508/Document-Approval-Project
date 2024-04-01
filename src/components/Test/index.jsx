@@ -1,23 +1,13 @@
 import React from 'react';
-import { Dropdown, Button, Menu } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DatePicker } from 'antd';
+import './style.scss'
 
-const Test = () => {
-    const menu = (
-        <Menu>
-            <Menu.Item key="1">Option 1</Menu.Item>
-            <Menu.Item key="2">Option 2</Menu.Item>
-            <Menu.Item key="3">Option 3</Menu.Item>
-        </Menu>
-    );
+const { RangePicker } = DatePicker;
 
-    return (
-        <Dropdown overlay={menu} placement="bottomLeft" arrow trigger={['click']}>
-            <Button>
-                Dropdown <DownOutlined />
-            </Button>
-        </Dropdown>
-    );
-};
+const Test = () => (
+    <div className="custom-range-picker">
+        <RangePicker />
+    </div>
+);
 
 export default Test;

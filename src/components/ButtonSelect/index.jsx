@@ -16,13 +16,13 @@ const ButtonSelect = ({
 }) => {
 
     const userData = data
-    .map(value => ({
-        value: value.Id,
-        label: value.Email
-    }));
+        .map(value => ({
+            value: value.Id,
+            label: value.Email
+        }));
 
-    const [inputSelects, setInputSelects] = useState([]);
     const [editLabelIndex, setEditLabelIndex] = useState(null);
+    const [inputSelects, setInputSelects] = useState([]);
 
     const handleAddInputSelect = () => {
         let maxLabelNumber = 0;
@@ -32,15 +32,15 @@ const ButtonSelect = ({
                 maxLabelNumber = labelNumber;
             }
         });
-    
+
         const newLabel = `${labelName} ${maxLabelNumber + 1}`;
-    
+
         setInputSelects(prevInputSelects => {
             const newId = prevInputSelects.length;
             return [...prevInputSelects, { id: newId, userName: undefined, label: newLabel, selectedOption: undefined }];
         });
     };
-    
+
 
     const handleDeleteInputSelect = id => {
         setInputSelects(prevInputSelects => {
@@ -50,7 +50,7 @@ const ButtonSelect = ({
                 id: index,
             }));
         });
-    }; 
+    };
 
     const handleEditLabel = id => {
         setEditLabelIndex(id);
@@ -76,9 +76,9 @@ const ButtonSelect = ({
         }));
     };
 
-    useEffect(()=>{
-        setValue(name,inputSelects)
-    },[inputSelects])
+    useEffect(() => {
+        setValue(name, inputSelects)
+    }, [inputSelects])
 
     return (
         <>
@@ -98,7 +98,7 @@ const ButtonSelect = ({
                             )}
 
                             {editLabelIndex === inputSelect.id ? (
-                                <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id,inputSelect.label)}>
+                                <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id, inputSelect.label)}>
                                 </Button>
                             ) : (
                                 <Button type="danger" icon={<EditOutlined />} onClick={() => handleEditLabel(inputSelect.id)} />
@@ -111,16 +111,16 @@ const ButtonSelect = ({
                         <div className='selection'>
 
                             <InputSelection
-                            label="Document Type" 
-                            id={id}
-                            name={name}
-                            defaultValue="--Select approver--"
-                            control={control}
-                            value={inputSelect.selectedOption} 
-                            onChange={handleSelectChange}
-                            indexInput={inputSelect.id}
-                            options={userData}
-                            multifield={true}
+                                label="Document Type"
+                                id={id}
+                                name={name}
+                                defaultValue="--Select approver--"
+                                control={control}
+                                value={inputSelect.selectedOption}
+                                onChange={handleSelectChange}
+                                indexInput={inputSelect.id}
+                                options={userData}
+                                multifield={true}
                             >
                             </InputSelection>
 
