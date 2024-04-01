@@ -45,20 +45,20 @@ const CustomPagination = ({
 
   return (
     <>
-        {list.length > 0 ? (
+      {list.length > 0 ? (
         <div className={`table_pagination ${className ? className : ''}`}>
-            <Pagination
+          <Pagination
             itemRender={itemRender}
             current={no}
             onChange={handleChangePage}
             total={totalItems}
             pageSize={pageSize}
             showSizeChanger={false}
-            />
+          />
         </div>
-        ) : (
+      ) : (
         <></>
-        )}
+      )}
     </>
   );
 };

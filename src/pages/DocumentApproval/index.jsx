@@ -3,8 +3,10 @@ import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
+
 import { useSelector } from "react-redux";
 const DocumentApproval = () => {
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
@@ -13,7 +15,24 @@ const DocumentApproval = () => {
   // Hàm để tạo ngẫu nhiên một phần tử mới dựa trên cấu trúc của phần tử đầu tiên
   const user = useSelector((state) => state.user.value)
   const tabView = useSelector((state) => state.tabview.value)
-
+  // rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy
+  const [searchedrCode, setSearchedrCode] = useState("")
+  const [searcheddType, setSearcheddType] = useState("")
+  const [searchedsubject, setSearchedsubject] = useState("")
+  const [searchedrProposal, setSearchedrProposal] = useState("")
+  const [searchedcreateStart, setSearchedcreateStart] = useState("")
+  const [searchedcreateEnd, setSearchedcreateEnd] = useState("")
+  const [searchedto, setSearchedto] = useState("")
+  const [searchedauthor, setSearchedauthor] = useState("")
+  const [searchedattoney, setSearchedattoney] = useState("")
+  const [searchedperiodStart, setSearchedperiodStart] = useState("")
+  const [searchedperiodEnd, setSearchedperiodEnd] = useState("")
+  const [searchedapplicant, setSearchedapplicant] = useState("")
+  const [searcheddepart, setSearcheddepart] = useState("")
+  const [searchedsection, setSearchedsection] = useState("")
+  const [searchedunit, setSearchedunit] = useState("")
+  const [searchedstatus, setSearchedstatus] = useState("")
+  const [searchedprocBy, setSearchedprocBy] = useState("")
   useEffect(() => {
     const getAllDocument = async () => {
         try {
@@ -27,12 +46,14 @@ const DocumentApproval = () => {
     window.scrollTo(0, 0);
   }, [tabView,currentPage]);
 
+
   useEffect(() => {
     setCurrentPage(1)
     window.scrollTo(0, 0);
   }, [tabView]);
 
   const columns = [
+
     {
       title: 'Request Code',
       align: 'left',
@@ -40,6 +61,7 @@ const DocumentApproval = () => {
       render: (text, record, index) => {
         return text.DocumentApprovalId
       },
+
     },
     {
       title: 'Categories',
@@ -54,6 +76,12 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.documentType;
       },
+      filteredValue: [searcheddType],
+      onFilter: (value, record) => {
+        return record.documentType ? String(record.documentType).toLowerCase().includes(value.toLowerCase()) : '';
+      }
+
+
     },
     {
       title: 'Subject',
@@ -61,6 +89,10 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.subject;
       },
+      // filteredValue: [searchedSubject],
+      // onFilter: (value, record) => {
+      //   return record.subject ? record.subject.includes(value) : '';
+      // }
     },
     {
       title: 'Created date',
@@ -75,6 +107,12 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.department;
       },
+      filteredValue: [searcheddepart],
+      onFilter: (value, record) => {
+        return record.department ? String(record.department).toLowerCase().includes(value.toLowerCase()) : '';
+      }
+
+
     },
     {
       title: 'Section',
@@ -82,6 +120,7 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.section;
       },
+
     },
     {
       title: 'Unit',
@@ -115,10 +154,33 @@ const DocumentApproval = () => {
     }
   };
 
+  const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
+    // Xử lý dữ liệu từ TitleBody tại đây
+    // setSearchedSubject(labelOfDocumentType);
+    setSearchedrCode(rCode)
+    setSearcheddType(dType)
+    setSearchedsubject(subject)
+    setSearchedrProposal(rProposal)
+    setSearchedcreateStart(createStart)
+    setSearchedcreateEnd(createEnd)
+    setSearchedto(to)
+    setSearchedauthor(author)
+    setSearchedattoney(attoney)
+    setSearchedperiodStart(periodStart)
+    setSearchedperiodEnd(periodEnd)
+    setSearchedapplicant(applicant)
+    setSearcheddepart(depart)
+    setSearchedsection(section)
+    setSearchedunit(unit)
+    setSearchedstatus(status)
+    setSearchedprocBy(procBy)
+
+  };
+
   // console.log(getPageData(currentPage,10))
   return (
     <>
-      <TitleBody label="eDocument Approval" isForm={false} />
+      <TitleBody label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
       <TablePagination
         list={list?.listDcapproval}
         totalItems={list?.totalItems}

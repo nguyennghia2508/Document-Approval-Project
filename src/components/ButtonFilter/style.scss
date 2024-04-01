@@ -1,0 +1,37 @@
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+
+
+.buttonFilter-menu.ant-dropdown-menu {
+    padding: 20px;
+    width: 300px;
+    max-height: 700px;
+    /* Thiết lập chiều cao tối đa */
+    overflow-y: auto;
+
+
+    .menu-animation {
+        animation: slideInRight 1s forwards;
+    }
+
+    .buttonFilter-title {
+        display: flex;
+        justify-content: space-between;
+
+
+
+        .buttonFilter-title-right>a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    }
+}

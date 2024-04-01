@@ -8,7 +8,7 @@ const CustomTable = ({
   className = null,
   scroll = null,
 }) => {
-  
+
   // const showTotal = () => {
   // const start = (no - 1) * pageSize + 1;
   // const end = Math.min(no * pageSize, totalItems);

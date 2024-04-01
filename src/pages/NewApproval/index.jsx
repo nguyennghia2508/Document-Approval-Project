@@ -14,11 +14,13 @@ import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
+
 import { useSelector } from 'react-redux';
 import { yupResolver } from "@hookform/resolvers/yup";
 import {schema} from './data';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -38,6 +40,9 @@ const New = () => {
     const navigate = useNavigate()
     const user = useSelector((state) => state.user.value)
     const departments = useSelector((state) => state.department.value)
+
+
+    const [departmentData, setDepartmentData] = useState([]);
 
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
@@ -194,6 +199,7 @@ const New = () => {
             CreateDate: data.date,
             Subject: data.subject,
             ContentSum: data.content
+
         };
 
         formData.append("Data", JSON.stringify(dataObject));
@@ -226,12 +232,14 @@ const New = () => {
             const dc = res.dc
             navigate(`/avn/documentapproval/view/${dc.Id}`)
         }
+
     };    
+
 
     return (
         <>
             <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
-                <TitleBody label="eDocument Approval" isForm={true} isApproval={false} href={"/avn/documentapproval"} />
+                <TitleBody label="eDocument Approval" onSubmit={handleSubmit(onSubmit)} isForm={true} isApproval={false} href={"/avn/documentapproval"} />
                 <div className='newapproval-container'>
                     <div className="new-title"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
                     <div className='input'>
@@ -295,15 +303,14 @@ const New = () => {
                 <div className='signapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>
-                        <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A"/>
+                        <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
                     </div>
                     <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
 
                     <div className='sign-email'>
-                        <ButtonSelect  id="signers" name="signers" control={control} data={userData}  setValue={setValue} labelName="S"/>
+                        <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div>
                 </div>
-                <button type="submit">submit</button>
             </form >
         </>
 

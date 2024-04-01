@@ -6,7 +6,7 @@ import {
 import React from 'react'
 import './style.scss'
 import { Link, useNavigate } from "react-router-dom";
-import ButtonFiler from '../ButtonFiler';
+import ButtonFilter from '../ButtonFilter';
 
 // import Link from 'antd/es/typography/Link'
 
@@ -16,11 +16,23 @@ import ButtonFiler from '../ButtonFiler';
 // }
 
 const TitleBody = ({
+    onSubmitFromTitleBody,
+    afterSubmit,
+    onSubmit,
     label,
     isForm = false,
     isApproval = false,
     href
 }) => {
+
+    const handleClick = () => {
+        // Xử lý submit dữ liệu tại đây
+        onSubmit('Data to submit');
+    };
+    const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
+
+        onSubmitFromTitleBody(rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy)
+    };
 
     return (
         isForm ?
@@ -40,7 +52,7 @@ const TitleBody = ({
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><SaveOutlined />Save draft</Link>
-                                <Link ><SendOutlined />Submit</Link>
+                                <Link to={afterSubmit} onClick={handleClick}><SendOutlined />Submit</Link>
                             </>
                     }
 
@@ -54,7 +66,9 @@ const TitleBody = ({
                 <label className='titlebody-left'>{label}</label>
                 <div className='titlebody-right'>
                     <Button><VerticalAlignBottomOutlined style={{ transform: 'rotate(-90deg)' }} />Export excel</Button>
-                    <ButtonFiler />
+                    <ButtonFilter
+                        onFilter={handleSubmitFromTitleBody}
+                    />
 
                     <Link className='link-create' to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
                 </div>
