@@ -174,17 +174,20 @@ const DocumentApproval = () => {
   // console.log(getPageData(currentPage,10))
   return (
     <>
-      <TitleBody label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
-      <TablePagination
-        list={list?.listDcapproval}
-        totalItems={list?.totalItems}
-        className='documentApproval'
-        columns={columns}
-        onChange={handleTablePageChange}
-        no={currentPage}
-        pageSize={limit}
-        useText={true}
-      />
+      <div className="documentApproval-container">
+        <TitleBody label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
+
+        <TablePagination
+          list={list?.listDcapproval}
+          totalItems={list?.totalItems}
+          className='documentApproval'
+          columns={columns}
+          onChange={handleTablePageChange}
+          no={currentPage}
+          pageSize={limit}
+          useText={true}
+        />
+      </div>
     </>
   );
 };

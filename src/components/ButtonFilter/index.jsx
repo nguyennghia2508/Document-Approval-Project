@@ -331,7 +331,7 @@ const ButtonFilter = ({
                     <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputText label="Subject" value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
+                    <InputText label="Subject" value={subject} handlefield={true} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />

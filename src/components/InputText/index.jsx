@@ -17,11 +17,14 @@ const InputText = ({
   defaultValue,
   handleOnChange,
   value,
+  handlefield
 }) => {
 
   const handleChange = (e, field) => {
     field.onChange(e.target.value)
-    handleOnChange(e.target.value)
+    if (handlefield) {
+      handleOnChange(e.target.value)
+    }
   };
 
   return (
@@ -35,6 +38,7 @@ const InputText = ({
           return (
             <Input
               placeholder={placeholder}
+              defaultValue={defaultValue}
               type={type}
               id={id}
               onChange={(e) => handleChange(e, field)}

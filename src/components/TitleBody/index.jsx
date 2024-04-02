@@ -44,7 +44,8 @@ const TitleBody = ({
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><FileTextOutlined /> Download file</Link>
                                 <Link><ShareAltOutlined />Share</Link>
-                                <Link><CheckOutlined />Approve</Link>
+                                <Link><CheckOutlined />
+                                    Approve</Link>
                                 <Link><CloseOutlined />Reject</Link>
                                 <Link><MailOutlined />Forward</Link>
                             </>
