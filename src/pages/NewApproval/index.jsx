@@ -41,9 +41,6 @@ const New = () => {
     const user = useSelector((state) => state.user.value)
     const departments = useSelector((state) => state.department.value)
 
-
-    const [departmentData, setDepartmentData] = useState([]);
-
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
     const [categoryData, setCategoryData] = useState(null);

@@ -12,13 +12,14 @@ const InputText = ({
   name,
   id,
   control,
-  defaultValue
+  defaultValue,
+  handleOnChange,
+  value,
 }) => {
 
-  const [value, setValue] = useState('');
-
-  const handleChange = (e) => {
-    setValue(e.target.value)
+  const handleChange = (e,field) => {
+    field.onChange(e.target.value)
+    handleOnChange(e.target.value)
   };
 
   return (
@@ -33,10 +34,9 @@ const InputText = ({
             <Input
               type={type}
               id={id}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleChange(e,field)}
               value={value}
               disabled={disabled}
-              {...field}
             />
           )
         }}

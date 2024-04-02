@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = { value: {
     tabIndex:null,
-    tabName:""
+    tabName:"",
+    filter:false,
+    filterList:[],
+    switchTable:false
 }}
 
 export const departmenttSlice = createSlice({
