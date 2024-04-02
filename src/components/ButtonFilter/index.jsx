@@ -118,6 +118,8 @@ const ButtonFilter = ({
         getCategory();
     }, [selectedCategory, categoryData, initialCategorySet]);
 
+
+
     const department = departmentData
         .filter(value => value.DepartmentLevel === 1)
         .map(value => ({
@@ -155,7 +157,6 @@ const ButtonFilter = ({
         setSelectedUnit('Select Unit');
         setUnitOptions([])
         setValue("unit", undefined)
-
         const selectedSection = departmentData
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
@@ -171,7 +172,6 @@ const ButtonFilter = ({
             setUnitOptions([]);
         }
         setDisableUnit(false)
-
     };
 
     const handleUnitChange = (value) => {

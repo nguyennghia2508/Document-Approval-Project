@@ -14,8 +14,11 @@ import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
+import { useSelector } from 'react-redux';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from './data';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
 
 
 
@@ -25,11 +28,20 @@ const New = () => {
         handleSubmit,
         formState: { errors },
         control,
-        setValue
-    } = useForm({ mode: "all" });
+        setValue,
+    } = useForm({
+        mode: "onsubmit",
+        resolver: yupResolver(schema()),
+        shouldFocusError: false,
+    });
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const user = useSelector((state) => state.user.value)
+    const departments = useSelector((state) => state.department.value)
+
+
     const [departmentData, setDepartmentData] = useState([]);
+
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
     const [categoryData, setCategoryData] = useState(null);
@@ -43,19 +55,7 @@ const New = () => {
     const [initialCategorySet, setInitialCategorySet] = useState(false);
     const [userData, setUserData] = useState([])
 
-    useEffect(() => {
-        const getDepartment = async () => {
-            try {
-                const data = await departmentApi.getAllDepartment()
-                setDepartmentData(data.departmentHierarchy)
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        getDepartment();
-    }, []);
-
-    const department = departmentData
+    const department = departments
         .filter(value => value.DepartmentLevel === 1)
         .map(value => ({
             value: value.Id,
@@ -72,7 +72,7 @@ const New = () => {
         setValue("section", undefined)
         setValue("unit", undefined)
 
-        const selectedDepartment = departmentData.find(department => department.Id === value);
+        const selectedDepartment = departments.find(department => department.Id === value);
         if (selectedDepartment) {
             const sections = (selectedDepartment.Children || [])
                 .filter(child => child.DepartmentLevel === 2)
@@ -92,7 +92,7 @@ const New = () => {
         setUnitOptions([])
         setValue("unit", undefined)
 
-        const selectedSection = departmentData
+        const selectedSection = departments
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
         if (selectedSection) {
@@ -174,10 +174,19 @@ const New = () => {
 
     const defaultDate = moment().format('YYYY-MM-DDTHH:mm:ss')
 
+    useEffect(() => {
+        if (errors && Object.keys(errors).length > 0) {
+            const firstErrorMessage = Object.values(errors)[0].message;
+            toast.error(firstErrorMessage);
+        }
+    }, [errors]);
+
     const onSubmit = async (data) => {
+        // Tiếp tục xử lý dữ liệu
         data.date = defaultDate;
         const formData = new FormData();
         const dataObject = {
+            ApplicantId: user.Id,
             ApplicantName: data.applicant,
             CategoryId: data.category,
             DocumentTypeId: data.documentType,
@@ -188,8 +197,8 @@ const New = () => {
             CreateDate: data.date,
             Subject: data.subject,
             ContentSum: data.content
-        }
-            ;
+        };
+
         formData.append("Data", JSON.stringify(dataObject));
 
         if (data.approve && data.approve.length > 0) {
@@ -212,11 +221,13 @@ const New = () => {
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
             }))
+        };
+        formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
+        const res = await documentApprovalApi.addDocumentApproval(formData);
+        if (res.state === "true") {
+            const dc = res.dc
+            navigate(`/avn/documentapproval/view/${dc.Id}`)
         }
-        formData.append('ApprovalPerson', JSON.stringify(approvalPerson))
-        const res = await documentApprovalApi.addDocumentApproval(formData)
-        navigate("/avn/documentapproval/new")
-
     };
 
     return (
@@ -228,7 +239,7 @@ const New = () => {
                     <div className='input'>
                         <div className='input-top'>
                             <div className='input-element'>
-                                <InputText label="Applicant" id="applicant" name="applicant" control={control} />
+                                <InputText label="Applicant" id="applicant" name="applicant" disabled={true} defaultValue={user.Username} control={control} />
                             </div>
                             <div className='input-element'>
                                 <InputSelection label="Department" id="department" name="department" value={selectedDepartment} control={control} onChange={handleDepartmentChange} options={department} required />
@@ -266,10 +277,12 @@ const New = () => {
                             <InputText label="Content summary" id="content" name="content" control={control} />
                         </div>
                         <div className='approve-sign'>
-                            <FileUpload label="Documents to be approved/signed" id="approve" name="approve" control={control} type="primary" />
+                            <FileUpload maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
+                                setValue={setValue} control={control} type="primary" />
                         </div>
                         <div className='reference'>
-                            <FileUpload label="Documents for reference" id="reference" name="reference" control={control} type="primary" />
+                            <FileUpload maxSize={50} label="Documents for reference" id="reference" name="reference"
+                                setValue={setValue} control={control} type="primary" />
                         </div>
 
                     </div>
@@ -281,12 +294,13 @@ const New = () => {
                     }} />
 
                 </div >
+
                 <div className='signapproval-container'>
-                    <label className='label' style={{ fontWeight: "bold", }}>Aprover</label>
+                    <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>
                         <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
                     </div>
-                    <label className='label' style={{ fontWeight: "bold", }}>Signers</label>
+                    <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
 
                     <div className='sign-email'>
                         <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />

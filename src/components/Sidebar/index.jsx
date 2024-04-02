@@ -1,11 +1,13 @@
 import React from 'react'
 import './index.scss'
 import CustomMenu from '../CustomMenu'
-const Sidebar = () => {
+const Sidebar = ({
+    href,
+}) => {
     return (
         <div className='sidebar'>
             <div className='page-scroll'>
-                <CustomMenu />
+                <CustomMenu href={href}/>
             </div>
         </div>
     )

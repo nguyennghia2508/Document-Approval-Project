@@ -20,8 +20,15 @@ import {
 } from './login-style';
 import { WarningOutlined } from '@ant-design/icons';
 import authApi from '../../api/authApi';
+import departmentApi from '../../api/departmentApi';
+import { setListDepartment } from '../../redux/features/departmenttSlice';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,9 +37,6 @@ const Login = () => {
   const [errors, setError] = useState({});
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -70,8 +74,8 @@ const Login = () => {
     else {
 
       let user = {
-        email: email,
-        password: password,
+        Email: email,
+        Password: password,
       };
       login(user);
 
@@ -96,11 +100,15 @@ const Login = () => {
   };
 
   const login = async (user) => {
-
+    console.log(user)
     try {
       const response = await authApi.login(user);
       if (response.state === "true") {
         localStorage.setItem('token', response.token)
+
+        const departments = await departmentApi.getAllDepartment()
+        dispatch(setListDepartment(departments.departmentHierarchy))
+
         navigate("/")
         toast.success(response.msg)
       }
@@ -109,8 +117,8 @@ const Login = () => {
         toast.error(response.msg)
       }
     } catch (error) {
-      console.log(error.response.data);
-      handleError(error.response.data);
+      console.log(error);
+      handleError(error);
     }
 
   };

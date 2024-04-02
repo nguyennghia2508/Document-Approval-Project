@@ -3,28 +3,17 @@ import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
-import { Input } from "antd";
-const DocumentApproval = ({ }) => {
-
+import { useSelector } from "react-redux";
+const DocumentApproval = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
 
   const limit = 10
   // Hàm để tạo ngẫu nhiên một phần tử mới dựa trên cấu trúc của phần tử đầu tiên
+  const user = useSelector((state) => state.user.value)
+  const tabView = useSelector((state) => state.tabview.value)
 
-  useEffect(() => {
-    const getAllDocument = async () => {
-      try {
-        const data = await documentApprovalApi.getListDocument(currentPage)
-        setList(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getAllDocument();
-    window.scrollTo(0, 0);
-  }, []);
   // rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy
   const [searchedrCode, setSearchedrCode] = useState("")
   const [searcheddType, setSearcheddType] = useState("")
@@ -45,7 +34,25 @@ const DocumentApproval = ({ }) => {
   const [searchedprocBy, setSearchedprocBy] = useState("")
 
 
+  useEffect(() => {
+    const getAllDocument = async () => {
 
+      try {
+        const data = await documentApprovalApi.getListDocument(user.Id, tabView.tabName, currentPage)
+        setList(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getAllDocument();
+    window.scrollTo(0, 0);
+  }, [tabView, currentPage]);
+
+
+  useEffect(() => {
+    setCurrentPage(1)
+    window.scrollTo(0, 0);
+  }, [tabView]);
 
   const columns = [
 
@@ -102,10 +109,10 @@ const DocumentApproval = ({ }) => {
       render: (text) => {
         return text.department;
       },
-      filteredValue: [searcheddepart],
-      onFilter: (value, record) => {
-        return record.department ? String(record.department).toLowerCase().includes(value.toLowerCase()) : '';
-      }
+      // filteredValue: [searcheddepart],
+      // onFilter: (value, record) => {
+      //   return record.department ? String(record.department).toLowerCase().includes(value.toLowerCase()) : '';
+      // }
 
 
     },
@@ -143,7 +150,7 @@ const DocumentApproval = ({ }) => {
   const handleTablePageChange = async (page) => {
     // Do something with the page number and additional data
     if (page !== undefined) {
-      const data = await documentApprovalApi.getListDocument(page)
+      const data = await documentApprovalApi.getListDocument(user.Id, tabView.tabName, currentPage)
       setList(data)
       setCurrentPage(page);
     }

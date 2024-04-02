@@ -5,6 +5,8 @@ import { Controller } from 'react-hook-form';
 
 
 const InputText = ({
+  placeholder,
+
   label,
   required,
   disabled,
@@ -31,11 +33,13 @@ const InputText = ({
         render={({ field }) => {
           return (
             <Input
+              placeholder={placeholder}
               type={type}
               id={id}
               onChange={(e) => handleChange(e)}
               value={value}
               disabled={disabled}
+              autoSize={{ minRows: 2, maxRows: 6 }}
               {...field}
             />
           )

@@ -1,0 +1,31 @@
+.personApproved {
+    table {
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+        width: 250px;
+        height: 165px;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        td {
+            padding-top: 10px;
+            height: 100%;
+            border-top: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+
+            .personApproved-body {
+                display: flex;
+                flex-direction: column;
+
+                .ant-image {
+                    padding: 15px 0;
+                }
+            }
+
+
+
+        }
+    }
+}

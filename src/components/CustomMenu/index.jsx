@@ -6,16 +6,22 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setTabview } from "../../redux/features/tabviewSlice"
 
 library.add(fas, far, fab);
 
-const CustomMenu = () => {
+const CustomMenu = ({
+  href
+}) => {
+  
+  const [currentTabIndex, setCurrenTabIndex] = useState(null)
+  const dispatch = useDispatch()
+
   const [openKeys, setOpenKeys] = useState(['sub1']);
   const rootSubmenuKeys = ['sub1', 'sub2', 'sub3', 'sub4'];
-
-
 
   const getItem = (label, key, icon, type, childrenLabels, styles = []) => {
 
@@ -39,12 +45,15 @@ const CustomMenu = () => {
     };
   };
 
-  const handleTableView = async () => {
-    // if (page !== undefined) {
-    //   const data = await documentApprovalApi.getListDocument(page)
-    //   setList(data)
-    //   setCurrentPage(page);
-    // }
+  const handleTableView = async (tabIndex,tabName) => {
+    setCurrenTabIndex(tabIndex)
+    if(tabIndex !== currentTabIndex)
+    {
+      dispatch(setTabview({
+        tabIndex:tabIndex,
+        tabName:tabName,
+      }))
+    }
   };
 
   const items = [
@@ -53,10 +62,11 @@ const CustomMenu = () => {
       'sub1',
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
-      [<Link to={"/avn/documentapproval"}>All requests</Link >,
-        <Link onClick={handleTableView}>Send to me</Link >,
-        'Send to others',
-        'Shared with me'],
+      [ <Link to={href} onClick={() => handleTableView(1,"all")}>All requests</Link >,
+        <Link to={href} onClick={() => handleTableView(2,"sendToMe")}>Send to me</Link >,
+        <Link to={href} onClick={() => handleTableView(3,"sendByMe")}>Send to others</Link >,
+        <Link to={href} onClick={() => handleTableView(4,"shareWithMe")}>Share with others</Link >,
+      ],
       { paddingLeft: '70.5px' }
     ), // 4 mục con trong submenu
     getItem(
@@ -65,12 +75,12 @@ const CustomMenu = () => {
       <FontAwesomeIcon icon='fa-solid fa-chart-column' />,
       'submenu',
       [
-        'Draft',
-        'Waiting for approval',
-        'Approved',
-        'Rejected',
-        'Digitally Signed',
-        'Signed',
+        <Link to={href} onClick={() => handleTableView(5,"status0")}>Draft</Link >,
+        <Link to={href} onClick={() => handleTableView(6,"status1")}>Waiting for approval</Link >,
+        <Link to={href} onClick={() => handleTableView(7,"status2")}>Approved</Link >,
+        <Link to={href} onClick={() => handleTableView(8,"status3")}>Rejected</Link >,
+        <Link to={href} onClick={() => handleTableView(9,"status5")}>Digitally Signed</Link >,
+        <Link to={href} onClick={() => handleTableView(10,"status4")}>Signed</Link >,
       ],
       { paddingLeft: '70.5px' }
     ), // 2 mục con trong submenu

@@ -4,7 +4,7 @@ const documentApprovalApi = {
 
     addDocumentApproval : (data) => axiosClient.post(`api/documentapproval/add`,data),
 
-    getListDocument: (page) => axiosClient.get(`api/documentapproval/page/${page}`)
+    getListDocument: (userId,tabName,page) => axiosClient.post(`api/documentapproval/page/${page}`,{userId,tabName})
 }
 
 export default documentApprovalApi
