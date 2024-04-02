@@ -3,8 +3,14 @@ import TablePagination from "../../components/TablePagination";
 import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setTabview } from "../../redux/features/tabviewSlice";
+import moment from "moment";
+
 const DocumentApproval = () => {
+
+
+  const dispatch = useDispatch()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
@@ -14,32 +20,13 @@ const DocumentApproval = () => {
   const user = useSelector((state) => state.user.value)
   const tabView = useSelector((state) => state.tabview.value)
 
-  // rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy
-  const [searchedrCode, setSearchedrCode] = useState("")
-  const [searcheddType, setSearcheddType] = useState("")
-  const [searchedsubject, setSearchedsubject] = useState("")
-  const [searchedrProposal, setSearchedrProposal] = useState("")
-  const [searchedcreateStart, setSearchedcreateStart] = useState("")
-  const [searchedcreateEnd, setSearchedcreateEnd] = useState("")
-  const [searchedto, setSearchedto] = useState("")
-  const [searchedauthor, setSearchedauthor] = useState("")
-  const [searchedattoney, setSearchedattoney] = useState("")
-  const [searchedperiodStart, setSearchedperiodStart] = useState("")
-  const [searchedperiodEnd, setSearchedperiodEnd] = useState("")
-  const [searchedapplicant, setSearchedapplicant] = useState("")
-  const [searcheddepart, setSearcheddepart] = useState("")
-  const [searchedsection, setSearchedsection] = useState("")
-  const [searchedunit, setSearchedunit] = useState("")
-  const [searchedstatus, setSearchedstatus] = useState("")
-  const [searchedprocBy, setSearchedprocBy] = useState("")
-
-
   useEffect(() => {
     const getAllDocument = async () => {
-
       try {
-        const data = await documentApprovalApi.getListDocument(user.Id, tabView.tabName, currentPage)
-        setList(data)
+        if (!tabView.filter) {
+          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
+          setList(data)
+        }
       } catch (err) {
         console.log(err)
       }
@@ -61,7 +48,7 @@ const DocumentApproval = () => {
       align: 'left',
       width: '13%',
       render: (text, record, index) => {
-        return text.DocumentApprovalId
+        return text.RequestCode
       },
 
     },
@@ -78,11 +65,6 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.documentType;
       },
-      filteredValue: [searcheddType],
-      onFilter: (value, record) => {
-        return record.documentType ? String(record.documentType).toLowerCase().includes(value.toLowerCase()) : '';
-      }
-
 
     },
     {
@@ -109,12 +91,6 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.department;
       },
-      // filteredValue: [searcheddepart],
-      // onFilter: (value, record) => {
-      //   return record.department ? String(record.department).toLowerCase().includes(value.toLowerCase()) : '';
-      // }
-
-
     },
     {
       title: 'Section',
@@ -150,32 +126,48 @@ const DocumentApproval = () => {
   const handleTablePageChange = async (page) => {
     // Do something with the page number and additional data
     if (page !== undefined) {
-      const data = await documentApprovalApi.getListDocument(user.Id, tabView.tabName, currentPage)
+      const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
       setList(data)
       setCurrentPage(page);
     }
   };
 
-  const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
-    // Xử lý dữ liệu từ TitleBody tại đây
-    // setSearchedSubject(labelOfDocumentType);
-    setSearchedrCode(rCode)
-    setSearcheddType(dType)
-    setSearchedsubject(subject)
-    setSearchedrProposal(rProposal)
-    setSearchedcreateStart(createStart)
-    setSearchedcreateEnd(createEnd)
-    setSearchedto(to)
-    setSearchedauthor(author)
-    setSearchedattoney(attoney)
-    setSearchedperiodStart(periodStart)
-    setSearchedperiodEnd(periodEnd)
-    setSearchedapplicant(applicant)
-    setSearcheddepart(depart)
-    setSearchedsection(section)
-    setSearchedunit(unit)
-    setSearchedstatus(status)
-    setSearchedprocBy(procBy)
+  const handleSubmitFromTitleBody = async (data) => {
+    const dataFilter = {
+      applicant: data.applicant,
+      attorney: data.attorney,
+      authorizer: data.authorizer,
+      createEnd: data.createEnd && moment(data.createEnd).format('YYYY-MM-DDTHH:mm:ss'),
+      createStart: data.createEnd && moment(data.createStart).format('YYYY-MM-DDTHH:mm:ss'),
+      department: data.department,
+      documentType: data.documentType,
+      periodEnd: data.periodEnd,
+      periodStart: data.periodStart,
+      processingby: data.processingby,
+      proposal: data.proposal,
+      requestcode: data.requestcode,
+      section: data.section,
+      status: data.status,
+      subject: data.subject,
+      to: data.to,
+      unit: data.unit
+    }
+
+    dispatch(setTabview({
+      tabIndex: tabView.tabIndex,
+      tabName: tabView.tabName,
+      filter: true,
+      filterList: dataFilter
+    }))
+
+    const res = await documentApprovalApi.getListDocument({
+      userId: user.Id,
+      tabName: tabView.tabName,
+      page: currentPage,
+      dataFilter: dataFilter
+    });
+
+    setList(res)
 
   };
 

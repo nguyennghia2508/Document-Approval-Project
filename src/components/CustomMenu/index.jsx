@@ -52,6 +52,9 @@ const CustomMenu = ({
       dispatch(setTabview({
         tabIndex:tabIndex,
         tabName:tabName,
+        filter:false,
+        filterList:[],
+        switchTable:true
       }))
     }
   };
@@ -79,7 +82,7 @@ const CustomMenu = ({
         <Link to={href} onClick={() => handleTableView(6,"status1")}>Waiting for approval</Link >,
         <Link to={href} onClick={() => handleTableView(7,"status2")}>Approved</Link >,
         <Link to={href} onClick={() => handleTableView(8,"status3")}>Rejected</Link >,
-        <Link to={href} onClick={() => handleTableView(9,"status5")}>Digitally Signed</Link >,
+        <Link to={href} onClick={() => handleTableView(9,"status4")}>Digitally Signed</Link >,
         <Link to={href} onClick={() => handleTableView(10,"status4")}>Signed</Link >,
       ],
       { paddingLeft: '70.5px' }
