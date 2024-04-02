@@ -1,0 +1,105 @@
+@media (max-width:767px) {
+    .conment-Children {
+        width: calc(100% - 50px);
+
+        margin-left: 50px;
+    }
+
+}
+
+@media (min-width:768px) {
+    .viewApproval-container {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        .viewInput {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 50px;
+
+            .viewInput-top {
+                padding-bottom: 20px;
+                display: flex;
+
+                // justify-content: space-between;
+                .viewInput-element {
+                    width: 24%;
+                    margin-right: 25px;
+
+                }
+            }
+
+            .viewInput-bot {
+                display: flex;
+                // justify-content: space-between;
+
+                .viewInput-element {
+                    width: 24%;
+                    margin-right: 20px;
+                }
+            }
+        }
+
+        .viewDocument {
+            width: 50%;
+
+            >div {
+                padding-bottom: 20PX;
+            }
+
+            .viewDocument-content {
+                .ant-viewInput {
+                    height: 100px;
+                }
+            }
+        }
+    }
+
+    .viewSignapproval-container {
+        padding: 20px;
+
+
+        .comment {
+            display: flex;
+            flex-direction: column;
+
+            .commentInput {
+                width: 70%;
+
+            }
+
+            .commentShow {
+
+                .commentGroup {
+
+                    .commentParent {
+                        width: 60%;
+                    }
+
+                    .conment-Children {
+                        width: calc(60% - 50px);
+
+                        margin-left: 50px;
+                    }
+
+                    .comment-element {
+                        display: flex;
+                        // align-items: center;
+                        padding: 10px 0;
+
+                        .comment-avarta {
+                            margin-right: 10px;
+                        }
+
+                        .comment-body {
+                            // margin-top: -10PX;
+                            width: 100%;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+}

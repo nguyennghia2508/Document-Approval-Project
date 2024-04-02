@@ -11,7 +11,7 @@ const DocumentApproval = () => {
 
 
   const dispatch = useDispatch()
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
 
@@ -22,19 +22,18 @@ const DocumentApproval = () => {
 
   useEffect(() => {
     const getAllDocument = async () => {
-        try {
-            if(!tabView.filter)
-            {
-              const data = await documentApprovalApi.getListDocument({userId:user.Id,tabName:tabView.tabName,page:currentPage})
-              setList(data)
-            }
-        } catch (err) {
-            console.log(err)
+      try {
+        if (!tabView.filter) {
+          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
+          setList(data)
         }
+      } catch (err) {
+        console.log(err)
+      }
     }
     getAllDocument();
     window.scrollTo(0, 0);
-  }, [tabView,currentPage]);
+  }, [tabView, currentPage]);
 
 
   useEffect(() => {
@@ -127,7 +126,7 @@ const DocumentApproval = () => {
   const handleTablePageChange = async (page) => {
     // Do something with the page number and additional data
     if (page !== undefined) {
-      const data = await documentApprovalApi.getListDocument({userId:user.Id,tabName:tabView.tabName,page:currentPage})
+      const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
       setList(data)
       setCurrentPage(page);
     }
@@ -135,39 +134,39 @@ const DocumentApproval = () => {
 
   const handleSubmitFromTitleBody = async (data) => {
     const dataFilter = {
-        applicant: data.applicant,
-        attorney: data.attorney,
-        authorizer: data.authorizer,
-        createEnd: data.createEnd && moment(data.createEnd).format('YYYY-MM-DDTHH:mm:ss'),
-        createStart: data.createEnd && moment(data.createStart).format('YYYY-MM-DDTHH:mm:ss'),
-        department: data.department,
-        documentType: data.documentType,
-        periodEnd: data.periodEnd,
-        periodStart: data.periodStart,
-        processingby: data.processingby,
-        proposal: data.proposal,
-        requestcode: data.requestcode,
-        section: data.section,
-        status: data.status,
-        subject: data.subject,
-        to: data.to,
-        unit: data.unit
+      applicant: data.applicant,
+      attorney: data.attorney,
+      authorizer: data.authorizer,
+      createEnd: data.createEnd && moment(data.createEnd).format('YYYY-MM-DDTHH:mm:ss'),
+      createStart: data.createEnd && moment(data.createStart).format('YYYY-MM-DDTHH:mm:ss'),
+      department: data.department,
+      documentType: data.documentType,
+      periodEnd: data.periodEnd,
+      periodStart: data.periodStart,
+      processingby: data.processingby,
+      proposal: data.proposal,
+      requestcode: data.requestcode,
+      section: data.section,
+      status: data.status,
+      subject: data.subject,
+      to: data.to,
+      unit: data.unit
     }
-    
+
     dispatch(setTabview({
-      tabIndex:tabView.tabIndex,
-      tabName:tabView.tabName,
-      filter:true,
-      filterList:dataFilter
+      tabIndex: tabView.tabIndex,
+      tabName: tabView.tabName,
+      filter: true,
+      filterList: dataFilter
     }))
-    
+
     const res = await documentApprovalApi.getListDocument({
       userId: user.Id,
-        tabName: tabView.tabName,
-        page: currentPage,
-        dataFilter:dataFilter
+      tabName: tabView.tabName,
+      page: currentPage,
+      dataFilter: dataFilter
     });
-    
+
     setList(res)
 
   };

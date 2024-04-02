@@ -7,12 +7,13 @@ import Login from '../../pages/Login';
 import MainLayout from '../../layouts/main/MainLayout';
 import NewApproval from '../../pages/NewApproval';
 import Test from '../../components/Test';
+import ViewDocument from '../../pages/ViewDocument';
 
 
 const mainRouter = [
   {
     path: '/avn',
-    element: <MainLayout href="/avn/documentapproval"/>,
+    element: <MainLayout href="/avn/documentapproval" />,
     children: [
       {
         path: '/avn/documentapproval',
@@ -24,8 +25,9 @@ const mainRouter = [
       },
       {
         path: '/avn/documentapproval/view/:id',
-        Component: Test,
+        Component: ViewDocument,
       },
+
     ],
   },
 

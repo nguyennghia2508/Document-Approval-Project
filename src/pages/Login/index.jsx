@@ -21,7 +21,7 @@ import {
 import { WarningOutlined } from '@ant-design/icons';
 import authApi from '../../api/authApi';
 import departmentApi from '../../api/departmentApi';
-import { setListDepartment } from '../../redux/features/departmenttSlice'; 
+import { setListDepartment } from '../../redux/features/departmenttSlice';
 import { useDispatch } from 'react-redux';
 
 const Login = () => {

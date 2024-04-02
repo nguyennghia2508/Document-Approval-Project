@@ -14,13 +14,11 @@ import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
-
 import { useSelector } from 'react-redux';
 import { yupResolver } from "@hookform/resolvers/yup";
-import {schema} from './data';
+import { schema } from './data';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
 
 
 
@@ -31,8 +29,8 @@ const New = () => {
         formState: { errors },
         control,
         setValue,
-    } = useForm({ 
-        mode: "onsubmit" ,
+    } = useForm({
+        mode: "onsubmit",
         resolver: yupResolver(schema()),
         shouldFocusError: false,
     });
@@ -178,14 +176,14 @@ const New = () => {
             const firstErrorMessage = Object.values(errors)[0].message;
             toast.error(firstErrorMessage);
         }
-    }, [errors]);   
+    }, [errors]);
 
     const onSubmit = async (data) => {
         // Tiếp tục xử lý dữ liệu
         data.date = defaultDate;
         const formData = new FormData();
         const dataObject = {
-            ApplicantId:  user.Id,
+            ApplicantId: user.Id,
             ApplicantName: data.applicant,
             CategoryId: data.category,
             DocumentTypeId: data.documentType,
@@ -196,7 +194,6 @@ const New = () => {
             CreateDate: data.date,
             Subject: data.subject,
             ContentSum: data.content
-
         };
 
         formData.append("Data", JSON.stringify(dataObject));
@@ -223,14 +220,13 @@ const New = () => {
             }))
         };
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
-        const res = await  documentApprovalApi.addDocumentApproval(formData);
-        if(res.state === "true")
-        {
+        const res = await documentApprovalApi.addDocumentApproval(formData);
+        if (res.state === "true") {
             const dc = res.dc
             navigate(`/avn/documentapproval/view/${dc.Id}`)
         }
 
-    };    
+    };
 
 
     return (
@@ -280,12 +276,12 @@ const New = () => {
                             <InputText label="Content summary" id="content" name="content" control={control} />
                         </div>
                         <div className='approve-sign'>
-                            <FileUpload maxSize={50} label="Documents to be approved/signed" id="approve" name="approve" 
-                            setValue={setValue} control={control} type="primary" />
+                            <FileUpload maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
+                                setValue={setValue} control={control} type="primary" />
                         </div>
                         <div className='reference'>
-                            <FileUpload maxSize={50} label="Documents for reference" id="reference" name="reference" 
-                            setValue={setValue} control={control} type="primary" />
+                            <FileUpload maxSize={50} label="Documents for reference" id="reference" name="reference"
+                                setValue={setValue} control={control} type="primary" />
                         </div>
 
                     </div>
@@ -297,6 +293,7 @@ const New = () => {
                     }} />
 
                 </div >
+
                 <div className='signapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>

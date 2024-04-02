@@ -33,7 +33,7 @@ const ButtonFilter = ({
     const tabView = useSelector((state) => state.tabview.value)
 
     const [isOpen, setIsOpen] = useState(false);
-    
+
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
     const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
@@ -85,8 +85,7 @@ const ButtonFilter = ({
     useEffect(() => {
         const getDepartment = async () => {
             try {
-                if(department.length > 0)
-                {
+                if (department.length > 0) {
                     setSelectedDepartment(department[0].value)
                 }
             } catch (err) {
@@ -116,9 +115,9 @@ const ButtonFilter = ({
                     setSelectAttoney(options[0].value)
                     setSelectProcessingBy(options[0].value)
                 }
-    
+
                 // Thêm giá trị "All" vào mảng options
-                
+
                 setValue("authorizer", options[0].value)
                 setValue("attorney", options[0].value)
                 setValue("processingby", options[0].value)
@@ -138,7 +137,7 @@ const ButtonFilter = ({
                 const listDocumentType = data.listDocumentType;
                 const options = [];
                 options.unshift(all);
-                
+
                 listDocumentType.forEach(category => {
                     // Duyệt qua từng documentType trong children của category
                     category.Children.forEach(documentType => {
@@ -149,14 +148,14 @@ const ButtonFilter = ({
                         });
                     });
                 });
-    
+
                 // Nếu mảng options không rỗng, chọn giá trị đầu tiên
                 if (options.length > 0) {
                     setSelectedDocumentType(options[0].value);
                 }
-    
+
                 // Thêm giá trị "All" vào mảng options
-                
+
                 setValue("documentType", options[0].value)
 
                 // Cập nhật setDocumentTypeOptions với mảng options mới
@@ -166,12 +165,11 @@ const ButtonFilter = ({
             }
         };
         getCategory();
-    }, []);    
+    }, []);
 
-    useEffect(() =>{
+    useEffect(() => {
         const handleReset = () => {
-            if (!tabView.filter && tabView.switchTable)
-            {
+            if (!tabView.filter && tabView.switchTable) {
                 reset();
                 setRequestCode("");
                 setSubject("")
@@ -195,12 +193,12 @@ const ButtonFilter = ({
                 if (status.some(st => st.value === tabIndexNumber)) {
                     // Nếu có, in ra value của status tương ứng
                     setSelectStatus(status.find(st => st.value === tabIndexNumber).value);
-                    setValue("status",status.find(st => st.value === tabIndexNumber).value)
+                    setValue("status", status.find(st => st.value === tabIndexNumber).value)
                 }
             }
         };
         handleReset()
-    },[tabView.tabName,tabView.filter])
+    }, [tabView.tabName, tabView.filter])
 
     const handleDepartmentChange = (value) => {
 
@@ -208,21 +206,19 @@ const ButtonFilter = ({
         setSelectedSection('Select Section');
         setSelectedUnit('Select Unit');
         setUnitOptions([])
-        
+
         const sections = []
         sections.push({
             value: "all",
             label: "All"
         });
 
-        if(selectedDepartment === 'all')
-        {
+        if (selectedDepartment === 'all') {
             setValue("section", sections[0].value)
             setValue("unit", undefined)
             setSelectedSection(sections[0].value)
         }
-        else
-        {
+        else {
             setValue("section", undefined)
             setValue("unit", undefined)
         }
@@ -234,7 +230,7 @@ const ButtonFilter = ({
                 .map(section => ({
                     value: section.Id,
                     label: section.DepartmentName
-            })));
+                })));
             setSelectedSection(sections[0].value)
             setSectionOptions(sections);
 
@@ -255,13 +251,11 @@ const ButtonFilter = ({
 
         setUnitOptions([])
 
-        if(selectedSection === 'all')
-        {
+        if (selectedSection === 'all') {
             setValue("unit", units[0].value)
             setSelectedUnit(units[0].value)
         }
-        else
-        {
+        else {
             setValue("unit", undefined)
         }
 
@@ -306,18 +300,18 @@ const ButtonFilter = ({
         setSelectProcessingBy(value)
     }
 
-    const handleRequestCode = (value) =>{
+    const handleRequestCode = (value) => {
         setRequestCode(value)
     }
-    
-    const handleSubject = (value) =>{
+
+    const handleSubject = (value) => {
         setSubject(value)
     }
-    
+
     const onSubmit = async (data) => {
         onFilter(data)
     };
-        
+
     const menu = (
         <form encType="multipart/form-data">
             <Menu className="buttonFilter-menu" mode="vertical" direction="rtl">
@@ -337,7 +331,7 @@ const ButtonFilter = ({
                     <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputText label="Subject"value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
+                    <InputText label="Subject" value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />
@@ -383,10 +377,10 @@ const ButtonFilter = ({
                 </Menu.Item>
 
                 <Menu.Item className="menu-animation" >
-                    <InputSelection 
-                    defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 5].value : status[0].value} 
-                    label="Status" id="status" name="status" 
-                    value={selectStatus} control={control} onChange={handleStatusChange} options={status} required />
+                    <InputSelection
+                        defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 5].value : status[0].value}
+                        label="Status" id="status" name="status"
+                        value={selectStatus} control={control} onChange={handleStatusChange} options={status} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSelection label="Processing by" id="processingBy" name="processingby" value={selectProcessingBy} control={control} onChange={handleProcessingBy} options={userData} required />
