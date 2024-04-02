@@ -12,27 +12,30 @@ import userApi from "../../api/userApi"
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 import InputSearch from '../InputSearch';
+import { useSelector } from 'react-redux';
+
 const ButtonFilter = ({
     onFilter,
 }
 
 ) => {
     const {
-
-        data,
         setValue,
         handleSubmit,
         formState: { errors },
         control,
+        reset
     } = useForm({ mode: "all" });
-    const [isOpen, setIsOpen] = useState(false);
 
     const navigate = useNavigate();
-    const [departmentData, setDepartmentData] = useState([]);
+
+    const departments = useSelector((state) => state.department.value)
+    const tabView = useSelector((state) => state.tabview.value)
+
+    const [isOpen, setIsOpen] = useState(false);
+    
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
-    const [categoryData, setCategoryData] = useState(null);
-    const [categoryOptions, setCategoryOptions] = useState([])
     const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
 
     const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
@@ -42,19 +45,50 @@ const ButtonFilter = ({
     const [selectedDocumentType, setSelectedDocumentType] = useState('Choose document type');
     const [initialCategorySet, setInitialCategorySet] = useState(false);
     const [userData, setUserData] = useState([])
-    const [disableSection, setDisableSection] = useState(true)
-    const [disableUnit, setDisableUnit] = useState(true)
     const [selectUser, setSelectUser] = useState("All")
     const [selectAuthor, setSelectAuthor] = useState("")
     const [selectAttoney, setSelectAttoney] = useState("")
-    const [selectStatus, setSelectStatus] = useState("")
+    const [selectStatus, setSelectStatus] = useState("All requests")
     const [selectProcessingBy, setSelectProcessingBy] = useState("")
+    const [requestcode, setRequestCode] = useState("")
+    const [subject, setSubject] = useState("")
+
+    const all = {
+        value: "all",
+        label: "All"
+    }
+
+    const status = [
+        { value: "all", label: "All requests" },
+        { value: 0, label: "Draft" },
+        { value: 1, label: "Approving" },
+        { value: 2, label: "Approved" },
+        { value: 4, label: "Signed" },
+        { value: 3, label: "Rejected" },
+    ];
+
+    const department = [];
+
+    department.push({
+        value: "all",
+        label: "All"
+    });
+
+    department.push(...departments
+        .filter(value => value.DepartmentLevel === 1)
+        .map(value => ({
+            value: value.Id,
+            label: value.DepartmentName
+        }))
+    );
 
     useEffect(() => {
         const getDepartment = async () => {
             try {
-                const data = await departmentApi.getAllDepartment()
-                setDepartmentData(data.departmentHierarchy)
+                if(department.length > 0)
+                {
+                    setSelectedDepartment(department[0].value)
+                }
             } catch (err) {
                 console.log(err)
             }
@@ -67,12 +101,28 @@ const ButtonFilter = ({
             try {
                 const data = await userApi.getAll()
                 const listUser = data.listUser
-                setUserData(listUser.map(item => ({
+                const options = [];
+                options.unshift(all);
 
-                    value: item.Id,
-                    label: item.Username
-                })
-                ))
+                listUser.forEach(item => {
+                    options.push({
+                        value: item.Id,
+                        label: item.Username
+                    })
+                });
+
+                if (options.length > 0) {
+                    setSelectAuthor(options[0].value);
+                    setSelectAttoney(options[0].value)
+                    setSelectProcessingBy(options[0].value)
+                }
+    
+                // Thêm giá trị "All" vào mảng options
+                
+                setValue("authorizer", options[0].value)
+                setValue("attorney", options[0].value)
+                setValue("processingby", options[0].value)
+                setUserData(options)
 
             } catch (err) {
                 console.log(err)
@@ -84,47 +134,73 @@ const ButtonFilter = ({
     useEffect(() => {
         const getCategory = async () => {
             try {
-                if (!categoryData) {
-                    const data = await categoryApi.getAllCategory();
-                    const listCategory = data.listDocumentType;
-                    setCategoryOptions(listCategory.map(value => ({
-                        value: value.Id,
-                        label: value.CategoryName
-                    })));
-                    setCategoryData(listCategory);
-                } else {
-                    if (!initialCategorySet) {
-                        const initialSelectedCategory = categoryData.length > 0 ? categoryData[0].Id : null;
-                        setSelectedCategory(initialSelectedCategory);
-                        setInitialCategorySet(true);
-                        setValue("category", initialSelectedCategory)
-                    } else {
-                        const selectedCategoryObject = categoryData.find(item => item.Id === selectedCategory);
-                        const documentType = selectedCategoryObject?.Children.map(dctype => ({
-                            value: dctype.Id,
-                            label: dctype.DocumentTypeName
-                        })) || [];
-                        setDocumentTypeOptions(documentType);
-                        if (documentType.length > 0) {
-                            setSelectedDocumentType(documentType[0].value);
-                            setValue("documentType", documentType[0].value)
-                        }
-                    }
+                const data = await categoryApi.getAllCategory();
+                const listDocumentType = data.listDocumentType;
+                const options = [];
+                options.unshift(all);
+                
+                listDocumentType.forEach(category => {
+                    // Duyệt qua từng documentType trong children của category
+                    category.Children.forEach(documentType => {
+                        // Thêm documentType vào mảng options
+                        options.push({
+                            value: documentType.Id,
+                            label: documentType.DocumentTypeName
+                        });
+                    });
+                });
+    
+                // Nếu mảng options không rỗng, chọn giá trị đầu tiên
+                if (options.length > 0) {
+                    setSelectedDocumentType(options[0].value);
                 }
+    
+                // Thêm giá trị "All" vào mảng options
+                
+                setValue("documentType", options[0].value)
+
+                // Cập nhật setDocumentTypeOptions với mảng options mới
+                setDocumentTypeOptions(options);
             } catch (err) {
                 console.log(err);
             }
         };
         getCategory();
-    }, [selectedCategory, categoryData, initialCategorySet]);
+    }, []);    
 
-    const department = departmentData
-        .filter(value => value.DepartmentLevel === 1)
-        .map(value => ({
-            value: value.Id,
-            label: value.DepartmentName
-        }));
+    useEffect(() =>{
+        const handleReset = () => {
+            if (!tabView.filter && tabView.switchTable)
+            {
+                reset();
+                setRequestCode("");
+                setSubject("")
+                setSelectedDocumentType(documentTypeOptions[0]?.value)
+                setSelectUser(userData[0]?.value);
+                setSelectAuthor(userData[0]?.value);
+                setSelectAttoney(userData[0]?.value);
+                setSelectStatus(status[0]?.value);
+                setSelectedDepartment(department[0]?.value)
+                setSelectedSection("Select Section")
+                setSelectedUnit("Select Unit")
+                setSelectProcessingBy(userData[0]?.value);
+            }
+            const regex = /^status(\d+)$/;
+            const match = tabView.tabName.match(regex);
 
+            if (match) {
+                // Lấy số cuối cùng từ tabView.TabName
+                const tabIndexNumber = parseInt(match[1]);
+                // Kiểm tra xem số cuối cùng có phù hợp với value của status không
+                if (status.some(st => st.value === tabIndexNumber)) {
+                    // Nếu có, in ra value của status tương ứng
+                    setSelectStatus(status.find(st => st.value === tabIndexNumber).value);
+                    setValue("status",status.find(st => st.value === tabIndexNumber).value)
+                }
+            }
+        };
+        handleReset()
+    },[tabView.tabName,tabView.filter])
 
     const handleDepartmentChange = (value) => {
 
@@ -132,64 +208,86 @@ const ButtonFilter = ({
         setSelectedSection('Select Section');
         setSelectedUnit('Select Unit');
         setUnitOptions([])
-        setValue("section", undefined)
-        setValue("unit", undefined)
+        
+        const sections = []
+        sections.push({
+            value: "all",
+            label: "All"
+        });
 
-        const selectedDepartment = departmentData.find(department => department.Id === value);
-        if (selectedDepartment) {
-            const sections = (selectedDepartment.Children || [])
+        if(selectedDepartment === 'all')
+        {
+            setValue("section", sections[0].value)
+            setValue("unit", undefined)
+            setSelectedSection(sections[0].value)
+        }
+        else
+        {
+            setValue("section", undefined)
+            setValue("unit", undefined)
+        }
+
+        const departmentData = departments.find(department => department.Id === value);
+        if (departmentData) {
+            sections.push(...(departmentData?.Children || [])
                 .filter(child => child.DepartmentLevel === 2)
                 .map(section => ({
                     value: section.Id,
                     label: section.DepartmentName
-                }));
+            })));
+            setSelectedSection(sections[0].value)
             setSectionOptions(sections);
+
         } else {
             setSectionOptions([]);
         }
-        setDisableSection(false)
     };
 
     const handleSectionChange = (value) => {
         setSelectedSection(value);
         setSelectedUnit('Select Unit');
-        setUnitOptions([])
-        setValue("unit", undefined)
 
-        const selectedSection = departmentData
+        const units = []
+        units.push({
+            value: "all",
+            label: "All"
+        });
+
+        setUnitOptions([])
+
+        if(selectedSection === 'all')
+        {
+            setValue("unit", units[0].value)
+            setSelectedUnit(units[0].value)
+        }
+        else
+        {
+            setValue("unit", undefined)
+        }
+
+        const selectedData = departments
             .flatMap(department => department.Children || [])
             .find(section => section.Id === value);
-        if (selectedSection) {
-            const units = (selectedSection.Children || [])
+        if (selectedData) {
+            units.push(...(selectedData.Children || [])
                 .filter(unit => unit.DepartmentLevel === 3)
                 .map(unit => ({
                     value: unit.Id,
                     label: unit.DepartmentName
-                }));
+                })));
+            setSelectedUnit(units[0].value)
             setUnitOptions(units);
         } else {
             setUnitOptions([]);
         }
-        setDisableUnit(false)
-
     };
 
     const handleUnitChange = (value) => {
         setSelectedUnit(value);
     };
 
-
-
-    const handleCategoryChange = (value) => {
-        setSelectedCategory(value);
-
-    };
-
     const handleDocumentTypeChange = (value) => {
-        console.log("aaa", selectedDocumentType)
         setSelectedDocumentType(value);
-
-
     };
 
     const handleUserSelectChange = (value) => {
@@ -208,42 +306,18 @@ const ButtonFilter = ({
         setSelectProcessingBy(value)
     }
 
-    const defaultDate = moment().format('YYYY-MM-DDTHH:mm:ss')
-
+    const handleRequestCode = (value) =>{
+        setRequestCode(value)
+    }
+    
+    const handleSubject = (value) =>{
+        setSubject(value)
+    }
+    
     const onSubmit = async (data) => {
-        // rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy
-        const rCode = data.requestcode
-        const dType = documentTypeOptions.find(option => option.value === data.documentType)?.label;
-        const subject = data.subject
-        const rProposal = data.proposal
-        const createStart = data.createStart
-        const createEnd = data.createEnd
-        const to = data.to
-        const author = userData.find(option => option.value === data.authorizer)?.label;
-        const attoney = userData.find(option => option.value === data.attorney)?.label;
-        const periodStart = data.periodStart
-        const periodEnd = data.periodEnd
-        const applicant = userData.find(option => option.value === data.applicant)?.label;
-        const depart = department.find(option => option.value === data.department)?.label;
-        const section = sectionOptions.find(option => option.value === data.section)?.label;
-        const unit = unitOptions.find(option => option.value === data.unit)?.label;
-        const status = department.find(option => option.value === data.status)?.label;
-        const procBy = department.find(option => option.value === data.processingby)?.label;
-
-
-        onFilter(rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy)
-
-
+        onFilter(data)
     };
-
-    // const handleFilterData = () => {
-    //     console.log("handle", labelOfDocumentType)
-    // }
-
-
-
-
-
+        
     const menu = (
         <form encType="multipart/form-data">
             <Menu className="buttonFilter-menu" mode="vertical" direction="rtl">
@@ -257,13 +331,13 @@ const ButtonFilter = ({
                 </div>
                 <hr />
                 <Menu.Item className="menu-animation" >
-                    <InputText label="Request Code" id="requestcode" name="requestcode" control={control} />
+                    <InputText label="Request Code" value={requestcode} handleOnChange={handleRequestCode} id="requestcode" name="requestcode" control={control} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputText label="Subject" id="subject" name="subject" control={control} />
+                    <InputText label="Subject"value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />
@@ -287,32 +361,35 @@ const ButtonFilter = ({
 
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputText label="Authorization period" name="periodStart" control={control} type="date" required disabled={false} />
+                    <InputText label="Authorization period" name="periodStart" control={control} type="datetime-local" required disabled={false} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputText name="periodEnd" control={control} type="date" disabled={false} />
+                    <InputText name="periodEnd" control={control} type="datetime-local" disabled={false} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSelection label="Applicant" id="applicant" name="applicant" control={control} value={selectUser} onChange={handleUserSelectChange} options={userData} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputSelection label="Department" id="department" name="department" value={selectedDepartment} control={control} onChange={handleDepartmentChange} options={department} required />
+                    <InputSelection label="Department" defaultValue={department[0].value} id="department" name="department" value={selectedDepartment} control={control} onChange={handleDepartmentChange} options={department} required />
 
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputSelection label="Section" id="section" name="section" value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} required disabled={disableSection} />
+                    <InputSelection label="Section" id="section" name="section" value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} required disabled={selectedDepartment === "all" ? true : false} />
 
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputSelection label="Unit" id="unit" name="unit" value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} required disabled={disableUnit} />
+                    <InputSelection label="Unit" id="unit" name="unit" value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} required disabled={selectedDepartment === "all" ? true : selectedSection === "all" ? true : false} />
 
                 </Menu.Item>
 
                 <Menu.Item className="menu-animation" >
-                    <InputSelection label="Status" id="status" name="status" value={selectStatus} control={control} onChange={handleStatusChange} options={department} required />
+                    <InputSelection 
+                    defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 5].value : status[0].value} 
+                    label="Status" id="status" name="status" 
+                    value={selectStatus} control={control} onChange={handleStatusChange} options={status} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputSelection label="Processing by" id="processingBy" name="processingby" value={selectProcessingBy} control={control} onChange={handleProcessingBy} options={department} required />
+                    <InputSelection label="Processing by" id="processingBy" name="processingby" value={selectProcessingBy} control={control} onChange={handleProcessingBy} options={userData} required />
                 </Menu.Item>
             </Menu>
         </form >

@@ -15,7 +15,6 @@ const InputSelection = ({
     defaultValue,
     multifield = false,
     indexInput,
-    filter,
 }) => {
 
     const handleSelected = (e, field) => {
@@ -34,18 +33,16 @@ const InputSelection = ({
             <Controller
                 name={name}
                 control={control}
+                defaultValue={defaultValue}
                 render={({ field }) => {
                     return (
                         <Select
                             id={id}
                             value={value}
                             defaultValue={defaultValue}
-
                             disabled={disabled}
                             onChange={(e) => handleSelected(e, field)}
-
                         >
-                            {filter ?? <Select.Option key="all" value="all">All</Select.Option>}
                             {options.map(option => (
                                 <Select.Option key={option.value} value={option.value} >{option.label} </Select.Option>
                             ))}
