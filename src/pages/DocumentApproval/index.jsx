@@ -6,12 +6,13 @@ import documentApprovalApi from "../../api/documentApprovalApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 const DocumentApproval = () => {
 
 
   const dispatch = useDispatch()
-
+  const location = useLocation()
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
 
@@ -184,6 +185,7 @@ const DocumentApproval = () => {
         no={currentPage}
         pageSize={limit}
         useText={true}
+        href={location.pathname}
       />
     </>
   );

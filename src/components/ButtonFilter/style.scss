@@ -13,9 +13,10 @@
 .buttonFilter-menu.ant-dropdown-menu {
     padding: 20px;
     width: 300px;
-    max-height: 700px;
+    max-height: 80vh;
     /* Thiết lập chiều cao tối đa */
     overflow-y: auto;
+    overflow-x: hidden;
 
 
     .menu-animation {

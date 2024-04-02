@@ -18,6 +18,7 @@ const TablePagination = ({
   pageSize = 5,
   scroll = null,
   useText = false,
+  href,
 }) => {
 
   return (
@@ -27,6 +28,7 @@ const TablePagination = ({
         totalItems={totalItems}
         className={className}
         columns={columns}
+        href={href}
       />
 
       <CustomPagination

@@ -1,6 +1,8 @@
 import axiosClient from './axiosClient'
 
 const documentApprovalApi = {
+    
+    getDocumentById : (id) => axiosClient.get(`api/documentapproval/view/${id}`),
 
     addDocumentApproval : (data) => axiosClient.post(`api/documentapproval/add`,data),
 

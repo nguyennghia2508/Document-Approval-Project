@@ -331,7 +331,7 @@ const ButtonFilter = ({
                     <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
-                    <InputText label="Subject" value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
+                    <InputText label="Subject" handleField={true} value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
                 </Menu.Item>
                 <Menu.Item className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />
@@ -390,7 +390,7 @@ const ButtonFilter = ({
 
     );
     return (
-        <Dropdown overlay={menu} placement="bottomLeft" arrow trigger={['click']} visible={isOpen} onVisibleChange={setIsOpen}>
+        <Dropdown placement="bottomLeft" arrow trigger={['click']}>
             <Button>
                 Dropdown <DownOutlined />
             </Button>
