@@ -1,9 +1,13 @@
-@media (max-width:767px) {}
+@media (max-width:767px) {
+    .newapproval-container {}
+}
 
 @media (min-width:768px) {
+
     .newapproval-container {
         padding-left: 20px;
         padding-right: 20px;
+        padding-top: 60px;
 
         .input {
             display: flex;

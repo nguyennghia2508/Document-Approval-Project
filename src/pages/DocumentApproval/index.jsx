@@ -4,13 +4,13 @@ import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setTabview } from "../../redux/features/tabviewSlice";
+import { setTabview,resetTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DocumentApproval = () => {
 
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +28,12 @@ const DocumentApproval = () => {
           const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
           setList(data)
         }
+        else
+        {
+          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage ,
+          dataFilter:tabView.filterList})
+          setList(data)
+        }
       } catch (err) {
         console.log(err)
       }
@@ -36,7 +42,10 @@ const DocumentApproval = () => {
     window.scrollTo(0, 0);
   }, [tabView, currentPage]);
 
-
+  // useEffect(() =>{
+  //   dispatch(resetTabview())
+  // },[navigate])
+  
   useEffect(() => {
     setCurrentPage(1)
     window.scrollTo(0, 0);
@@ -158,6 +167,7 @@ const DocumentApproval = () => {
       tabIndex: tabView.tabIndex,
       tabName: tabView.tabName,
       filter: true,
+      switchTab:false,
       filterList: dataFilter
     }))
 

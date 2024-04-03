@@ -32,6 +32,9 @@ const CustomTable = ({
             pagination={false}
             scroll={scroll}
             // bordered
+            rowClassName={(record) =>
+              record.isProcessing ? 'row-is-processing' : ''
+            }
             className={`table_content ${className ? className : ''}`}
             onRow={(record, index) => ({
               onDoubleClick: () => handleRowClick(record, index),

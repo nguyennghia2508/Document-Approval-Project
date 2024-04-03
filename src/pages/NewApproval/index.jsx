@@ -231,7 +231,7 @@ const New = () => {
 
     return (
         <>
-            <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
+            <form encType="multipart/form-data">
                 <TitleBody label="eDocument Approval" onSubmit={handleSubmit(onSubmit)} isForm={true} isApproval={false} href={"/avn/documentapproval"} />
                 <div className='newapproval-container'>
                     <div className="new-title"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>

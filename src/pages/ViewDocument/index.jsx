@@ -91,6 +91,7 @@ const ViewDocument = () => {
                 const data = err.data
                 if(data.state === "false")
                 {
+                    toast.error(data.message);
                     navigate("/avn/documentapproval")
                 }
             }
@@ -100,6 +101,7 @@ const ViewDocument = () => {
 
 
     const onSubmit = async (data) => {
+        console.log(data)
         // // Tiếp tục xử lý dữ liệu
         // data.date = defaultDate;
         // const formData = new FormData();

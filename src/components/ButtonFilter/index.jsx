@@ -1,4 +1,4 @@
-import { Dropdown, Button, Menu, DatePicker } from 'antd';
+import { Dropdown, Button, Menu, DatePicker, Table } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import './style.scss';
 import InputText from '../InputText';
@@ -169,7 +169,7 @@ const ButtonFilter = ({
 
     useEffect(() => {
         const handleReset = () => {
-            if (!tabView.filter && tabView.switchTable) {
+            if (!tabView.filter && tabView.switchTab) {
                 reset();
                 setRequestCode("");
                 setSubject("")
@@ -183,17 +183,34 @@ const ButtonFilter = ({
                 setSelectedUnit("Select Unit")
                 setSelectProcessingBy(userData[0]?.value);
             }
-            const regex = /^status(\d+)$/;
-            const match = tabView.tabName.match(regex);
 
-            if (match) {
-                // Lấy số cuối cùng từ tabView.TabName
-                const tabIndexNumber = parseInt(match[1]);
-                // Kiểm tra xem số cuối cùng có phù hợp với value của status không
-                if (status.some(st => st.value === tabIndexNumber)) {
-                    // Nếu có, in ra value của status tương ứng
-                    setSelectStatus(status.find(st => st.value === tabIndexNumber).value);
-                    setValue("status", status.find(st => st.value === tabIndexNumber).value)
+            if(tabView.switchTab)
+            {
+                const regex = /^status(\d+)$/;
+                const match = tabView.tabName.match(regex);
+
+                if (match) {
+                    // Lấy số cuối cùng từ tabView.TabName
+                    const tabIndexNumber = parseInt(match[1]);
+                    // Kiểm tra xem số cuối cùng có phù hợp với value của status không
+                    if (status.some(st => st.value === tabIndexNumber)) {
+                        // Nếu có, in ra value của status tương ứng
+                        setSelectStatus(status.find(st => st.value === tabIndexNumber).value);
+                        setValue("status", status.find(st => st.value === tabIndexNumber).value)
+                    }
+                }
+            }
+            else
+            {
+                if(tabView.filter)
+                {
+                    const statusIndex = tabView.filterList?.status
+                    if (status.some(st => st.value === statusIndex)) 
+                    {
+                        // Nếu có, in ra value của status tương ứng
+                        setSelectStatus(status.find(st => st.value === statusIndex).value);
+                        setValue("status", status.find(st => st.value === statusIndex).value)
+                    }
                 }
             }
         };
@@ -293,9 +310,9 @@ const ButtonFilter = ({
     const handleAttoneySelectChange = (value) => {
         setSelectAttoney(value)
     }
-    const handleStatusChange = (value => {
+    const handleStatusChange = (value) => {
         setSelectStatus(value)
-    })
+    }
     const handleProcessingBy = (value) => {
         setSelectProcessingBy(value)
     }
@@ -314,7 +331,7 @@ const ButtonFilter = ({
 
     const menu = (
         <form encType="multipart/form-data">
-            <Menu className="buttonFilter-menu" mode="vertical" direction="rtl">
+            <div className="buttonFilter-menu" mode="vertical" direction="rtl">
                 <div className='buttonFilter-title'>
                     <label className='buttonFilter-title-left'>Filter</label>
                     <div className='buttonFilter-title-right' >
@@ -324,73 +341,78 @@ const ButtonFilter = ({
                     </div>
                 </div>
                 <hr />
-                <Menu.Item className="menu-animation" >
-                    <InputText label="Request Code" value={requestcode} handleOnChange={handleRequestCode} id="requestcode" name="requestcode" control={control} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
-                    <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
-                    <InputText label="Subject" handleField={true} value={subject} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                <div className="menu-animation" >
+                    <InputText label="Request Code" value={requestcode} handleField={true} handleOnChange={handleRequestCode} id="requestcode" name="requestcode" control={control} />
+                </div>
+                <div className="menu-animation" >
+                    <InputSelection label="Document Type" defaultValue={selectedDocumentType} id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
+                </div>
+                <div className="menu-animation" >
+                    <InputText label="Subject" value={subject} handleField={true} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
+                </div>
+                <div className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="Created" type="date" name="createStart" control={control} required disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText type="date" name="createEnd" control={control} disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="To" id="to" name="to" control={control} />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
-                    <InputSelection label="The Authorizer" filter={true} id="authorizer" name="authorizer" control={control} value={selectAuthor} onChange={handleAuthorSelectChange} options={userData} required />
+                </div>
+                <div className="menu-animation" >
+                    <InputSelection label="The Authorizer" defaultValue={selectAuthor} filter={true} id="authorizer" name="authorizer" control={control} value={selectAuthor} onChange={handleAuthorSelectChange} options={userData} required />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
-                    <InputSelection label="The Attorney" filter={true} id="attorney" name="attorney" control={control} value={selectAttoney} onChange={handleAttoneySelectChange} options={userData} required />
+                </div>
+                <div className="menu-animation" >
+                    <InputSelection label="The Attorney" defaultValue={selectAttoney} filter={true} id="attorney" name="attorney" control={control} value={selectAttoney} onChange={handleAttoneySelectChange} options={userData} required />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="Authorization period" name="periodStart" control={control} type="datetime-local" required disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText name="periodEnd" control={control} type="datetime-local" disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Applicant" id="applicant" name="applicant" control={control} value={selectUser} onChange={handleUserSelectChange} options={userData} required />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Department" defaultValue={department[0].value} id="department" name="department" value={selectedDepartment} control={control} onChange={handleDepartmentChange} options={department} required />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Section" id="section" name="section" value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} required disabled={selectedDepartment === "all" ? true : false} />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Unit" id="unit" name="unit" value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} required disabled={selectedDepartment === "all" ? true : selectedSection === "all" ? true : false} />
 
-                </Menu.Item>
+                </div>
 
-                <Menu.Item className="menu-animation" >
+                <div className="menu-animation" >
                     <InputSelection
-                        defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 5].value : status[0].value}
+                        defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 4].value : status[0].value}
                         label="Status" id="status" name="status"
                         value={selectStatus} control={control} onChange={handleStatusChange} options={status} required />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Processing by" id="processingBy" name="processingby" value={selectProcessingBy} control={control} onChange={handleProcessingBy} options={userData} required />
-                </Menu.Item>
-            </Menu>
+                </div>
+            </div>
         </form >
 
     );
     return (
-        <Dropdown placement="bottomLeft" arrow trigger={['click']}>
+        <Dropdown overlay={menu}
+            placement="bottomLeft"
+            arrow
+            trigger={['click']}
+            open={isOpen}
+            onOpenChange={setIsOpen}>
             <Button>
                 Dropdown <DownOutlined />
             </Button>

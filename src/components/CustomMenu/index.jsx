@@ -54,7 +54,7 @@ const CustomMenu = ({
         tabName:tabName,
         filter:false,
         filterList:[],
-        switchTable:true
+        switchTab:true
       }))
     }
   };

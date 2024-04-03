@@ -2,12 +2,16 @@
     height: 100vh;
     min-width: 481px;
 
+
+
     .layout-container {
         display: flex;
         // padding-bottom: 30px;
         min-height: calc(100vh - 50px);
         width: 100%;
         position: relative;
+
+
     }
 
     .layout-footer {
@@ -19,6 +23,9 @@
     .layout-wrapper {
         min-width: calc(100%/3);
         max-height: 100vh;
+        width: 100%;
+
+
     }
 
     ::-webkit-scrollbar {
@@ -39,11 +46,16 @@
     .layout-container {
         display: flex;
         // padding-bottom: 30px;
-        min-height: calc(100vh - 50px);
+        min-height: calc(100vh - 50Px);
         width: 100%;
 
+        .layout-header {
+            position: fixed;
+            width: 100%;
+        }
+
         .container-body {
-            width: calc(100% - 230px);
+            width: 100%;
 
             .page-scroll {
                 .main-content {
@@ -55,7 +67,12 @@
         }
 
         .container-sidebar {
-            // height: 100%;
+            position: fixed;
+            margin-top: 50px;
+            // margin-left: -230px; 
+
+            z-index: 1000;
+            height: calc(100% - 80PX);
         }
     }
 }

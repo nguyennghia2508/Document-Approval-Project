@@ -5,7 +5,7 @@ const initialState = { value: {
     tabName:"",
     filter:false,
     filterList:[],
-    switchTable:false
+    switchTab:false
 }}
 
 export const departmenttSlice = createSlice({
