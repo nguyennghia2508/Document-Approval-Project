@@ -64,91 +64,11 @@ const ViewDocument = () => {
         }));
 
 
-    // const handleDepartmentChange = (value) => {
-
-    //     setSelectedDepartment(value);
-    //     setSelectedSection('Select Section');
-    //     setSelectedUnit('Select Unit');
-    //     setUnitOptions([])
-    //     setValue("section", undefined)
-    //     setValue("unit", undefined)
-
-    //     const selectedDepartment = departments.find(department => department.Id === value);
-    //     if (selectedDepartment) {
-    //         const sections = (selectedDepartment.Children || [])
-    //             .filter(child => child.DepartmentLevel === 2)
-    //             .map(section => ({
-    //                 value: section.Id,
-    //                 label: section.DepartmentName
-    //             }));
-    //         setSectionOptions(sections);
-    //     } else {
-    //         setSectionOptions([]);
-    //     }
-    // };
-
-    // const handleSectionChange = (value) => {
-    //     setSelectedSection(value);
-    //     setSelectedUnit('Select Unit');
-    //     setUnitOptions([])
-    //     setValue("unit", undefined)
-
-    //     const selectedSection = departments
-    //         .flatMap(department => department.Children || [])
-    //         .find(section => section.Id === value);
-    //     if (selectedSection) {
-    //         const units = (selectedSection.Children || [])
-    //             .filter(unit => unit.DepartmentLevel === 3)
-    //             .map(unit => ({
-    //                 value: unit.Id,
-    //                 label: unit.DepartmentName
-    //             }));
-    //         setUnitOptions(units);
-    //     } else {
-    //         setUnitOptions([]);
-    //     }
-    // };
 
     const handleUnitChange = (value) => {
         setSelectedUnit(value);
     };
 
-    // useEffect(() => {
-    //     const getCategory = async () => {
-    //         try {
-    //             if (!categoryData) {
-    //                 const data = await categoryApi.getAllCategory();
-    //                 const listCategory = data.listDocumentType;
-    //                 setCategoryOptions(listCategory.map(value => ({
-    //                     value: value.Id,
-    //                     label: value.CategoryName
-    //                 })));
-    //                 setCategoryData(listCategory);
-    //             } else {
-    //                 if (!initialCategorySet) {
-    //                     const initialSelectedCategory = categoryData.length > 0 ? categoryData[0].Id : null;
-    //                     setSelectedCategory(initialSelectedCategory);
-    //                     setInitialCategorySet(true);
-    //                     setValue("category", initialSelectedCategory)
-    //                 } else {
-    //                     const selectedCategoryObject = categoryData.find(item => item.Id === selectedCategory);
-    //                     const documentType = selectedCategoryObject?.Children.map(dctype => ({
-    //                         value: dctype.Id,
-    //                         label: dctype.DocumentTypeName
-    //                     })) || [];
-    //                     setDocumentTypeOptions(documentType);
-    //                     if (documentType.length > 0) {
-    //                         setSelectedDocumentType(documentType[0].value);
-    //                         setValue("documentType", documentType[0].value)
-    //                     }
-    //                 }
-    //             }
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     getCategory();
-    // }, [selectedCategory, categoryData, initialCategorySet]);
 
     const handleCategoryChange = (value) => {
         setSelectedCategory(value);
@@ -160,77 +80,13 @@ const ViewDocument = () => {
     };
 
 
-
-    // useEffect(() => {
-    //     const getAllUser = async () => {
-    //         try {
-    //             const data = await userApi.getAll()
-    //             setUserData(data.listUser)
-    //         } catch (err) {
-    //             console.log(err)
-    //         }
-    //     }
-    //     getAllUser();
-    // }, []);
-
-    // const defaultDate = moment().format('YYYY-MM-DDTHH:mm:ss')
-
-    // useEffect(() => {
-    //     if (errors && Object.keys(errors).length > 0) {
-    //         const firstErrorMessage = Object.values(errors)[0].message;
-    //         toast.error(firstErrorMessage);
-    //     }
-    // }, [errors]);
-
     const onSubmit = async (data) => {
-        // // Tiếp tục xử lý dữ liệu
-        // data.date = defaultDate;
-        // const formData = new FormData();
-        // const dataObject = {
-        //     ApplicantId: user.Id,
-        //     ApplicantName: data.applicant,
-        //     CategoryId: data.category,
-        //     DocumentTypeId: data.documentType,
-        //     DepartmentId: data.department,
-        //     SectionId: data.section,
-        //     UnitId: data.unit,
-        //     RelatedProposal: data.proposal,
-        //     CreateDate: data.date,
-        //     Subject: data.subject,
-        //     ContentSum: data.content
-        // };
 
-        // formData.append("Data", JSON.stringify(dataObject));
-
-        // if (data.approve && data.approve.length > 0) {
-        //     for (let i = 0; i < data.approve.length; i++) {
-        //         formData.append('approve', data.approve[i]);
-        //     }
-        // }
-        // if (data.reference && data.reference.length > 0) {
-        //     for (let i = 0; i < data.reference.length; i++) {
-        //         formData.append('reference', data.reference[i]);
-        //     }
-        // }
-
-        // const approvalPerson = {
-        //     approvers: data.approvers.map(value => ({
-        //         ApprovalPersonId: value.selectedOption,
-        //         ApprovalPersonName: value.userName,
-        //     })),
-        //     signers: data.signers.map(value => ({
-        //         ApprovalPersonId: value.selectedOption,
-        //         ApprovalPersonName: value.userName,
-        //     }))
-        // };
-        // formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
-        // const res = await documentApprovalApi.addDocumentApproval(formData);
-        // if (res.state === "true") {
-        //     const dc = res.dc
-        //     navigate(`/avn/documentapproval/view/${dc.Id}`)
-        // }
     };
-
+    const [showCommentInput, setShowCommentInput] = useState(false);
+    const handleToggleCommentInput = () => {
+        setShowCommentInput(!showCommentInput);
+    };
     return (
         <>
             <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
@@ -295,7 +151,6 @@ const ViewDocument = () => {
                     }} />
 
                 </div >
-
                 <div className='viewSignapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <PersonApproved></PersonApproved>
@@ -309,105 +164,114 @@ const ViewDocument = () => {
                         <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div> */}
 
+                </div>
+
+            </form >
+            <form >
+                <div className='comment'>
+                    <div className='commentInput'>
+                        <label className='commentInput-label'><CommentOutlined />Comment</label>
+
+                        {!showCommentInput && <CommentInput showCancelButton={false} control={control} />}
+                    </div>
 
 
-                    <div className='comment'>
-                        <div className='commentInput'>
-                            <CommentInput></CommentInput>
-                        </div>
-
-
-                        <div className="commentShow">
-                            <div className='commentGroup'>
-                                <div className='commentParent'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar className='comment-avarta'></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
+                    <div className="commentShow">
+                        <div className='commentGroup'>
+                            <div className='commentParent'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar className='comment-avarta'></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label className='comment-bodyTitle' >Nguyễn Minh Nhân</label>
+                                            <span>29/03/2024</span>
                                         </div>
-                                        <EnterOutlined className='comment-reply' />
+                                        <div>Comment input</div>
                                     </div>
+
+                                    <EnterOutlined className='comment-reply' onClick={handleToggleCommentInput} />
                                 </div>
-                                <div className='conment-Children'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label>Nguyễn Minh Nhân children</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
+                            </div>
+                            <div className='conment-Children'>
+                                {showCommentInput && <CommentInput onCancel={handleToggleCommentInput} showCancelButton={true} control={control} />}
+                            </div>
+
+                            <div className='conment-Children'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label className='comment-bodyTitle'>Nguyễn Minh Nhân children</label>
+                                            <span>29/03/2024</span>
                                         </div>
+                                        <div>Comment input</div>
                                     </div>
                                 </div>
                             </div>
-                            <div className='commentGroup'>
-                                <div className='commentParent'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar className='comment-avarta'></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
+                        </div>
+                        <div className='commentGroup'>
+                            <div className='commentParent'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar className='comment-avarta'></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
+                                            <span>29/03/2024</span>
                                         </div>
-                                        <EnterOutlined className='comment-reply' />
+                                        <div>Comment input</div>
+                                    </div>
+                                    <EnterOutlined className='comment-reply' />
+                                </div>
+                            </div>
+                            <div className='conment-Children'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label>Nguyễn Minh Nhân children</label>
+                                            <span>29/03/2024</span>
+                                        </div>
+                                        <div>Comment input</div>
                                     </div>
                                 </div>
-                                <div className='conment-Children'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label>Nguyễn Minh Nhân children</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
+                            </div>
+                        </div><div className='commentGroup'>
+                            <div className='commentParent'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar className='comment-avarta'></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
+                                            <span>29/03/2024</span>
                                         </div>
+                                        <div>Comment input</div>
                                     </div>
+                                    <EnterOutlined className='comment-reply' />
                                 </div>
-                            </div><div className='commentGroup'>
-                                <div className='commentParent'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar className='comment-avarta'></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
+                            </div>
+                            <div className='conment-Children'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label>Nguyễn Minh Nhân children</label>
+                                            <span>29/03/2024</span>
                                         </div>
-                                        <EnterOutlined className='comment-reply' />
-                                    </div>
-                                </div>
-                                <div className='conment-Children'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label>Nguyễn Minh Nhân children</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
+                                        <div>Comment input</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form >
+            </form>
+
         </>
 
 

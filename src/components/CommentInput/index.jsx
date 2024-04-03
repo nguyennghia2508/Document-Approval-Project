@@ -4,10 +4,12 @@ import { CommentOutlined, Avarta } from '@ant-design/icons';
 import FileUpload from '../FileUpload';
 import { Input, Button, Avatar } from 'antd';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 const { TextArea } = Input;
-const CommentInput = () => {
+const CommentInput = ({ onCancel, showCancelButton }) => {
 
     const {
+        rows,
         formState: { errors },
         control,
         setValue,
@@ -16,13 +18,21 @@ const CommentInput = () => {
 
     });
 
+    const [visible, setVisible] = useState(true);
+
+    const handleCancel = () => {
+        setVisible(false);
+        onCancel(); // Gọi hàm onCancel được truyền từ CommentShow
+    };
+
     return (
         <div className='commentInput'>
-            <label className='commentInput-label'><CommentOutlined />Comment</label>
             <div className='commentInput-container'>
                 <Avatar className='commentInput-avarta'></Avatar>
-                <TextArea rows={4} className='commentInput-body' placeplaceholder="Input here" />
+                <TextArea rows={rows} className='commentInput-body' placeplaceholder="Input here" />
                 <Button type='primary'>Save</Button>
+                {showCancelButton && <Button type='primary' onClick={handleCancel} danger>Cancel</Button>}
+
             </div>
             <div className='commentInput-upload'>
                 <FileUpload maxSize={50} label="Documents for reference" id="reference" name="reference"
