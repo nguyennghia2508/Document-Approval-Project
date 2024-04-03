@@ -4,15 +4,10 @@ import InputSelection from '../../components/InputSelection'
 import InputSearch from '../../components/InputSearch'
 import React, { useEffect, useState } from 'react';
 import './style.scss'
-import FileUpload from '../../components/FileUpload';
 import { Avatar, Divider, Image } from 'antd';
-import ButtonSelect from '../../components/ButtonSelect';
 import TitleBody from '../../components/TitleBody';
 import { useForm } from 'react-hook-form';
-import departmentApi from '../../api/departmentApi';
-import categoryApi from '../../api/categoryApi'
 import documentApprovalApi from '../../api/documentApprovalApi'
-import userApi from "../../api/userApi"
 import moment from 'moment'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -20,7 +15,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CommentOutlined, EnterOutlined } from '@ant-design/icons';
 import CommentInput from '../../components/CommentInput';
 import PersonApproved from '../../components/PersonApproved';
-
+import commentApi from "../../api/commentApi"
 
 const ViewDocument = () => {
     const {
@@ -33,6 +28,7 @@ const ViewDocument = () => {
     });
 
     const navigate = useNavigate()
+    const user = useSelector((state) => state.user.value)
     const { id } = useParams();
     const urlBE = "https://localhost:44389"
     
@@ -41,6 +37,7 @@ const ViewDocument = () => {
     const [unitOptions, setUnitOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([])
     const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
+    const [dataDocument , setDataDocument] = useState([])
     const [selectedApplicant, setSelectedApplicant] = useState("")
     const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
     const [selectedSection, setSelectedSection] = useState('Select Section');
@@ -52,11 +49,13 @@ const ViewDocument = () => {
     const [selectedContent, setSelectedContent] = useState(null)
     const [selectedFilesApproved, setSelectedFilesApproved] = useState([])
     const [selectedFileReference , setSelectedFileReference] = useState([])
+    const [selectedFileComment , setSelectedFileComment] = useState([])
     const [approvers, setApprovers] = useState([])
     const [signers, setSigners] = useState([])
+    const [comment, setComment] = useState([])
     const [initialCategorySet, setInitialCategorySet] = useState(false);
     const [userData, setUserData] = useState([])
-
+    const [activeCommentIndex, setActiveCommentIndex] = useState(null);
 
     useEffect(() => {
         const getDocument = async () => {
@@ -64,7 +63,7 @@ const ViewDocument = () => {
                 const data = await documentApprovalApi.getDocumentById(id)
                 const document = data.document
                 const files = data.files
-
+                setDataDocument(data.document)
                 setSelectedApplicant(document.ApplicantName)
                 setSelectedDepartment(document.DepartmentName)
                 setSelectedSection(document.SectionName)
@@ -81,11 +80,16 @@ const ViewDocument = () => {
                 const selectedFilesReference = files.filter(file => file.DocumentType === 2);
                 setSelectedFileReference(selectedFilesReference);
 
+                const selectedFilesComment = files.filter(file => file.DocumentType === 3);
+                setSelectedFileComment(selectedFilesComment);
+
                 setApprovers(data.approvers)
                 setSigners(data.signers)
+
+                setComment(data.comments)
             } catch (err) {
                 const data = err.data
-                if(data.state === "false")
+                if(data.state && data.state === "false")
                 {
                     toast.error(data.message);
                     navigate("/avn/documentapproval")
@@ -95,35 +99,43 @@ const ViewDocument = () => {
         getDocument();
     }, []);
 
+    const handleToggleCommentInput = (index) => {
+        setActiveCommentIndex(activeCommentIndex === index ? null : index);
+    }
 
     const onSubmit = async (data) => {
-        console.log(data)
-        // // Tiếp tục xử lý dữ liệu
-        // data.date = defaultDate;
-        // const formData = new FormData();
-        // const dataObject = {
-        //     ApplicantId: user.Id,
-        //     ApplicantName: data.applicant,
-        //     CategoryId: data.category,
-        //     DocumentTypeId: data.documentType,
-        //     DepartmentId: data.department,
-        //     SectionId: data.section,
-        //     UnitId: data.unit,
-        //     RelatedProposal: data.proposal,
-        //     CreateDate: data.date,
-        //     Subject: data.subject,
-        //     ContentSum: data.content
-        // };
+        const formData = new FormData();
+        const dataObject = {
+            CommentContent: data.content,
+            ParentNode: data.commentId,
+            DocumentApprovalId: data.documentId,
+            ApprovalPersonId: data.userId,
+            ApprovalPersonName: data.userName,
+            IsSubComment: data.children,
+        };
 
+        formData.append("Data", JSON.stringify(dataObject));
+        if (data.reference && data.reference.length > 0) {
+            for (let i = 0; i < data.reference.length; i++) {
+                formData.append('reference', data.reference[i]);
+            }
+        }
+        const res = await commentApi.addComment(formData)
+        if(res.state === "true")
+        {
+            setActiveCommentIndex(null)
+            setComment(res.comments)
+            const files = res.files
+            console.log(res)
+            const selectedFilesComment = files.filter(file => file.DocumentType === 3);
+            setSelectedFileComment(selectedFilesComment);
+        }
     };
-    const [showCommentInput, setShowCommentInput] = useState(false);
-    const handleToggleCommentInput = () => {
-        setShowCommentInput(!showCommentInput);
-    };
+    
     return (
         <>
-            <form encType="multipart/form-data">
-                <TitleBody label="eDocument Approval" onSubmit={handleSubmit(onSubmit)} isForm={true} isApproval={true} href={"/avn/documentapproval"} />
+            <form>
+                <TitleBody label="eDocument Approval" isForm={true} isApproval={true} href={"/avn/documentapproval"} />
                 <div className='viewApproval-container'>
                     <div className="viewtitle"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
                     <div className='viewInput'>
@@ -208,46 +220,74 @@ const ViewDocument = () => {
                 <div className='commentInput'>
                     <label className='commentInput-label'><CommentOutlined />Comment</label>
 
-                    {!showCommentInput && <CommentInput showCancelButton={false} control={control} />}
+                    {activeCommentIndex === null && <CommentInput 
+                    documentId={dataDocument.DocumentApprovalId} 
+                    userId={user.Id} 
+                    userName={user.Username} 
+                    showCancelButton={false}
+                    submitComment={onSubmit}
+                    />}
                 </div>
 
 
                 <div className="commentShow">
-                    <div className='commentGroup'>
-                        <div className='commentParent'>
-                            <hr></hr>
-                            <div className='comment-element' >
-                                <Avatar className='comment-avarta'></Avatar>
-                                <div className='comment-body'>
-                                    <div>
-                                        <label className='comment-bodyTitle' >Nguyễn Minh Nhân</label>
-                                        <span>29/03/2024</span>
-                                    </div>
-                                    <div>Comment input</div>
-                                </div>
+                    {comment && comment.length > 0 && comment.map((value,index) => (
+                        <div className='commentGroup' key={index}>
+                            <div className='commentParent'>
+                                <hr></hr>
+                                <div className='comment-element' >
+                                    <Avatar className='comment-avarta'></Avatar>
+                                    <div className='comment-body'>
+                                        <div>
+                                            <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
+                                            <span>{moment(value.comment.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                        </div>
+                                        <div>{value.comment.CommentContent}</div>
+                                        {selectedFileComment.map((file) => (
+                                            file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
+                                        ))}
 
-                                <EnterOutlined className='comment-reply' onClick={handleToggleCommentInput} />
-                            </div>
-                        </div>
-                        <div className='conment-Children'>
-                            {showCommentInput && <CommentInput onCancel={handleToggleCommentInput} showCancelButton={true} control={control} />}
-                        </div>
-
-                        <div className='conment-Children'>
-                            <hr></hr>
-                            <div className='comment-element' >
-                                <Avatar></Avatar>
-                                <div className='comment-body'>
-                                    <div>
-                                        <label className='comment-bodyTitle'>Nguyễn Minh Nhân children</label>
-                                        <span>29/03/2024</span>
                                     </div>
-                                    <div>Comment input</div>
+
+                                    {activeCommentIndex !== index ? 
+                                    <EnterOutlined className="comment-reply" onClick={() => handleToggleCommentInput(index)} />                                
+                                    :
+                                    <EnterOutlined className="comment-reply"/>
+                                    }      
                                 </div>
                             </div>
+                            <div className='conment-Children'>
+                                {activeCommentIndex === index && <CommentInput 
+                                documentId={dataDocument.DocumentApprovalId} 
+                                commentId={value.comment.Id} 
+                                userId={user.Id} 
+                                userName={user.Username} 
+                                isChildren={true}
+                                submitComment={onSubmit}
+                                onCancel={() => handleToggleCommentInput(index)} showCancelButton={true} control={control} 
+                                />}
+                            </div>
+                                {value.children && value.children.length > 0 && value.children.map((value,index) => (
+                                    <div className='conment-Children' key={index}>
+                                    <hr></hr>
+                                    <div className='comment-element' >
+                                        <Avatar></Avatar>
+                                        <div className='comment-body'>
+                                            <div>
+                                                <label className='comment-bodyTitle'>{value.ApprovalPersonName}</label>
+                                                <span>{moment(value.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                            </div>
+                                            <div>{value.CommentContent}</div>
+                                            {selectedFileComment.map((file) => (
+                                                file.CommentId === value.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                            }
                         </div>
-                    </div>
-
+                    ))}
                 </div>
             </div>
         </>

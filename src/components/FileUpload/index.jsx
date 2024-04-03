@@ -20,18 +20,20 @@ const FileUpload = ({
     const handleUploadChange = (info) => {
         const { fileList: newFileList } = info;
         if (fileList.length === 0) {
+            const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize);
             // Nếu fileList đang trống, chỉ cần thêm tất cả các tệp từ newFileList vào fileList
-            setFileList(newFileList);
-            const files = newFileList.map(file => file.originFileObj);
+            setFileList(filteredFileList);
+            const files = filteredFileList.map(file => file.originFileObj);
             setValue(name, files);
         } else {
             // Lọc ra các file mới không trùng tên với bất kỳ file nào đã có trong mảng fileList
             // const normalizedFileName = newFileList[0].name.toLowerCase().trim();
             const uniqueNewFiles = !newFileList.every(newFile => fileList.some(existingFile => existingFile.name.toLowerCase().trim() === newFile.name.toLowerCase().trim()));
             if (uniqueNewFiles) {
+                const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize);
                 // Thêm các tệp mới vào fileList
-                setFileList(newFileList);
-                const files = newFileList.map(file => file.originFileObj);
+                setFileList(filteredFileList);
+                const files = filteredFileList.map(file => file.originFileObj);
                 setValue(name, files);
             }
         }
