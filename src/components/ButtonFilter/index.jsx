@@ -1,4 +1,4 @@
-import { Dropdown, Button, Menu, DatePicker } from 'antd';
+import { Dropdown, Button, Menu, DatePicker, Table } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import './style.scss';
 import InputText from '../InputText';
@@ -169,7 +169,7 @@ const ButtonFilter = ({
 
     useEffect(() => {
         const handleReset = () => {
-            if (!tabView.filter && tabView.switchTable) {
+            if (!tabView.filter && tabView.switchTab) {
                 reset();
                 setRequestCode("");
                 setSubject("")
@@ -183,17 +183,34 @@ const ButtonFilter = ({
                 setSelectedUnit("Select Unit")
                 setSelectProcessingBy(userData[0]?.value);
             }
-            const regex = /^status(\d+)$/;
-            const match = tabView.tabName.match(regex);
 
-            if (match) {
-                // Lấy số cuối cùng từ tabView.TabName
-                const tabIndexNumber = parseInt(match[1]);
-                // Kiểm tra xem số cuối cùng có phù hợp với value của status không
-                if (status.some(st => st.value === tabIndexNumber)) {
-                    // Nếu có, in ra value của status tương ứng
-                    setSelectStatus(status.find(st => st.value === tabIndexNumber).value);
-                    setValue("status", status.find(st => st.value === tabIndexNumber).value)
+            if(tabView.switchTab)
+            {
+                const regex = /^status(\d+)$/;
+                const match = tabView.tabName.match(regex);
+
+                if (match) {
+                    // Lấy số cuối cùng từ tabView.TabName
+                    const tabIndexNumber = parseInt(match[1]);
+                    // Kiểm tra xem số cuối cùng có phù hợp với value của status không
+                    if (status.some(st => st.value === tabIndexNumber)) {
+                        // Nếu có, in ra value của status tương ứng
+                        setSelectStatus(status.find(st => st.value === tabIndexNumber).value);
+                        setValue("status", status.find(st => st.value === tabIndexNumber).value)
+                    }
+                }
+            }
+            else
+            {
+                if(tabView.filter)
+                {
+                    const statusIndex = tabView.filterList?.status
+                    if (status.some(st => st.value === statusIndex)) 
+                    {
+                        // Nếu có, in ra value của status tương ứng
+                        setSelectStatus(status.find(st => st.value === statusIndex).value);
+                        setValue("status", status.find(st => st.value === statusIndex).value)
+                    }
                 }
             }
         };
@@ -293,9 +310,9 @@ const ButtonFilter = ({
     const handleAttoneySelectChange = (value) => {
         setSelectAttoney(value)
     }
-    const handleStatusChange = (value => {
+    const handleStatusChange = (value) => {
         setSelectStatus(value)
-    })
+    }
     const handleProcessingBy = (value) => {
         setSelectProcessingBy(value)
     }
@@ -325,13 +342,13 @@ const ButtonFilter = ({
                 </div>
                 <hr />
                 <div className="menu-animation" >
-                    <InputText label="Request Code" value={requestcode} handleOnChange={handleRequestCode} id="requestcode" name="requestcode" control={control} />
+                    <InputText label="Request Code" value={requestcode} handleField={true} handleOnChange={handleRequestCode} id="requestcode" name="requestcode" control={control} />
                 </div>
                 <div className="menu-animation" >
-                    <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
+                    <InputSelection label="Document Type" defaultValue={selectedDocumentType} id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
                 </div>
                 <div className="menu-animation" >
-                    <InputText label="Subject" value={subject} handlefield={true} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
+                    <InputText label="Subject" value={subject} handleField={true} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
                 </div>
                 <div className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />
@@ -347,11 +364,11 @@ const ButtonFilter = ({
 
                 </div>
                 <div className="menu-animation" >
-                    <InputSelection label="The Authorizer" filter={true} id="authorizer" name="authorizer" control={control} value={selectAuthor} onChange={handleAuthorSelectChange} options={userData} required />
+                    <InputSelection label="The Authorizer" defaultValue={selectAuthor} filter={true} id="authorizer" name="authorizer" control={control} value={selectAuthor} onChange={handleAuthorSelectChange} options={userData} required />
 
                 </div>
                 <div className="menu-animation" >
-                    <InputSelection label="The Attorney" filter={true} id="attorney" name="attorney" control={control} value={selectAttoney} onChange={handleAttoneySelectChange} options={userData} required />
+                    <InputSelection label="The Attorney" defaultValue={selectAttoney} filter={true} id="attorney" name="attorney" control={control} value={selectAttoney} onChange={handleAttoneySelectChange} options={userData} required />
 
                 </div>
                 <div className="menu-animation" >
@@ -378,7 +395,7 @@ const ButtonFilter = ({
 
                 <div className="menu-animation" >
                     <InputSelection
-                        defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 5].value : status[0].value}
+                        defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 4].value : status[0].value}
                         label="Status" id="status" name="status"
                         value={selectStatus} control={control} onChange={handleStatusChange} options={status} required />
                 </div>

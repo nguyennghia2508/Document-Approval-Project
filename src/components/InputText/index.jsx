@@ -6,7 +6,6 @@ import { Controller } from 'react-hook-form';
 
 const InputText = ({
   placeholder,
-
   label,
   required,
   disabled,
@@ -17,12 +16,13 @@ const InputText = ({
   defaultValue,
   handleOnChange,
   value,
-  handlefield
+  handleField
 }) => {
 
   const handleChange = (e, field) => {
     field.onChange(e.target.value)
-    if (handlefield) {
+    if(handleField)
+    {
       handleOnChange(e.target.value)
     }
   };

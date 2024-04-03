@@ -15,11 +15,17 @@ const ButtonSelect = ({
     setValue,
 }) => {
 
-    const userData = data
-        .map(value => ({
-            value: value.Id,
-            label: value.Email
-        }));
+    const userData = data.map((value, index) => ({
+        value: value.Id,
+        label: (
+            <div className='filter-option' key={index}>
+                <span>{value.Username}</span>
+                <span>{value.Email}</span>
+            </div>
+        ),
+        name: value.Username,
+    }));
+    
 
     const [editLabelIndex, setEditLabelIndex] = useState(null);
     const [inputSelects, setInputSelects] = useState([]);
@@ -70,7 +76,7 @@ const ButtonSelect = ({
     const handleSelectChange = (id, value) => {
         setInputSelects(inputSelects.map(inputSelect => {
             if (inputSelect.id === id) {
-                return { ...inputSelect, userName: userData[value].label, selectedOption: value };
+                return { ...inputSelect, userName: userData[value].name, selectedOption: value };
             }
             return inputSelect;
         }));
