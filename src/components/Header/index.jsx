@@ -15,6 +15,11 @@ import user_default_image from '../../assets/images/default-user-profile.png';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
+
+  const handleMobileHeaderClick = () => {
+    setIsMobile(!isMobile); // Thay đổi trạng thái xoay
+  };
 
   return (
     <div className='header'>
@@ -36,7 +41,7 @@ const Header = () => {
           <MenuHeader />
         </Drawer>
 
-        <Col className='header-brand'>
+        <Col className={isMobile ? 'header-brandMobile' : 'header-brand'}>
           <Image width={200} src={logo} />
         </Col>
         <Col className='header-span'>
@@ -45,17 +50,17 @@ const Header = () => {
       </Row>
 
       <Row className='header-right '>
-        <Col className='icon-more'>
+        <Col className={isMobile ? 'icon-more' : 'icon-moreMobile'} onClick={handleMobileHeaderClick}>
           <MoreOutlined rotate={90} />
         </Col>
 
-        <Col className='header-icon'>
+        <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
           <QuestionOutlined />
         </Col>
-        <Col className='header-icon'>
+        <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
           <BellOutlined />
         </Col>
-        <Col className='header-icon'>
+        <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
           <SettingOutlined />
         </Col>
         <Col className='header-user'>

@@ -15,8 +15,6 @@ import documentApprovalApi from '../../api/documentApprovalApi'
 import userApi from "../../api/userApi"
 import moment from 'moment'
 import { useSelector } from 'react-redux';
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from './data';
 import { toast } from 'react-toastify';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CommentOutlined, EnterOutlined } from '@ant-design/icons';
@@ -32,8 +30,6 @@ const ViewDocument = () => {
         setValue,
     } = useForm({
         mode: "onsubmit",
-        resolver: yupResolver(schema()),
-        shouldFocusError: false,
     });
 
     const navigate = useNavigate()
@@ -119,40 +115,14 @@ const ViewDocument = () => {
         //     ContentSum: data.content
         // };
 
-        // formData.append("Data", JSON.stringify(dataObject));
-
-        // if (data.approve && data.approve.length > 0) {
-        //     for (let i = 0; i < data.approve.length; i++) {
-        //         formData.append('approve', data.approve[i]);
-        //     }
-        // }
-        // if (data.reference && data.reference.length > 0) {
-        //     for (let i = 0; i < data.reference.length; i++) {
-        //         formData.append('reference', data.reference[i]);
-        //     }
-        // }
-
-        // const approvalPerson = {
-        //     approvers: data.approvers.map(value => ({
-        //         ApprovalPersonId: value.selectedOption,
-        //         ApprovalPersonName: value.userName,
-        //     })),
-        //     signers: data.signers.map(value => ({
-        //         ApprovalPersonId: value.selectedOption,
-        //         ApprovalPersonName: value.userName,
-        //     }))
-        // };
-        // formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
-        // const res = await documentApprovalApi.addDocumentApproval(formData);
-        // if (res.state === "true") {
-        //     const dc = res.dc
-        //     navigate(`/avn/documentapproval/view/${dc.Id}`)
-        // }
     };
-
+    const [showCommentInput, setShowCommentInput] = useState(false);
+    const handleToggleCommentInput = () => {
+        setShowCommentInput(!showCommentInput);
+    };
     return (
         <>
-            <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
+            <form encType="multipart/form-data">
                 <TitleBody label="eDocument Approval" onSubmit={handleSubmit(onSubmit)} isForm={true} isApproval={true} href={"/avn/documentapproval"} />
                 <div className='viewApproval-container'>
                     <div className="viewtitle"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
@@ -218,7 +188,6 @@ const ViewDocument = () => {
                     }} />
 
                 </div >
-
                 <div className='viewSignapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <PersonApproved options={approvers}/>
@@ -232,105 +201,55 @@ const ViewDocument = () => {
                         <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div> */}
 
+                </div>
+
+            </form >
+            <div className='comment'>
+                <div className='commentInput'>
+                    <label className='commentInput-label'><CommentOutlined />Comment</label>
+
+                    {!showCommentInput && <CommentInput showCancelButton={false} control={control} />}
+                </div>
 
 
-                    <div className='comment'>
-                        <div className='commentInput'>
-                            <CommentInput></CommentInput>
+                <div className="commentShow">
+                    <div className='commentGroup'>
+                        <div className='commentParent'>
+                            <hr></hr>
+                            <div className='comment-element' >
+                                <Avatar className='comment-avarta'></Avatar>
+                                <div className='comment-body'>
+                                    <div>
+                                        <label className='comment-bodyTitle' >Nguyễn Minh Nhân</label>
+                                        <span>29/03/2024</span>
+                                    </div>
+                                    <div>Comment input</div>
+                                </div>
+
+                                <EnterOutlined className='comment-reply' onClick={handleToggleCommentInput} />
+                            </div>
+                        </div>
+                        <div className='conment-Children'>
+                            {showCommentInput && <CommentInput onCancel={handleToggleCommentInput} showCancelButton={true} control={control} />}
                         </div>
 
-
-                        <div className="commentShow">
-                            <div className='commentGroup'>
-                                <div className='commentParent'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar className='comment-avarta'></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
-                                        <EnterOutlined className='comment-reply' />
+                        <div className='conment-Children'>
+                            <hr></hr>
+                            <div className='comment-element' >
+                                <Avatar></Avatar>
+                                <div className='comment-body'>
+                                    <div>
+                                        <label className='comment-bodyTitle'>Nguyễn Minh Nhân children</label>
+                                        <span>29/03/2024</span>
                                     </div>
-                                </div>
-                                <div className='conment-Children'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label>Nguyễn Minh Nhân children</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='commentGroup'>
-                                <div className='commentParent'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar className='comment-avarta'></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
-                                        <EnterOutlined className='comment-reply' />
-                                    </div>
-                                </div>
-                                <div className='conment-Children'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label>Nguyễn Minh Nhân children</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><div className='commentGroup'>
-                                <div className='commentParent'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar className='comment-avarta'></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label style={{ fontWeight: "bold", marginRight: "20px" }}>Nguyễn Minh Nhân</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
-                                        <EnterOutlined className='comment-reply' />
-                                    </div>
-                                </div>
-                                <div className='conment-Children'>
-                                    <hr></hr>
-                                    <div className='comment-element' >
-                                        <Avatar></Avatar>
-                                        <div className='comment-body'>
-                                            <div>
-                                                <label>Nguyễn Minh Nhân children</label>
-                                                <span>29/03/2024</span>
-                                            </div>
-                                            <div>Comment input</div>
-                                        </div>
-                                    </div>
+                                    <div>Comment input</div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-            </form >
+            </div>
         </>
 
 
