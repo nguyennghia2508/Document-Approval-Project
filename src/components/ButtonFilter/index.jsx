@@ -314,7 +314,7 @@ const ButtonFilter = ({
 
     const menu = (
         <form encType="multipart/form-data">
-            <Menu className="buttonFilter-menu" mode="vertical" direction="rtl">
+            <div className="buttonFilter-menu" mode="vertical" direction="rtl">
                 <div className='buttonFilter-title'>
                     <label className='buttonFilter-title-left'>Filter</label>
                     <div className='buttonFilter-title-right' >
@@ -324,73 +324,78 @@ const ButtonFilter = ({
                     </div>
                 </div>
                 <hr />
-                <Menu.Item className="menu-animation" >
+                <div className="menu-animation" >
                     <InputText label="Request Code" value={requestcode} handleOnChange={handleRequestCode} id="requestcode" name="requestcode" control={control} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} required />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="Subject" value={subject} handlefield={true} handleOnChange={handleSubject} id="subject" name="subject" control={control} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" control={control} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="Created" type="date" name="createStart" control={control} required disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText type="date" name="createEnd" control={control} disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="To" id="to" name="to" control={control} />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="The Authorizer" filter={true} id="authorizer" name="authorizer" control={control} value={selectAuthor} onChange={handleAuthorSelectChange} options={userData} required />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="The Attorney" filter={true} id="attorney" name="attorney" control={control} value={selectAttoney} onChange={handleAttoneySelectChange} options={userData} required />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText label="Authorization period" name="periodStart" control={control} type="datetime-local" required disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputText name="periodEnd" control={control} type="datetime-local" disabled={false} />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Applicant" id="applicant" name="applicant" control={control} value={selectUser} onChange={handleUserSelectChange} options={userData} required />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Department" defaultValue={department[0].value} id="department" name="department" value={selectedDepartment} control={control} onChange={handleDepartmentChange} options={department} required />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Section" id="section" name="section" value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} required disabled={selectedDepartment === "all" ? true : false} />
 
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Unit" id="unit" name="unit" value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} required disabled={selectedDepartment === "all" ? true : selectedSection === "all" ? true : false} />
 
-                </Menu.Item>
+                </div>
 
-                <Menu.Item className="menu-animation" >
+                <div className="menu-animation" >
                     <InputSelection
                         defaultValue={status.some(status => status + 5 === tabView.tabIndex) ? status[tabView.Tabindex - 5].value : status[0].value}
                         label="Status" id="status" name="status"
                         value={selectStatus} control={control} onChange={handleStatusChange} options={status} required />
-                </Menu.Item>
-                <Menu.Item className="menu-animation" >
+                </div>
+                <div className="menu-animation" >
                     <InputSelection label="Processing by" id="processingBy" name="processingby" value={selectProcessingBy} control={control} onChange={handleProcessingBy} options={userData} required />
-                </Menu.Item>
-            </Menu>
+                </div>
+            </div>
         </form >
 
     );
     return (
-        <Dropdown overlay={menu} placement="bottomLeft" arrow trigger={['click']} visible={isOpen} onVisibleChange={setIsOpen}>
+        <Dropdown overlay={menu}
+            placement="bottomLeft"
+            arrow
+            trigger={['click']}
+            open={isOpen}
+            onOpenChange={setIsOpen}>
             <Button>
                 Dropdown <DownOutlined />
             </Button>
