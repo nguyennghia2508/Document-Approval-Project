@@ -1,14 +1,25 @@
 import React from 'react'
 import './style.scss'
-import { CommentOutlined, Avarta } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from './data';
 import FileUpload from '../FileUpload';
 import { Input, Button, Avatar } from 'antd';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useState,useEffect} from 'react';
 const { TextArea } = Input;
 const CommentInput = ({ 
-    onCancel, 
-    showCancelButton 
+    onCancel,
+    submitComment,
+    showCancelButton,
+    isChildren=false,
+    documentId,
+    commentId,
+    userId,
+    userName,
+    isActive,
+    index,
 }) => {
 
     const {
@@ -16,30 +27,68 @@ const CommentInput = ({
         formState: { errors },
         handleSubmit,
         control,
+        reset,
         setValue,
     } = useForm({
         mode: "onsubmit",
-
+        resolver: yupResolver(schema()),
     });
 
     const [visible, setVisible] = useState(true);
+    const [text, setText] = useState(null)
+    const handleTextChange = (e) => {
+        console.log(e.target.value)
+        setText(e.target.value);
+    };
 
     const handleCancel = () => {
         setVisible(false);
-        onCancel(); // Gọi hàm onCancel được truyền từ CommentShow
+        onCancel();
     };
+
+    useEffect(() => {
+        if (errors && Object.keys(errors).length > 0) {
+            const firstErrorMessage = Object.values(errors)[0].message;
+            toast.error(firstErrorMessage);
+        }
+    }, [errors]);
 
     const onSubmit = async (data) => {
-        console.log(data)
+        data.documentId = documentId
+        data.userId = userId
+        data.userName = userName
+        if(isChildren)
+        {
+            data.children = true
+            data.commentId = commentId
+        }
+        submitComment(data)
+        reset();
     };
-
+    
     return (
         <form encType="multipart/form-data">
             <div className='commentInput'>
                 <div className='commentInput-container'>
                     <Avatar className='commentInput-avarta'></Avatar>
-                    <TextArea rows={rows} className='commentInput-body' placeplaceholder="Input here" />
-                    <Button type='primary' onSubmit={handleSubmit(onSubmit)}>Save</Button>
+                    <Controller
+                        name="content"
+                        control={control}
+                        render={({ field }) => {
+                            return (
+                                <TextArea 
+                                    name="content" 
+                                    value={text} 
+                                    onChange={(e) => handleTextChange(e)}
+                                    {...field}
+                                    className='commentInput-body' 
+                                    placeplaceholder="Input here" 
+                                />
+                            )
+                        }}
+                    >
+                    </Controller>
+                    <Button type='primary' onClick={handleSubmit(onSubmit)}>Save</Button>
                     {showCancelButton && <Button type='primary' onClick={handleCancel} danger>Cancel</Button>}
 
                 </div>
