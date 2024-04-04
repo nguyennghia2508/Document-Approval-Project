@@ -31,13 +31,13 @@ const ViewDocument = () => {
     const user = useSelector((state) => state.user.value)
     const { id } = useParams();
     const urlBE = "https://localhost:44389"
-    
+
     const [departmentData, setDepartmentData] = useState([]);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([])
     const [documentTypeOptions, setDocumentTypeOptions] = useState([]);
-    const [dataDocument , setDataDocument] = useState([])
+    const [dataDocument, setDataDocument] = useState([])
     const [selectedApplicant, setSelectedApplicant] = useState("")
     const [selectedDepartment, setSelectedDepartment] = useState('Select Department');
     const [selectedSection, setSelectedSection] = useState('Select Section');
@@ -48,8 +48,8 @@ const ViewDocument = () => {
     const [selectedSubject, setSelectedSubject] = useState(null)
     const [selectedContent, setSelectedContent] = useState(null)
     const [selectedFilesApproved, setSelectedFilesApproved] = useState([])
-    const [selectedFileReference , setSelectedFileReference] = useState([])
-    const [selectedFileComment , setSelectedFileComment] = useState([])
+    const [selectedFileReference, setSelectedFileReference] = useState([])
+    const [selectedFileComment, setSelectedFileComment] = useState([])
     const [approvers, setApprovers] = useState([])
     const [signers, setSigners] = useState([])
     const [comment, setComment] = useState([])
@@ -89,8 +89,7 @@ const ViewDocument = () => {
                 setComment(data.comments)
             } catch (err) {
                 const data = err.data
-                if(data.state && data.state === "false")
-                {
+                if (data.state && data.state === "false") {
                     toast.error(data.message);
                     navigate("/avn/documentapproval")
                 }
@@ -104,7 +103,7 @@ const ViewDocument = () => {
     }
 
     const onSubmit = async (data) => {
-        
+
         const formData = new FormData();
         const dataObject = {
             CommentContent: data.content,
@@ -124,8 +123,7 @@ const ViewDocument = () => {
 
         setActiveCommentIndex(null)
         const res = await commentApi.addComment(formData)
-        if(res.state === "true")
-        {
+        if (res.state === "true") {
             setComment(res.comments)
             const files = res.files
             console.log(res)
@@ -133,13 +131,33 @@ const ViewDocument = () => {
             setSelectedFileComment(selectedFilesComment);
         }
     };
-    
+    console.log(user)
     return (
         <>
             <form>
                 <TitleBody label="eDocument Approval" isForm={true} isApproval={true} href={"/avn/documentapproval"} />
                 <div className='viewApproval-container'>
-                    <div className="viewtitle"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
+                    <div className="viewtitle">
+                        <div className='viewtitle-status'>
+                            <div className='viewtitle-statusRcode'  >
+                                <span >Request Code:</span>
+                                <p style={{ fontWeight: "bold" }}>{dataDocument.RequestCode} </p>
+                            </div>
+                            <div className='viewtitle-statusState'>
+                                <span>Status:</span>
+                                {dataDocument.Status === 1 ?
+                                    <p style={{ color: "#2F85EF" }}> Approved</p>
+                                    :
+                                    null
+                                }{
+                                    dataDocument.Status === 2 ?
+                                        <p>approving</p>
+                                        :
+                                        null
+                                }
+                            </div>
+                        </div>
+                        <h1 >DOCUMENT APPROVAL</h1></div>
                     <div className='viewInput'>
                         <div className='viewInput-top'>
                             <div className='viewInput-element'>
@@ -175,7 +193,7 @@ const ViewDocument = () => {
                     </div >
                     <div className='viewDocument'>
                         <div className='viewDocument-subject'>
-                            <InputText label="Subject" id="subject" name="subject"  value={selectedSubject} control={control} disabled={true} />
+                            <InputText label="Subject" id="subject" name="subject" value={selectedSubject} control={control} disabled={true} />
                         </div>
                         <div className='viewDocument-content'>
                             <InputText label="Content summary" id="content" name="content" value={selectedContent} control={control} disabled={true} />
@@ -204,13 +222,13 @@ const ViewDocument = () => {
                 </div >
                 <div className='viewSignapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
-                    <PersonApproved options={approvers}/>
+                    <PersonApproved options={approvers} />
 
                     {/* <div className='approval-email' style={{ paddingBottom: "20px" }}>
                         <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
                     </div> */}
                     <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
-                    <PersonApproved options={signers}/>
+                    <PersonApproved options={signers} />
                     {/* <div className='sign-email'>
                         <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div> */}
@@ -222,21 +240,21 @@ const ViewDocument = () => {
                 <div className='commentInput'>
                     <label className='commentInput-label'><CommentOutlined />Comment</label>
 
-                    {activeCommentIndex === null && <CommentInput 
-                    documentId={dataDocument.DocumentApprovalId} 
-                    userId={user.Id} 
-                    userName={user.Username} 
-                    showCancelButton={false}
-                    submitComment={onSubmit}
+                    {activeCommentIndex === null && <CommentInput
+                        documentId={dataDocument.DocumentApprovalId}
+                        userId={user.Id}
+                        userName={user.Username}
+                        showCancelButton={false}
+                        submitComment={onSubmit}
                     />}
                 </div>
 
 
                 <div className="commentShow">
-                    {comment && comment.length > 0 && comment.map((value,index) => (
+                    {comment && comment.length > 0 && comment.map((value, index) => (
                         <div className='commentGroup' key={index}>
-                            <div className='commentParent'>
-                                <hr></hr>
+                            <div className='commentParent '>
+
                                 <div className='comment-element' >
                                     <Avatar className='comment-avarta'></Avatar>
                                     <div className='comment-body'>
@@ -244,42 +262,41 @@ const ViewDocument = () => {
                                             <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
                                             <span>{moment(value.comment.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
                                         </div>
-                                        <div>{value.comment.CommentContent}</div>
+                                        <div className='comment-bodyComment' >{value.comment.CommentContent}</div>
                                         {selectedFileComment.map((file) => (
                                             file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
                                         ))}
 
                                     </div>
 
-                                    {activeCommentIndex !== index ? 
-                                    <EnterOutlined className="comment-reply" onClick={() => handleToggleCommentInput(index)} />                                
-                                    :
-                                    <EnterOutlined className="comment-reply"/>
-                                    }      
+                                    {activeCommentIndex !== index ?
+                                        <EnterOutlined className="comment-reply" onClick={() => handleToggleCommentInput(index)} />
+                                        :
+                                        <EnterOutlined className="comment-reply" />
+                                    }
                                 </div>
                             </div>
                             <div className='conment-Children'>
-                                {activeCommentIndex === index && <CommentInput 
-                                documentId={dataDocument.DocumentApprovalId} 
-                                commentId={value.comment.Id} 
-                                userId={user.Id} 
-                                userName={user.Username} 
-                                isChildren={true}
-                                submitComment={onSubmit}
-                                onCancel={() => handleToggleCommentInput(index)} showCancelButton={true} control={control} 
+                                {activeCommentIndex === index && <CommentInput
+                                    documentId={dataDocument.DocumentApprovalId}
+                                    commentId={value.comment.Id}
+                                    userId={user.Id}
+                                    userName={user.Username}
+                                    isChildren={true}
+                                    submitComment={onSubmit}
+                                    onCancel={() => handleToggleCommentInput(index)} showCancelButton={true} control={control}
                                 />}
                             </div>
-                                {value.children && value.children.length > 0 && value.children.map((value,index) => (
-                                    <div className='conment-Children' key={index}>
-                                    <hr></hr>
+                            {value.children && value.children.length > 0 && value.children.map((value, index) => (
+                                <div className='conment-Children' key={index}>
                                     <div className='comment-element' >
-                                        <Avatar></Avatar>
+                                        <Avatar className='comment-avarta'></Avatar>
                                         <div className='comment-body'>
                                             <div>
                                                 <label className='comment-bodyTitle'>{value.ApprovalPersonName}</label>
                                                 <span>{moment(value.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
                                             </div>
-                                            <div>{value.CommentContent}</div>
+                                            <div className='comment-bodyComment'>{value.CommentContent}</div>
                                             {selectedFileComment.map((file) => (
                                                 file.CommentId === value.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
                                             ))}

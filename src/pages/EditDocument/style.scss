@@ -1,0 +1,169 @@
+    @media (max-width:767px) {
+        .editApproval-container {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 110px;
+
+
+            .editInput {
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 50px;
+
+                .editInput-top {
+                    padding-bottom: 20px;
+                    display: flex;
+
+                    // justify-content: space-between;
+                    .editInput-element {
+                        width: 24%;
+                        margin-right: 25px;
+
+                    }
+                }
+
+                .editInput-bot {
+                    display: flex;
+                    // justify-content: space-between;
+
+                    .editInput-element {
+                        width: 24%;
+                        margin-right: 20px;
+                    }
+                }
+            }
+
+            .editDocument {
+                width: 100%;
+
+                >div {
+                    padding-bottom: 20PX;
+                }
+
+                .editDocument-content {
+                    .ant-editInput {
+                        height: 100px;
+                    }
+                }
+            }
+        }
+
+        .editSignapproval-container {
+            padding: 20px;
+
+
+
+        }
+
+
+
+    }
+
+    @media (min-width:768px) {
+        .editApproval-container {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 60px;
+            width: 100%;
+
+            .edittitle {
+                display: flex;
+
+                .edittitle-status {
+                    display: inline-block;
+                    width: 40%;
+
+                    .edittitle-statusState,
+                    .edittitle-statusRcode {
+                        display: flex;
+
+                        >span {
+                            margin: 16px 0;
+                            padding-right: 5px;
+                        }
+                    }
+
+                    .edittitle-statusState {
+                        width: 30%;
+                    }
+
+
+
+
+                }
+
+                >h1 {
+                    // padding-left: 250px;
+
+                }
+
+
+            }
+
+            .editInput {
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 50px;
+
+                .editInput-top {
+                    padding-bottom: 20px;
+                    display: flex;
+
+                    // justify-content: space-between;
+                    .editInput-element {
+                        width: 24%;
+                        margin-right: 25px;
+
+                    }
+                }
+
+                .editInput-bot {
+                    display: flex;
+                    // justify-content: space-between;
+
+                    .editInput-element {
+                        width: 24%;
+                        margin-right: 20px;
+                    }
+                }
+            }
+
+            .editDocument {
+                width: 50%;
+
+
+                >div {
+                    padding-bottom: 20PX;
+                }
+
+                .editDocument-reference,
+                .editDocument-approve {
+                    display: flex;
+                    flex-direction: column;
+
+                    >a {
+                        text-decoration: none;
+                        display: block;
+                        width: 100px;
+                        color: #917b7b;
+                    }
+                }
+
+                .editDocument-content {
+                    .ant-editInput {
+                        height: 100px;
+                    }
+                }
+            }
+        }
+
+        .editSignapproval-container {
+            padding: 20px;
+
+
+
+        }
+
+
+
+    }

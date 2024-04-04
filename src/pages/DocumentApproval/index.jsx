@@ -6,10 +6,12 @@ import documentApprovalApi from "../../api/documentApprovalApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 const DocumentApproval = () => {
 
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
@@ -25,10 +27,11 @@ const DocumentApproval = () => {
           const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
           setList(data)
         }
-        else
-        {
-          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage ,
-          dataFilter:tabView.filterList})
+        else {
+          const data = await documentApprovalApi.getListDocument({
+            userId: user.Id, tabName: tabView.tabName, page: currentPage,
+            dataFilter: tabView.filterList
+          })
           setList(data)
           console.log(data)
         }
@@ -39,7 +42,7 @@ const DocumentApproval = () => {
     getAllDocument();
     window.scrollTo(0, 0);
   }, [tabView, currentPage]);
-  
+
   useEffect(() => {
     setCurrentPage(1)
     window.scrollTo(0, 0);
@@ -184,6 +187,7 @@ const DocumentApproval = () => {
           no={currentPage}
           pageSize={limit}
           useText={true}
+          href={location.pathname}
         />
       </div>
     </>
