@@ -179,7 +179,6 @@ const New = () => {
     }, [errors]);
 
     const onSubmit = async (data) => {
-        // Tiếp tục xử lý dữ liệu
         data.date = defaultDate;
         const formData = new FormData();
         const dataObject = {

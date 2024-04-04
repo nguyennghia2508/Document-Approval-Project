@@ -9,14 +9,12 @@ import moment from "moment";
 
 const DocumentApproval = () => {
 
-
   const dispatch = useDispatch()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
 
   const limit = 10
-  // Hàm để tạo ngẫu nhiên một phần tử mới dựa trên cấu trúc của phần tử đầu tiên
   const user = useSelector((state) => state.user.value)
   const tabView = useSelector((state) => state.tabview.value)
 
@@ -26,6 +24,13 @@ const DocumentApproval = () => {
         if (!tabView.filter) {
           const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
           setList(data)
+        }
+        else
+        {
+          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage ,
+          dataFilter:tabView.filterList})
+          setList(data)
+          console.log(data)
         }
       } catch (err) {
         console.log(err)
