@@ -53,10 +53,8 @@ const ViewDocument = () => {
     const [approvers, setApprovers] = useState([])
     const [signers, setSigners] = useState([])
     const [comment, setComment] = useState([])
-    const [initialCategorySet, setInitialCategorySet] = useState(false);
-    const [userData, setUserData] = useState([])
     const [activeCommentIndex, setActiveCommentIndex] = useState(null);
-
+    
     useEffect(() => {
         const getDocument = async () => {
             try {
@@ -83,9 +81,12 @@ const ViewDocument = () => {
                 const selectedFilesComment = files.filter(file => file.DocumentType === 3);
                 setSelectedFileComment(selectedFilesComment);
 
-                setApprovers(data.approvers)
-                setSigners(data.signers)
+                const listApprover = data.persons.filter(value => value.PersonDuty === 1);
+                setApprovers(listApprover)
 
+                const listSigner = data.persons.filter(value => value.PersonDuty === 2);
+                setSigners(listSigner)
+                
                 setComment(data.comments)
             } catch (err) {
                 const data = err.data
@@ -126,16 +127,34 @@ const ViewDocument = () => {
         if (res.state === "true") {
             setComment(res.comments)
             const files = res.files
-            console.log(res)
             const selectedFilesComment = files.filter(file => file.DocumentType === 3);
             setSelectedFileComment(selectedFilesComment);
         }
     };
-    console.log(user)
+  
+    const handleSelectedApprover = (value) => {
+        setApprovers(value)
+    }
+
+    const handleSelectedSigner = (value) => {
+        setSigners(value)
+    }
+
     return (
         <>
             <form>
-                <TitleBody label="eDocument Approval" isForm={true} isApproval={true} href={"/avn/documentapproval"} />
+                <TitleBody 
+                    handleApprover={handleSelectedApprover}
+                    handleSigner={handleSelectedSigner}
+                    listApprover={approvers}
+                    listSigner={signers}
+                    currentUser={user}
+                    dataDocument={dataDocument} 
+                    label="eDocument Approval" 
+                    isForm={true} 
+                    isApproval={true} 
+                    href={"/avn/documentapproval"} 
+                />
                 <div className='viewApproval-container'>
                     <div className="viewtitle">
                         <div className='viewtitle-status'>

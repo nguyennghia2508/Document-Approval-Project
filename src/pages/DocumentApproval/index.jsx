@@ -4,9 +4,10 @@ import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setTabview } from "../../redux/features/tabviewSlice";
+import { setTabview,resetTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 const DocumentApproval = () => {
 
@@ -159,6 +160,7 @@ const DocumentApproval = () => {
       tabIndex: tabView.tabIndex,
       tabName: tabView.tabName,
       filter: true,
+      switchTab:false,
       filterList: dataFilter
     }))
 
@@ -175,21 +177,18 @@ const DocumentApproval = () => {
 
   return (
     <>
-      <div className="documentApproval-container">
-        <TitleBody label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
-
-        <TablePagination
-          list={list?.listDcapproval}
-          totalItems={list?.totalItems}
-          className='documentApproval'
-          columns={columns}
-          onChange={handleTablePageChange}
-          no={currentPage}
-          pageSize={limit}
-          useText={true}
-          href={location.pathname}
-        />
-      </div>
+      <TitleBody label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
+      <TablePagination
+        list={list?.listDcapproval}
+        totalItems={list?.totalItems}
+        className='documentApproval'
+        columns={columns}
+        onChange={handleTablePageChange}
+        no={currentPage}
+        pageSize={limit}
+        useText={true}
+        href={location.pathname}
+      />
     </>
   );
 };
