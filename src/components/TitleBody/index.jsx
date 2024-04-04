@@ -1,5 +1,5 @@
 // TitleBody.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Input } from 'antd';
 import { Link } from "react-router-dom";
 import { SwapLeftOutlined, FileTextOutlined, ShareAltOutlined, CheckOutlined, CloseOutlined, MailOutlined, SaveOutlined, SendOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
@@ -7,6 +7,7 @@ import ButtonFilter from '../ButtonFilter';
 import './style.scss';
 import { useForm } from 'react-hook-form';
 import ModalApproval from '../ModalApproval';
+import approvalPersonApi from '../../api/approvalPersonApi';
 
 const { TextArea } = Input;
 
@@ -18,8 +19,15 @@ const TitleBody = ({
     isForm = false,
     isApproval = false,
     isApproved = false,
-    href
-}) => {
+    href,
+    dataDocument,
+    currentUser,
+    selectedSigner,
+    handleApprover,
+    handleSigner,
+    listApprover,
+    listSigner,
+}) => {    
     const {
         rows,
         formState: { errors },
@@ -31,17 +39,53 @@ const TitleBody = ({
 
     });
 
-
+    const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
+    const [isLastApprover , setIsLastApprover] = useState(false)
+    const [personIndex, setPersonIndex] = useState(null)
 
-    const openModal = () => {
+    const openModal = (value,index) => {
+        setPersonIndex(index)
+        setStatus(value)
         setModalOpen(true);
     };
     const closeModal = () => {
         setModalOpen(false);
     };
-    const submitModal = (data) => {
-        console.log("submit", data)
+    const submitModal = async (data) => {
+        if(data.status === 2)
+        {
+            setModalOpen(false);
+            const dataObject = {
+                ApprovalPersonId: currentUser.Id,
+                Index: personIndex,
+                ApprovalPersonName: currentUser.Username,
+                DocumentApprovalId: dataDocument.DocumentApprovalId,
+                Comment: data.submiModal,
+            };
+            const res = await approvalPersonApi.addApproval(dataObject)
+            if(res.state === "true")
+            {
+                handleApprover(res.approvers)
+                setIsLastApprover(res.isLast)
+            }
+        }
+        if(data.status === 3)
+        {
+            setModalOpen(false);
+            const dataObject = {
+                ApprovalPersonId: currentUser.Id,
+                Index: personIndex,
+                ApprovalPersonName: currentUser.Username,
+                DocumentApprovalId: dataDocument.DocumentApprovalId,
+                Comment: data.submiModal,
+            };
+            const res = await approvalPersonApi.addSigned(dataObject)
+            if(res.state === "true")
+            {
+                handleSigner(res.signers)
+            }
+        }
     }
 
     const handleClick = () => {
@@ -51,13 +95,14 @@ const TitleBody = ({
     const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
         onSubmitFromTitleBody(rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy)
     };
+        
     return (
         <>
             <ModalApproval
+                status={status}
                 isOpen={modalOpen}
                 isSubmit={submitModal}
                 isClose={closeModal}
-                control={control}
                 name="submiModal"
                 id="submiModal"
             />
@@ -70,13 +115,27 @@ const TitleBody = ({
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><FileTextOutlined /> Download file</Link>
                                 <Link><ShareAltOutlined />Share</Link>
-                                {isApproved ?
-                                    <Link><CheckOutlined />Approve</Link> :
-                                    <Link onClick={openModal} ><CheckOutlined />Approve1</Link>
-                                }
+                                {listApprover && listApprover?.length > 0 && listApprover.map((value,index) => (
+                                    value.ApprovalPersonId === currentUser?.Id 
+                                    && value.IsProcessing
+                                    &&
+                                     <React.Fragment key={index}>
+                                        <Link onClick={() => openModal(2,value.Index)} ><CheckOutlined />Approve</Link>
+                                        <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
+                                        <Link><MailOutlined />Forward</Link>
+                                    </React.Fragment>
+                                ))}
+                                {listSigner && listSigner?.length > 0 && listSigner.map((value,index) => (
+                                    value.ApprovalPersonId === currentUser?.Id 
+                                    && value.IsProcessing
+                                    &&
+                                     <React.Fragment key={index}>
+                                        <Link onClick={() => openModal(3,value.Index)} ><CheckOutlined />Sign</Link>
+                                        <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
+                                        <Link><MailOutlined />Forward</Link>
+                                    </React.Fragment>
+                                ))}
 
-                                <Link onClick={openModal}><CloseOutlined />Reject</Link>
-                                <Link><MailOutlined />Forward</Link>
                             </>
                             :
                             <>

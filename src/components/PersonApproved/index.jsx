@@ -9,7 +9,8 @@ const PersonApproved = ({ options }) => {
                 <React.Fragment key={index}>
                     <table>
                         <tbody>
-
+                        {value.PersonDuty === 1 ?
+                            <>
                             <tr>
                                 <th>Approver {value.Index}</th>
                             </tr>
@@ -17,12 +18,33 @@ const PersonApproved = ({ options }) => {
                                 <td>
                                     <div className='personApproved-body'>
                                         <label>asdasd</label>
-                                        <Image style={{ width: "100px" }} src={value.IsApproved ? '/approved.png' : undefined} />
+                                        <Image style={{ width: "100px" }} src={value.IsApprove ? '/approved.png' : undefined} />
                                     </div>
                                     <span>{value.ApprovalPersonName}</span>
                                 </td>
                             </tr>
-
+                            </>
+                            :
+                            null
+                        }
+                        {value.PersonDuty === 2 ?
+                            <>
+                            <tr>
+                                <th>Approver {value.Index}</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div className='personApproved-body'>
+                                        <label>asdasd</label>
+                                        <Image style={{ width: "100px" }} src={value.IsSign ? '/signed.png' : undefined} />
+                                    </div>
+                                    <span>{value.ApprovalPersonName}</span>
+                                </td>
+                            </tr>
+                            </>
+                            :
+                            null
+                        }
                         </tbody>
                     </table>
                 </React.Fragment>
