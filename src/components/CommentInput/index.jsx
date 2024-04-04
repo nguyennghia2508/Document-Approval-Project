@@ -23,7 +23,6 @@ const CommentInput = ({
 }) => {
 
     const {
-        rows,
         formState: { errors },
         handleSubmit,
         control,
@@ -34,7 +33,6 @@ const CommentInput = ({
         resolver: yupResolver(schema()),
     });
 
-    const [visible, setVisible] = useState(true);
     const [text, setText] = useState(null)
     const [resetFileList, setResetFileList] = useState(false);
 
