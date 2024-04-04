@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import './style.scss'
@@ -14,6 +14,7 @@ const FileUpload = ({
     control,
     maxSize,
     setValue,
+    handleFileListReset,
 }) => {
     const [fileList, setFileList] = useState([]);
 
@@ -71,6 +72,11 @@ const FileUpload = ({
         setValue(name, updatedFileList.map(file => file.originFileObj));
     };
 
+    useEffect(() => {
+        if (handleFileListReset) {
+            setFileList([])
+        }
+    }, [handleFileListReset]);
 
     return (
         <label className='file-upload-container'>

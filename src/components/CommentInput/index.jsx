@@ -36,6 +36,8 @@ const CommentInput = ({
 
     const [visible, setVisible] = useState(true);
     const [text, setText] = useState(null)
+    const [resetFileList, setResetFileList] = useState(false);
+
     const handleTextChange = (e) => {
         console.log(e.target.value)
         setText(e.target.value);
@@ -53,6 +55,10 @@ const CommentInput = ({
         }
     }, [errors]);
 
+    const handleFileListReset = () => {
+        setResetFileList(true);
+    };
+
     const onSubmit = async (data) => {
         data.documentId = documentId
         data.userId = userId
@@ -63,6 +69,7 @@ const CommentInput = ({
             data.commentId = commentId
         }
         submitComment(data)
+        handleFileListReset();
         reset();
     };
     
@@ -93,8 +100,14 @@ const CommentInput = ({
 
                 </div>
                 <div className='commentInput-upload'>
-                    <FileUpload maxSize={50} label="Documents for reference" id="reference" name="reference"
-                        setValue={setValue} control={control} type="primary" />
+                    <FileUpload
+                    maxSize={50}
+                    label="Documents for reference" 
+                    id="reference" name="reference"
+                    setValue={setValue} control={control}
+                    type="primary"
+                    handleFileListReset={resetFileList}
+                    />
                 </div>
             </div>
         </form>
