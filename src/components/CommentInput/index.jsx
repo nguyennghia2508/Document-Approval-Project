@@ -42,7 +42,6 @@ const CommentInput = ({
     };
 
     const handleCancel = () => {
-        setVisible(false);
         onCancel();
     };
 
