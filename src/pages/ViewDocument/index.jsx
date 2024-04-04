@@ -104,6 +104,7 @@ const ViewDocument = () => {
     }
 
     const onSubmit = async (data) => {
+        
         const formData = new FormData();
         const dataObject = {
             CommentContent: data.content,
@@ -120,10 +121,11 @@ const ViewDocument = () => {
                 formData.append('reference', data.reference[i]);
             }
         }
+
+        setActiveCommentIndex(null)
         const res = await commentApi.addComment(formData)
         if(res.state === "true")
         {
-            setActiveCommentIndex(null)
             setComment(res.comments)
             const files = res.files
             console.log(res)

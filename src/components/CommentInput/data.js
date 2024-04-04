@@ -6,6 +6,13 @@ export const schema = () => {
     return yup.object({
     content: yup
         .mixed()
-        .required(`${message} Comment`),
+        .required(`${message} Comment`)
+        .test("content",`${message} Comment`,(value) =>{
+            if(!value || value && value === "")
+            {
+                return false
+            }
+            return true
+        }),
     })
 };
