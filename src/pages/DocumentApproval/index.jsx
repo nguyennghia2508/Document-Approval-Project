@@ -34,8 +34,7 @@ const DocumentApproval = () => {
     getAllDocument();
     window.scrollTo(0, 0);
   }, [tabView, currentPage]);
-
-
+  
   useEffect(() => {
     setCurrentPage(1)
     window.scrollTo(0, 0);
@@ -73,10 +72,6 @@ const DocumentApproval = () => {
       render: (text) => {
         return text.subject;
       },
-      // filteredValue: [searchedSubject],
-      // onFilter: (value, record) => {
-      //   return record.subject ? record.subject.includes(value) : '';
-      // }
     },
     {
       title: 'Created date',
@@ -124,7 +119,6 @@ const DocumentApproval = () => {
   ];
 
   const handleTablePageChange = async (page) => {
-    // Do something with the page number and additional data
     if (page !== undefined) {
       const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
       setList(data)
@@ -171,7 +165,6 @@ const DocumentApproval = () => {
 
   };
 
-  // console.log(getPageData(currentPage,10))
   return (
     <>
       <div className="documentApproval-container">
