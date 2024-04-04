@@ -65,7 +65,7 @@ const Header = () => {
         </Col>
         <Col className='header-user'>
           {' '}
-          <Image src={user_default_image}></Image>{' '}
+          <Image preview="false" src={user_default_image}></Image>{' '}
         </Col>
       </Row>
     </div>

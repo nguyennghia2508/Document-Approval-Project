@@ -17,6 +17,7 @@ const CustomTable = ({
   // return `Hiển thị ${start} - ${end} trong ${totalItems} dữ liệu`;
   // };
 
+  console.log(href)
   const handleRowClick = (record, index) => {
     navigate(`${href}/view/${record.Id}`)
   };
