@@ -5,10 +5,11 @@ import { Image } from 'antd';
 const PersonApproved = ({ options }) => {
     return (
         <div className='personApproved'>
-            <table>
-                <tbody>
-                    {options && options.length > 0 && options.map((value, index) => (
-                        <React.Fragment key={index}>
+            {options && options.length > 0 && options.map((value, index) => (
+                <React.Fragment key={index}>
+                    <table>
+                        <tbody>
+
                             <tr>
                                 <th>Approver {value.Index}</th>
                             </tr>
@@ -21,10 +22,11 @@ const PersonApproved = ({ options }) => {
                                     <span>{value.ApprovalPersonName}</span>
                                 </td>
                             </tr>
-                        </React.Fragment>
-                    ))}
-                </tbody>
-            </table>
+
+                        </tbody>
+                    </table>
+                </React.Fragment>
+            ))}
         </div>
     );
 };
