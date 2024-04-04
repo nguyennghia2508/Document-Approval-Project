@@ -169,8 +169,22 @@
         .viewDocument {
             width: 50%;
 
+
             >div {
                 padding-bottom: 20PX;
+            }
+
+            .viewDocument-reference,
+            .viewDocument-approve {
+                display: flex;
+                flex-direction: column;
+
+                >a {
+                    text-decoration: none;
+                    display: block;
+                    width: 100px;
+                    color: #917b7b;
+                }
             }
 
             .viewDocument-content {
