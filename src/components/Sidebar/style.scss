@@ -34,19 +34,19 @@
     // position: fixed;
     // margin-left: -230px;
     width: 0;
-    animation: menuInRight 1s forwards;
+    animation: menuInRight 0.5s forwards;
 }
 
 .sidebar {
     // position: fixed;
     // margin-left: -230px;
     width: 0;
-    animation: menuInLeft 1s forwards;
+    animation: menuInLeft 0.5s forwards;
 }
 
 .list-menuRotate {
     z-index: -1;
-    animation: listInRight 1s forwards;
+    animation: listInRight 0.5s forwards;
 
 }
 
