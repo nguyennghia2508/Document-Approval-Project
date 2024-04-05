@@ -54,7 +54,7 @@ const ViewDocument = () => {
     const [signers, setSigners] = useState([])
     const [comment, setComment] = useState([])
     const [activeCommentIndex, setActiveCommentIndex] = useState(null);
-    
+
     useEffect(() => {
         const getDocument = async () => {
             try {
@@ -86,7 +86,7 @@ const ViewDocument = () => {
 
                 const listSigner = data.persons.filter(value => value.PersonDuty === 2);
                 setSigners(listSigner)
-                
+
                 setComment(data.comments)
             } catch (err) {
                 const data = err.data
@@ -131,7 +131,7 @@ const ViewDocument = () => {
             setSelectedFileComment(selectedFilesComment);
         }
     };
-  
+
     const handleSelectedApprover = (value) => {
         setApprovers(value)
     }
@@ -143,17 +143,17 @@ const ViewDocument = () => {
     return (
         <>
             <form>
-                <TitleBody 
+                <TitleBody
                     handleApprover={handleSelectedApprover}
                     handleSigner={handleSelectedSigner}
                     listApprover={approvers}
                     listSigner={signers}
                     currentUser={user}
-                    dataDocument={dataDocument} 
-                    label="eDocument Approval" 
-                    isForm={true} 
-                    isApproval={true} 
-                    href={"/avn/documentapproval"} 
+                    dataDocument={dataDocument}
+                    label="eDocument Approval"
+                    isForm={true}
+                    isApproval={true}
+                    href={"/avn/documentapproval"}
                 />
                 <div className='viewApproval-container'>
                     <div className="viewtitle">
@@ -165,12 +165,24 @@ const ViewDocument = () => {
                             <div className='viewtitle-statusState'>
                                 <span>Status:</span>
                                 {dataDocument.Status === 1 ?
-                                    <p style={{ color: "#2F85EF" }}> Approved</p>
+                                    <p style={{ color: "#4BA747" }}> Approved</p>
                                     :
                                     null
                                 }{
                                     dataDocument.Status === 2 ?
-                                        <p>approving</p>
+                                        <p style={{ color: "#2F85EF" }}>approving</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    dataDocument.Status === 3 ?
+                                        <p style={{ color: "#FF3030" }}>Reject</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    dataDocument.Status === 4 ?
+                                        <p style={{ color: "#ECD13E" }}>Signed</p>
                                         :
                                         null
                                 }
