@@ -1,5 +1,60 @@
 @media (max-width:767px) {
-    .newapproval-container {}
+    .newapproval-container {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 100px;
+        // margin-bottom: 50px;
+        // padding-bottom: 50px;
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 50px;
+
+            .input-top {
+                padding-bottom: 20px;
+                // display: flex;
+                // justify-content: space-between;
+
+
+
+                .input-element {
+                    width: 100%;
+                    margin-right: 25px;
+
+                }
+            }
+
+            .input-bot {
+                // display: flex;
+                // justify-content: space-between;
+
+                .input-element {
+                    width: 100%;
+                    margin-right: 20px;
+                }
+            }
+        }
+
+        .document {
+            width: 100%;
+
+            >div {
+                padding-bottom: 20PX;
+            }
+
+            .content {
+                .ant-input {
+                    height: 100px;
+
+                }
+            }
+
+        }
+
+    }
+
+
 }
 
 @media (min-width:768px) {

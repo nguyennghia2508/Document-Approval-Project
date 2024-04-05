@@ -297,37 +297,36 @@ const ViewDocument = () => {
                                         <div>
                                             <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
                                             <span>{moment(value.comment.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
-                                            {value.comment.CommentStatus === 1 && 
-                                            <img src="/status-approved.svg"/>
+                                            {value.comment.CommentStatus === 1 &&
+                                                <img src="/status-approved.svg" />
                                             }
-                                            {value.comment.CommentStatus === 2 && 
-                                            <img src="/status-signed.svg"/>
+                                            {value.comment.CommentStatus === 2 &&
+                                                <img src="/status-signed.svg" />
                                             }
                                         </div>
-                                        {value.comment.CommentStatus === 1 ? 
+                                        {value.comment.CommentStatus === 1 ?
                                             <>
-                                            <div>Request 
-                                                <Link to=''>
-                                                    {dataDocument.RequestCode}
-                                                </Link>
-                                                has been approved
-                                            </div>
-                                            <div>Note:{value.comment.CommentContent}</div>
+                                                <div className='comment-bodyComment' >Request
+                                                    <Link to=''>
+                                                        {dataDocument.RequestCode}
+                                                    </Link>
+                                                    has been approved
+                                                </div>
+                                                <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
                                             </>
-                                        : value.comment.CommentStatus === 2 ?
-                                            <>
-                                            <div>Request 
-                                                <Link to=''>
-                                                    {dataDocument.RequestCode}
-                                                </Link>
-                                                has been signed
-                                            </div>
-                                            <div>Note:{value.comment.CommentContent}</div>
-                                            </>
-                                        :
-                                            <div>{value.comment.CommentContent}</div>
+                                            : value.comment.CommentStatus === 2 ?
+                                                <>
+                                                    <div className='comment-bodyComment' >Request
+                                                        <Link to=''>
+                                                            {dataDocument.RequestCode}
+                                                        </Link>
+                                                        has been signed
+                                                    </div>
+                                                    <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                                </>
+                                                :
+                                                <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
                                         }
-                                        <div className='comment-bodyComment' >{value.comment.CommentContent}</div>
                                         {selectedFileComment.map((file) => (
                                             file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
                                         ))}

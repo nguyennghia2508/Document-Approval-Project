@@ -40,6 +40,7 @@ const TitleBody = ({
 
     const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
+    const [isLastApprover, setIsLastApprover] = useState(false)
     const [personIndex, setPersonIndex] = useState(null)
 
     const openModal = (value, index) => {
@@ -65,8 +66,7 @@ const TitleBody = ({
                 handleApprover(res.approvers)
                 handleComment(res.comments)
                 const signers = res.signers
-                if(signers && signers.length)
-                {
+                if (signers && signers.length) {
                     handleSigner(res.signers)
                 }
             }
@@ -127,30 +127,44 @@ const TitleBody = ({
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
                                         <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
                                         <Link><MailOutlined />Forward</Link>
-                                    </React.Fragment>
+                                    </React.Fragment >
                                 ))}
-                                {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
-                                    const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
-                                    const isLastApproverApproved = listApprover.some((ap,index) =>
-                                        value.Index === 1 &&
-                                        value.IsProcessing &&
-                                        ap.ApprovalPersonId === value.ApprovalPersonId &&
-                                        ap.IsLast &&
-                                        ap.IsApprove
-                                    );
-                                    console.log(isLastApproverApproved)
-                                    if (isCurrentUserSigner || isLastApproverApproved) {
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
-                                                <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
-                                                <Link><MailOutlined />Forward</Link>
-                                            </React.Fragment>
+                                {
+                                    listSigner && listSigner?.length > 0 && listSigner.map((value, index) => (
+                                        value.ApprovalPersonId === currentUser?.Id
+                                        && value.IsProcessing
+                                        &&
+                                        <React.Fragment key={index}>
+                                            <Link onClick={() => openModal(3, value.Index)} ><CheckOutlined />Sign</Link>
+                                            <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
+                                            <Link><MailOutlined />Forward</Link>
+                                        </React.Fragment>
+                                    ))
+                                }
+                                {
+                                    listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
+                                        const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
+                                        const isLastApproverApproved = listApprover.some((ap, index) =>
+                                            value.Index === 1 &&
+                                            value.IsProcessing &&
+                                            ap.ApprovalPersonId === value.ApprovalPersonId &&
+                                            ap.IsLast &&
+                                            ap.IsApprove
                                         );
-                                    } else {
-                                        return null;
-                                    }
-                                })}
+                                        console.log(isLastApproverApproved)
+                                        if (isCurrentUserSigner || isLastApproverApproved) {
+                                            return (
+                                                <React.Fragment key={index}>
+                                                    <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
+                                                    <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
+                                                    <Link><MailOutlined />Forward</Link>
+                                                </React.Fragment>
+                                            );
+                                        } else {
+                                            return null;
+                                        }
+                                    })
+                                }
 
 
                             </>
@@ -161,7 +175,7 @@ const TitleBody = ({
                                 <Link to={afterSubmit} onClick={handleClick}><SendOutlined />Submit</Link>
                             </>
                         }
-                    </div>
+                    </div >
                     <div className='titlebody-right'>
                     </div>
                 </div >
