@@ -3,6 +3,7 @@ import './style.scss';
 import { Image } from 'antd';
 
 const PersonApproved = ({ options }) => {
+
     return (
         <div className='personApproved'>
             {options && options.length > 0 && options.map((value, index) => (

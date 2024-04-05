@@ -42,7 +42,7 @@ const Header = () => {
         </Drawer>
 
         <Col className={isMobile ? 'header-brandMobile' : 'header-brand'}>
-          <Image width={200} src={logo} />
+          <Image width={200} src={logo} preview={false} />
         </Col>
         <Col className='header-span'>
           <span>eOffice</span>
@@ -65,7 +65,7 @@ const Header = () => {
         </Col>
         <Col className='header-user'>
           {' '}
-          <Image src={user_default_image}></Image>{' '}
+          <Image preview={false} src={user_default_image} ></Image>{' '}
         </Col>
       </Row>
     </div>

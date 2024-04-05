@@ -8,10 +8,12 @@ import { setTabview,resetTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 const DocumentApproval = () => {
 
   const dispatch = useDispatch()
   const location = useLocation()
+
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
 
@@ -26,10 +28,11 @@ const DocumentApproval = () => {
           const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
           setList(data)
         }
-        else
-        {
-          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage ,
-          dataFilter:tabView.filterList})
+        else {
+          const data = await documentApprovalApi.getListDocument({
+            userId: user.Id, tabName: tabView.tabName, page: currentPage,
+            dataFilter: tabView.filterList
+          })
           setList(data)
           console.log(data)
         }
@@ -40,7 +43,7 @@ const DocumentApproval = () => {
     getAllDocument();
     window.scrollTo(0, 0);
   }, [tabView, currentPage]);
-  
+
   useEffect(() => {
     setCurrentPage(1)
     window.scrollTo(0, 0);

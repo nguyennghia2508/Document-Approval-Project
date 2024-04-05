@@ -7,13 +7,13 @@ import { schema } from './data';
 import FileUpload from '../FileUpload';
 import { Input, Button, Avatar } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
-import { useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 const { TextArea } = Input;
-const CommentInput = ({ 
+const CommentInput = ({
     onCancel,
     submitComment,
     showCancelButton,
-    isChildren=false,
+    isChildren = false,
     documentId,
     commentId,
     userId,
@@ -60,8 +60,7 @@ const CommentInput = ({
         data.documentId = documentId
         data.userId = userId
         data.userName = userName
-        if(isChildren)
-        {
+        if (isChildren) {
             data.children = true
             data.commentId = commentId
         }
@@ -69,7 +68,7 @@ const CommentInput = ({
         handleFileListReset();
         reset();
     };
-    
+
     return (
         <form encType="multipart/form-data">
             <div className='commentInput'>
@@ -80,13 +79,13 @@ const CommentInput = ({
                         control={control}
                         render={({ field }) => {
                             return (
-                                <TextArea 
-                                    name="content" 
-                                    value={text} 
+                                <TextArea
+                                    name="content"
+                                    value={text}
                                     onChange={(e) => handleTextChange(e)}
                                     {...field}
-                                    className='commentInput-body' 
-                                    placeplaceholder="Input here" 
+                                    className='commentInput-body'
+                                    placeplaceholder="Input here"
                                 />
                             )
                         }}
@@ -98,12 +97,12 @@ const CommentInput = ({
                 </div>
                 <div className='commentInput-upload'>
                     <FileUpload
-                    maxSize={50}
-                    label="Documents for reference" 
-                    id="reference" name="reference"
-                    setValue={setValue} control={control}
-                    type="primary"
-                    handleFileListReset={resetFileList}
+                        maxSize={50}
+                        label="Documents for reference"
+                        id="reference" name="reference"
+                        setValue={setValue} control={control}
+                        type="primary"
+                        handleFileListReset={resetFileList}
                     />
                 </div>
             </div>

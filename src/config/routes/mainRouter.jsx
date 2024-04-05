@@ -8,6 +8,7 @@ import MainLayout from '../../layouts/main/MainLayout';
 import NewApproval from '../../pages/NewApproval';
 import Test from '../../components/Test';
 import ViewDocument from '../../pages/ViewDocument';
+import EditDocument from '../../pages/EditDocument';
 
 
 const mainRouter = [
@@ -26,6 +27,10 @@ const mainRouter = [
       {
         path: '/avn/documentapproval/view/:id',
         Component: ViewDocument,
+      },
+      {
+        path: '/avn/documentapproval/edit/:id',
+        Component: EditDocument,
       },
 
     ],
