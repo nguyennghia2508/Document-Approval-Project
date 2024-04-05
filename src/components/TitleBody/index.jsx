@@ -21,6 +21,7 @@ const TitleBody = ({
     href,
     dataDocument,
     currentUser,
+    handleDocument,
     handleApprover,
     handleSigner,
     handleComment,
@@ -41,8 +42,10 @@ const TitleBody = ({
     const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
     const [personIndex, setPersonIndex] = useState(null)
-
-    const openModal = (value, index) => {
+    const [personDuty, setPersonDuty] = useState(null)
+    
+    const openModal = (value, index,PersonDuty) => {
+        setPersonDuty(PersonDuty)
         setPersonIndex(index)
         setStatus(value)
         setModalOpen(true);
@@ -64,10 +67,15 @@ const TitleBody = ({
             if (res.state === "true") {
                 handleApprover(res.approvers)
                 handleComment(res.comments)
+                const document = res.document
                 const signers = res.signers
+                if(document && document.length)
+                {
+                    handleDocument(document)
+                }
                 if(signers && signers.length)
                 {
-                    handleSigner(res.signers)
+                    handleSigner(signers)
                 }
             }
         }
@@ -84,6 +92,30 @@ const TitleBody = ({
             if (res.state === "true") {
                 handleSigner(res.signers)
                 handleComment(res.comments)
+
+                const document = res.document
+                if(document && document.length)
+                {
+                    handleDocument(document)
+                }
+            }
+        }
+        if (data.status === 4) {
+            setModalOpen(false);
+            const dataObject = {
+                ApprovalPersonId: currentUser.Id,
+                Index: personIndex,
+                ApprovalPersonName: currentUser.Username,
+                DocumentApprovalId: dataDocument.DocumentApprovalId,
+                PersonDuty:personDuty,
+                Comment: data.submiModal,
+            };
+            const res = await approvalPersonApi.RejectDocument(dataObject)
+            if (res.state === "true") {
+                handleApprover(res.approvers)
+                handleSigner(res.signers)
+                handleComment(res.comments)
+                handleDocument(res.document)
             }
         }
     }
@@ -125,7 +157,7 @@ const TitleBody = ({
                                     &&
                                     <React.Fragment key={index}>
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
-                                        <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
+                                        <Link onClick={() => openModal(4, value.Index,value.PersonDuty)}><CloseOutlined />Reject</Link>
                                         <Link><MailOutlined />Forward</Link>
                                     </React.Fragment>
                                 ))}
@@ -138,12 +170,11 @@ const TitleBody = ({
                                         ap.IsLast &&
                                         ap.IsApprove
                                     );
-                                    console.log(isLastApproverApproved)
                                     if (isCurrentUserSigner || isLastApproverApproved) {
                                         return (
                                             <React.Fragment key={index}>
                                                 <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
-                                                <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
+                                                <Link onClick={() => openModal(4, value.Index,value.PersonDuty)}><CloseOutlined />Reject</Link>
                                                 <Link><MailOutlined />Forward</Link>
                                             </React.Fragment>
                                         );

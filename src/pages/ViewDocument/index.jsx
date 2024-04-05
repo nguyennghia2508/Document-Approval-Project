@@ -144,10 +144,15 @@ const ViewDocument = () => {
         setComment(value)
     }
 
+    const handleDocument = (value) => {
+        setDataDocument(value)
+    }
+
     return (
         <>
             <form>
                 <TitleBody
+                    handleDocument={handleDocument}
                     handleApprover={handleSelectedApprover}
                     handleSigner={handleSelectedSigner}
                     handleComment={handleComment}
@@ -169,27 +174,28 @@ const ViewDocument = () => {
                             </div>
                             <div className='viewtitle-statusState'>
                                 <span>Status:</span>
-                                {dataDocument.Status === 1 ?
+                                {
+                                    dataDocument.Status === 1 ?
+                                    <p style={{ color: "#2F85EF" }}>approving</p>
+                                    :
+                                    null
+                                }
+                                {dataDocument.Status === 2 ?
                                     <p style={{ color: "#4BA747" }}> Approved</p>
                                     :
                                     null
-                                }{
-                                    dataDocument.Status === 2 ?
-                                        <p style={{ color: "#2F85EF" }}>approving</p>
-                                        :
-                                        null
-                                }
-                                {
-                                    dataDocument.Status === 3 ?
-                                        <p style={{ color: "#FF3030" }}>Reject</p>
-                                        :
-                                        null
                                 }
                                 {
                                     dataDocument.Status === 4 ?
-                                        <p style={{ color: "#ECD13E" }}>Signed</p>
-                                        :
-                                        null
+                                    <p style={{ color: "#ECD13E" }}>Signed</p>
+                                    :
+                                    null
+                                }
+                                {
+                                    dataDocument.Status === 3 ?
+                                    <p style={{ color: "#FF3030" }}>Reject</p>
+                                    :
+                                    null
                                 }
                             </div>
                         </div>
@@ -303,31 +309,49 @@ const ViewDocument = () => {
                                             {value.comment.CommentStatus === 2 && 
                                             <img src="/status-signed.svg"/>
                                             }
+                                            {value.comment.CommentStatus === 3 && 
+                                            <img src="/status-rejected.svg"/>
+                                            }
                                         </div>
                                         {value.comment.CommentStatus === 1 ? 
                                             <>
-                                            <div>Request 
+                                            <div className='comment-bodyComment'>Request 
                                                 <Link to=''>
                                                     {dataDocument.RequestCode}
                                                 </Link>
                                                 has been approved
                                             </div>
-                                            <div>Note:{value.comment.CommentContent}</div>
+                                            <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
                                             </>
                                         : value.comment.CommentStatus === 2 ?
                                             <>
-                                            <div>Request 
-                                                <Link to=''>
+                                            <div className='comment-bodyComment'>Request 
+                                                <Link to="">
                                                     {dataDocument.RequestCode}
                                                 </Link>
                                                 has been signed
                                             </div>
-                                            <div>Note:{value.comment.CommentContent}</div>
+                                            <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                            </>
+                                        : value.comment.CommentStatus === 3 ?
+                                            <>
+                                            <div className='comment-bodyComment'>Request 
+                                                <Link to="">
+                                                    has been rejected
+                                                </Link>
+                                            </div>
+                                            <div className='comment-bodyComment'>Reason:{value.comment.CommentContent}</div>
                                             </>
                                         :
-                                            <div>{value.comment.CommentContent}</div>
+                                            value.comment.IsFirst ? 
+                                            <div className='comment-bodyComment'>{value.comment.CommentContent}
+                                                <Link to="">
+                                                    {dataDocument.RequestCode}
+                                                </Link>
+                                            </div>
+                                            :
+                                            <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
                                         }
-                                        <div className='comment-bodyComment' >{value.comment.CommentContent}</div>
                                         {selectedFileComment.map((file) => (
                                             file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
                                         ))}
