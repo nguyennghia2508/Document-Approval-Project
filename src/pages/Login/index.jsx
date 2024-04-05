@@ -109,7 +109,7 @@ const Login = () => {
         const departments = await departmentApi.getAllDepartment()
         dispatch(setListDepartment(departments.departmentHierarchy))
 
-        navigate("/")
+        navigate("/avn/documentapproval")
         toast.success(response.msg)
       }
       else {

@@ -27,7 +27,7 @@ const TitleBody = ({
     handleSigner,
     listApprover,
     listSigner,
-}) => {    
+}) => {
     const {
         rows,
         formState: { errors },
@@ -41,10 +41,10 @@ const TitleBody = ({
 
     const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
-    const [isLastApprover , setIsLastApprover] = useState(false)
+    const [isLastApprover, setIsLastApprover] = useState(false)
     const [personIndex, setPersonIndex] = useState(null)
 
-    const openModal = (value,index) => {
+    const openModal = (value, index) => {
         setPersonIndex(index)
         setStatus(value)
         setModalOpen(true);
@@ -53,8 +53,7 @@ const TitleBody = ({
         setModalOpen(false);
     };
     const submitModal = async (data) => {
-        if(data.status === 2)
-        {
+        if (data.status === 2) {
             setModalOpen(false);
             const dataObject = {
                 ApprovalPersonId: currentUser.Id,
@@ -64,14 +63,12 @@ const TitleBody = ({
                 Comment: data.submiModal,
             };
             const res = await approvalPersonApi.addApproval(dataObject)
-            if(res.state === "true")
-            {
+            if (res.state === "true") {
                 handleApprover(res.approvers)
                 setIsLastApprover(res.isLast)
             }
         }
-        if(data.status === 3)
-        {
+        if (data.status === 3) {
             setModalOpen(false);
             const dataObject = {
                 ApprovalPersonId: currentUser.Id,
@@ -81,8 +78,7 @@ const TitleBody = ({
                 Comment: data.submiModal,
             };
             const res = await approvalPersonApi.addSigned(dataObject)
-            if(res.state === "true")
-            {
+            if (res.state === "true") {
                 handleSigner(res.signers)
             }
         }
@@ -95,7 +91,11 @@ const TitleBody = ({
     const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
         onSubmitFromTitleBody(rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy)
     };
-        
+    // console.log("IDPERSON", currentUser)
+    // console.log("IDPERSON", listSigner)
+
+
+
     return (
         <>
             <ModalApproval
@@ -115,22 +115,22 @@ const TitleBody = ({
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <Link><FileTextOutlined /> Download file</Link>
                                 <Link><ShareAltOutlined />Share</Link>
-                                {listApprover && listApprover?.length > 0 && listApprover.map((value,index) => (
-                                    value.ApprovalPersonId === currentUser?.Id 
+                                {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
+                                    value.ApprovalPersonId === currentUser?.Id
                                     && value.IsProcessing
                                     &&
-                                     <React.Fragment key={index}>
-                                        <Link onClick={() => openModal(2,value.Index)} ><CheckOutlined />Approve</Link>
+                                    <React.Fragment key={index}>
+                                        <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
                                         <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
                                         <Link><MailOutlined />Forward</Link>
                                     </React.Fragment>
                                 ))}
-                                {listSigner && listSigner?.length > 0 && listSigner.map((value,index) => (
-                                    value.ApprovalPersonId === currentUser?.Id 
+                                {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => (
+                                    value.ApprovalPersonId === currentUser?.Id
                                     && value.IsProcessing
                                     &&
-                                     <React.Fragment key={index}>
-                                        <Link onClick={() => openModal(3,value.Index)} ><CheckOutlined />Sign</Link>
+                                    <React.Fragment key={index}>
+                                        <Link onClick={() => openModal(3, value.Index)} ><CheckOutlined />Sign</Link>
                                         <Link onClick={() => openModal(4)}><CloseOutlined />Reject</Link>
                                         <Link><MailOutlined />Forward</Link>
                                     </React.Fragment>
