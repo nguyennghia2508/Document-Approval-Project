@@ -10,9 +10,7 @@
         min-height: calc(100vh - 50px);
         width: 100%;
         position: relative;
-        overflow: auto;
-
-
+        overflow-x: auto
     }
 
     .layout-footer {
@@ -60,7 +58,7 @@
 
             .page-scroll {
                 .main-content {
-                    padding: 10px 20px;
+                    padding: 10px 20px 50px 20px;
                     transition: all 0.3s;
                     background-color: #ffffff;
                 }
@@ -76,6 +74,8 @@
             height: calc(100% - 80PX);
         }
     }
+
+
 }
 
 
