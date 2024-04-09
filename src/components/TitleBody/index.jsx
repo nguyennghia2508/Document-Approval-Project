@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import ModalApproval from '../ModalApproval';
 import approvalPersonApi from '../../api/approvalPersonApi';
 import Excel from '../Excel';
+import PdfDownload from '../PdfDownload';
 
 const { TextArea } = Input;
 
@@ -28,7 +29,10 @@ const TitleBody = ({
     handleComment,
     listApprover,
     listSigner,
-    dataArray
+    dataArray,
+    setValueInput,
+    approveFile,
+    referenceFile,
 }) => {
     const {
         rows,
@@ -122,8 +126,9 @@ const TitleBody = ({
         }
     }
 
-    const handleClick = () => {
-        onSubmit('Data to submit');
+    const handleClick = (actionType) => {
+        setValueInput("IsDraft",actionType)
+        onSubmit();
     };
 
     const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
@@ -151,7 +156,13 @@ const TitleBody = ({
                         {isApproval ?
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
-                                <Link><FileTextOutlined /> Download file</Link>
+                                <PdfDownload
+                                dataDocument={dataDocument}
+                                listApprover={listApprover}
+                                listSigner={listSigner}
+                                approveFile={approveFile}
+                                referenceFile={referenceFile}
+                                />
                                 <Link><ShareAltOutlined />Share</Link>
                                 {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
                                     value.ApprovalPersonId === currentUser?.Id
@@ -190,8 +201,12 @@ const TitleBody = ({
                             :
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
-                                <Link><SaveOutlined />Save draft</Link>
-                                <Link to={afterSubmit} onClick={handleClick}><SendOutlined />Submit</Link>
+                                <Link  onClick={() => handleClick(true)}><SaveOutlined />Save draft</Link>
+                                {dataDocument && dataDocument.Status === 3 && dataDocument.IsReject ? 
+                                    <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Re-submit</Link>
+                                    :
+                                    <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Submit</Link>
+                                }
                             </>
                         }
                     </div >

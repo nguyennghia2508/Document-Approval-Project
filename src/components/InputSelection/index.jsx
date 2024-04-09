@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import './style.scss'
 import { Controller } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
+
 const InputSelection = ({
     disabled,
     label,
@@ -15,11 +17,23 @@ const InputSelection = ({
     defaultValue,
     multifield = false,
     indexInput,
+    idInput,
+    setValue,
 }) => {
+
+    useEffect(() =>{
+        if(value)
+        {
+          if(setValue)
+          {
+            setValue(name,value)
+          }
+        }
+    },[value])
 
     const handleSelected = (e, field) => {
         if (multifield) {
-            onChange(indexInput, e);
+            onChange(idInput,indexInput, e);
         }
         else {
             field.onChange(e)
@@ -44,7 +58,7 @@ const InputSelection = ({
                             onChange={(e) => handleSelected(e, field)}
                         >
                             {options.map(option => (
-                                <Select.Option key={option.value} value={option.value} >{option.label} </Select.Option>
+                                <Select.Option key={uuidv4()} value={option.value} >{option.label} </Select.Option>
                             ))}
                         </Select>
                     )

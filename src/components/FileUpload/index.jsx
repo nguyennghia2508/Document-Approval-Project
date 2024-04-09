@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import './style.scss'
 import { Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 const FileUpload = ({
     disabled,
@@ -15,8 +16,32 @@ const FileUpload = ({
     maxSize,
     setValue,
     handleFileListReset,
+    files,
+    DocumentType,
 }) => {
     const [fileList, setFileList] = useState([]);
+
+    useEffect(() => {
+        if (files && files.length > 0) {
+            const formattedFiles = files.map((file) => {
+                const fileObj = new File([null], file.FileName, {
+                    type: file.FileType,
+                    lastModified: new Date(file.CreateDate).getTime(),
+                });
+                fileObj.id = file.DocumentFileId;
+                fileObj.length = parseInt(file.FileSize);
+                fileObj.DocumentType = file.DocumentType
+
+                return fileObj;
+            });
+    
+            setFileList(formattedFiles);
+            setValue(name, formattedFiles); // Update the value in react-hook-form
+        } else {
+            setFileList([]);
+            setValue(name, []); // Reset the value in react-hook-form when files are null or empty
+        }
+    }, [files]);    
 
     const handleUploadChange = (info) => {
         const { fileList: newFileList } = info;
@@ -34,7 +59,27 @@ const FileUpload = ({
                 const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize);
                 // Thêm các tệp mới vào fileList
                 setFileList(filteredFileList);
-                const files = filteredFileList.map(file => file.originFileObj);
+                const files = filteredFileList.map(file => {
+                    if(DocumentType)
+                    {
+                        if (file.originFileObj) {
+                            file.originFileObj.DocumentType = DocumentType
+                            return file.originFileObj
+                        } 
+                        else {
+                            return file
+                        }
+                    }
+                    else
+                    {
+                        if(file.originFileObj)
+                        {
+                            return file.originFileObj
+                        }
+                        return file
+                    }
+                })
+                
                 setValue(name, files);
             }
         }
@@ -68,8 +113,13 @@ const FileUpload = ({
     const handleRemove = (file) => {
         const updatedFileList = fileList.filter(item => item.uid !== file.uid);
         setFileList(updatedFileList);
-        // Cập nhật giá trị trong react-hook-form
-        setValue(name, updatedFileList.map(file => file.originFileObj));
+        setValue(name, updatedFileList.map(file => {
+            if(file.originFileObj)
+            {
+                return file.originFileObj
+            }
+            return file
+        }))
     };
 
     useEffect(() => {

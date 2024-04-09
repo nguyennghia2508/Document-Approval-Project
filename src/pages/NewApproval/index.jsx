@@ -192,7 +192,8 @@ const New = () => {
             RelatedProposal: data.proposal,
             CreateDate: data.date,
             Subject: data.subject,
-            ContentSum: data.content
+            ContentSum: data.content,
+            IsDraft: data.IsDraft,
         };
 
         formData.append("Data", JSON.stringify(dataObject));
@@ -212,17 +213,27 @@ const New = () => {
             approvers: data.approvers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                PersonDuty:value.PersonDuty
             })),
             signers: data.signers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                PersonDuty:value.PersonDuty
             }))
         };
+        
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
         const res = await documentApprovalApi.addDocumentApproval(formData);
         if (res.state === "true") {
             const dc = res.dc
-            navigate(`/avn/documentapproval/view/${dc.Id}`)
+            if(dc.IsDraft)
+            {
+                navigate(`/avn/documentapproval/edit/${dc.Id}`)
+            }
+            else
+            {
+                navigate(`/avn/documentapproval/view/${dc.Id}`)
+            }
         }
 
     };
@@ -231,7 +242,13 @@ const New = () => {
     return (
         <>
             <form encType="multipart/form-data">
-                <TitleBody label="eDocument Approval" onSubmit={handleSubmit(onSubmit)} isForm={true} isApproval={false} href={"/avn/documentapproval"} />
+                <TitleBody label="eDocument Approval" 
+                    setValueInput={setValue} 
+                    onSubmit={handleSubmit(onSubmit)} 
+                    isForm={true} 
+                    isApproval={false} 
+                    href={"/avn/documentapproval"} 
+                />
                 <div className='newapproval-container'>
                     <div className="new-title"><h1 style={{ textAlign: 'center' }}>DOCUMENT APPROVAL</h1></div>
                     <div className='input'>
@@ -296,11 +313,11 @@ const New = () => {
                 <div className='signapproval-container'>
                     <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
                     <div className='approval-email' style={{ paddingBottom: "20px" }}>
-                        <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
+                        <ButtonSelect PersonDuty={1} id="approvers" name="approvers" control={control} data={userData && userData} setValue={setValue} labelName="A" />
                     </div>
                     <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
                     <div className='sign-email'>
-                        <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
+                        <ButtonSelect PersonDuty={2} id="signers" name="signers" control={control} data={userData && userData} setValue={setValue} labelName="S" />
                     </div>
                 </div>
             </form >

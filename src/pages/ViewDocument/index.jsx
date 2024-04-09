@@ -58,7 +58,7 @@ const ViewDocument = () => {
     useEffect(() => {
         const getDocument = async () => {
             try {
-                const data = await documentApprovalApi.getDocumentById(id)
+                const data = await documentApprovalApi.getDocumentById(id,user.Id)
                 const document = data.document
                 const files = data.files
                 setDataDocument(data.document)
@@ -156,6 +156,8 @@ const ViewDocument = () => {
                     handleApprover={handleSelectedApprover}
                     handleSigner={handleSelectedSigner}
                     handleComment={handleComment}
+                    approveFile={selectedFilesApproved}
+                    referenceFile={selectedFileReference}
                     listApprover={approvers}
                     listSigner={signers}
                     currentUser={user}
@@ -203,7 +205,11 @@ const ViewDocument = () => {
                     <div className='viewInput'>
                         <div className='viewInput-top'>
                             <div className='viewInput-element'>
-                                <InputText label="Applicant" value={selectedApplicant} id="applicant" name="applicant" disabled={true} control={control} />
+                                <InputText label="Applicant" 
+                                value={selectedApplicant} 
+                                setValue={setValue} 
+                                selectedApplicant={selectedApplicant} 
+                                id="applicant" name="applicant" disabled={true} control={control} />
                             </div>
                             <div className='viewInput-element'>
                                 <InputSelection label="Department" id="department" name="department" value={selectedDepartment} control={control} options={departmentData} disabled={true} required />
@@ -227,18 +233,16 @@ const ViewDocument = () => {
                                 <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={true} control={control} />
                             </div>
                             <div className='viewInput-element'>
-                                <InputText label="Date" name="date" value={moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
-
+                                <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
                             </div>
-
                         </div >
                     </div >
                     <div className='viewDocument'>
                         <div className='viewDocument-subject'>
-                            <InputText label="Subject" id="subject" name="subject" value={selectedSubject} control={control} disabled={true} />
+                            <InputText setValue={setValue} label="Subject" id="subject" name="subject" value={selectedSubject} disabled={true} control={control} />
                         </div>
                         <div className='viewDocument-content'>
-                            <InputText label="Content summary" id="content" name="content" value={selectedContent} control={control} disabled={true} />
+                            <InputText setValue={setValue} label="Content summary" id="content" name="content" value={selectedContent} disabled={true} control={control} />
                         </div>
                         <div className='viewDocument-approve'>
                             <label>Documents to be approved/signed</label>
