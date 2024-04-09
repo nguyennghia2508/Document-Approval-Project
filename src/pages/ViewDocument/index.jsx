@@ -292,7 +292,8 @@ const ViewDocument = () => {
                             <div className='commentParent '>
 
                                 <div className='comment-element' >
-                                    <Avatar className='comment-avarta'></Avatar>
+                                    {/* <Avatar className='comment-avarta'></Avatar> */}
+                                    <Image className='comment-avarta' src='/logo192.png'></Image>
                                     <div className='comment-body'>
                                         <div>
                                             <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
@@ -322,7 +323,7 @@ const ViewDocument = () => {
                                                         </Link>
                                                         has been signed
                                                     </div>
-                                                    <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                                    <div className='comment-bodyComment'>Note:   {value.comment.CommentContent}</div>
                                                 </>
                                                 :
                                                 <div className='comment-bodyComment'>{value.comment.CommentContent}</div>

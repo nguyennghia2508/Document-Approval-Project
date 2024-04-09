@@ -4,7 +4,7 @@ import "./style.scss"
 import { useState, useEffect } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setTabview,resetTabview } from "../../redux/features/tabviewSlice";
+import { setTabview, resetTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const DocumentApproval = () => {
   const limit = 10
   const user = useSelector((state) => state.user.value)
   const tabView = useSelector((state) => state.tabview.value)
-
+  const [dataDocument, setDataDocument] = useState([])
   useEffect(() => {
     const getAllDocument = async () => {
       try {
@@ -48,6 +48,94 @@ const DocumentApproval = () => {
     setCurrentPage(1)
     window.scrollTo(0, 0);
   }, [tabView]);
+
+
+
+
+  useEffect(() => {
+    const getAllDocumentApproval = async () => {
+      try {
+        if (!tabView.filter) {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id,
+            tabName: tabView.tabName
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
+          console.log("dataDoc", dataDocument)
+
+        }
+        else {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id, tabName: tabView.tabName,
+            dataFilter: tabView.filterList
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
+          console.log("dataDoc", dataDocument)
+
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAllDocumentApproval();
+  }, [tabView])
+
+  const [exportExcel, setExportExcel] = useState('')
+  useEffect(() => {
+    console.log(dataDocument)
+
+    const listDocument = dataDocument.map(data => ({
+      applicant: data.ApplicantId,
+      attorney: data.attorney,
+      authorizer: data.authorizer,
+      createDate: data.CreateDate,
+      department: data.DepartmentName,
+      documentType: data.DocumentTypeName,
+      processingby: data.ProcessingBy,
+      requestcode: data.RequestCode,
+      section: data.SectionName,
+      status: data.Status,
+      subject: data.Subject,
+      unit: data.UnitName
+    }));
+    setExportExcel(listDocument)
+  }, [dataDocument])
+
+
+  // console.log("asdasd2", exportExcel)
+  const tabview = useSelector(state => state.tabview);
+  // console.log("export", tabview)
+
+  const dataArray = [ // Chú ý dùng mảng ngoài cùng
+    ['CONTRACT APPROVAL REQUEST REPORT'],
+    [`From ${moment().format('DD/MM/YYYY')} to ${moment().format('DD/MM/YYYY')}`],
+    [],
+    [],
+    ['Ord', 'RquestCode', 'Category', 'DocumentType', 'Subject', 'To', 'Authorizer', 'Attorney', 'Authorization Period From', 'Authorization Period To', 'CreateDate', 'Applicant', 'Department', 'SectionName', 'Unit', 'Status'],
+    ...dataDocument?.map((item, index) => [
+      index + 1,
+      item.RequestCode,
+      item.categories,
+      item.documentType,
+      item.subject,
+      '',
+      '',
+      '',
+      '',
+      '',
+      moment(item.CreateDate).format('DD/MM/YYYY'),
+      item.createBy,
+      item.department,
+      item.section,
+      item.unit,
+      (item.Status === 1 ? "Approving" : (item.Status === 2 ? "Approved" : (item.Status === 3 ? "Reject" : (item.Status === 4 ? "Signed" : (item.Status === 0 ? "Draft" : null))))),
+    ])
+  ];
+
+  // console.log("adsad", dataArray)
+
+
+
 
   const columns = [
 
@@ -160,7 +248,7 @@ const DocumentApproval = () => {
       tabIndex: tabView.tabIndex,
       tabName: tabView.tabName,
       filter: true,
-      switchTab:false,
+      switchTab: false,
       filterList: dataFilter
     }))
 
@@ -177,7 +265,7 @@ const DocumentApproval = () => {
 
   return (
     <>
-      <TitleBody label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
+      <TitleBody dataArray={dataArray} label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
       <TablePagination
         list={list?.listDcapproval}
         totalItems={list?.totalItems}

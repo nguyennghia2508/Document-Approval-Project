@@ -14,7 +14,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   department: departmentReducer,
-  tabview:tabviewReducer,
+  tabview: tabviewReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

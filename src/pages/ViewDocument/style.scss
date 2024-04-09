@@ -35,7 +35,7 @@
         .viewInput {
             display: flex;
             flex-direction: column;
-            padding-bottom: 50px;
+            padding-bottom: 30px;
 
             .viewInput-top {
                 padding-bottom: 20px;
@@ -45,7 +45,7 @@
                 .viewInput-element {
                     width: 100%;
                     margin-right: 25px;
-
+                    margin-bottom: 5px;
                 }
             }
 
@@ -56,6 +56,8 @@
                 .viewInput-element {
                     width: 100%;
                     margin-right: 20px;
+                    margin-bottom: 5px;
+
                 }
             }
         }
@@ -63,8 +65,23 @@
         .viewDocument {
             width: 100%;
 
+
             >div {
                 padding-bottom: 20PX;
+            }
+
+            .viewDocument-reference,
+            .viewDocument-approve {
+                display: flex;
+                flex-direction: column;
+
+                >a {
+                    text-decoration: none;
+                    display: block;
+                    width: 150px;
+                    color: #917b7b;
+                    margin-left: 15px;
+                }
             }
 
             .viewDocument-content {
@@ -88,6 +105,11 @@
 
         .commentInput {
             width: 100%;
+            margin-bottom: 10px;
+
+            .commentInput-label {
+                text-transform: uppercase;
+            }
 
         }
 
@@ -111,7 +133,9 @@
 
                         .comment-avarta {
                             margin-right: 10px;
-                            margin-top: 15px;
+                            margin-top: 20px;
+                            height: 40px;
+                            width: 40px;
                         }
 
                         .comment-body {
@@ -164,7 +188,8 @@
 
                         .comment-avarta {
                             margin-right: 10px;
-                            margin-top: 15px;
+                            margin-top: 20px;
+                            width: 40px;
                         }
 
                         .comment-body {
@@ -246,6 +271,7 @@
             display: flex;
             flex-direction: column;
             padding-bottom: 50px;
+            width: 100%;
 
             .viewInput-top {
                 padding-bottom: 20px;
@@ -254,7 +280,7 @@
                 // justify-content: space-between;
                 .viewInput-element {
                     width: 24%;
-                    margin-right: 25px;
+                    margin-right: 20px;
 
                 }
             }
@@ -286,8 +312,10 @@
                 >a {
                     text-decoration: none;
                     display: block;
-                    width: 100px;
+                    width: 200px;
                     color: #917b7b;
+                    margin-left: 15px;
+
                 }
             }
 
@@ -321,6 +349,7 @@
             .commentGroup {
                 // height: 80px;
 
+
                 .commentParent {
                     width: 60%;
 
@@ -335,7 +364,8 @@
 
                         .comment-avarta {
                             margin-right: 10px;
-                            margin-top: 15px;
+                            margin-top: 20px;
+                            width: 40px;
                         }
 
                         .comment-body {
@@ -343,9 +373,13 @@
                             width: 93%;
                             overflow-x: auto;
 
+                            img {
+                                margin-bottom: -5px;
+                            }
 
                             span {
                                 font-size: 12px;
+                                margin-right: 10px;
 
                                 color: #b4afb2;
                             }
@@ -360,13 +394,17 @@
 
                             .comment-bodyComment {
                                 padding-top: 5px;
-                                color: #b4afb2;
+                                color: #5a5656;
                                 overflow-wrap: break-word;
+                                margin-right: 10px;
 
                                 >a {
                                     margin: 0 10px;
+                                    color: rgb(73, 94, 211);
                                 }
                             }
+
+
                         }
 
                     }
@@ -398,19 +436,30 @@
                             // overflow-x: auto;
                             overflow-x: auto;
 
+                            span {
+                                font-size: 12px;
+                                color: #b4afb2;
+                            }
+
 
                             .comment-bodyTitle {
                                 font-weight: bold;
                                 margin-right: 20px;
                                 margin-top: -10px;
                                 font-size: 14px;
+
+                                >span {
+                                    font-size: 12px;
+
+                                    color: #b4afb2;
+                                }
                             }
 
                             .comment-bodyComment {
                                 padding-top: 5px;
                                 overflow-wrap: break-word;
                                 // overflow-x: auto;
-                                color: #b4afb2;
+                                color: #5a5656;
 
                                 >a {
                                     margin: 0 10px;

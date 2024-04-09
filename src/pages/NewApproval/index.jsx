@@ -299,7 +299,6 @@ const New = () => {
                         <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
                     </div>
                     <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
-
                     <div className='sign-email'>
                         <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div>
