@@ -3,10 +3,13 @@
     flex-direction: column;
 }
 
-.text-input-container label {
-    margin-bottom: 5px;
-}
+.text-input-container {
 
-.bold-label {
-    font-weight: bold;
+    .bold-label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        overflow: hidden;
+        height: 21px;
+
+    }
 }

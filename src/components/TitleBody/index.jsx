@@ -8,6 +8,7 @@ import './style.scss';
 import { useForm } from 'react-hook-form';
 import ModalApproval from '../ModalApproval';
 import approvalPersonApi from '../../api/approvalPersonApi';
+import Excel from '../Excel';
 
 const { TextArea } = Input;
 
@@ -27,6 +28,7 @@ const TitleBody = ({
     handleComment,
     listApprover,
     listSigner,
+    dataArray
 }) => {
     const {
         rows,
@@ -192,7 +194,7 @@ const TitleBody = ({
                                 <Link to={afterSubmit} onClick={handleClick}><SendOutlined />Submit</Link>
                             </>
                         }
-                    </div>
+                    </div >
                     <div className='titlebody-right'>
                     </div>
                 </div >
@@ -201,7 +203,7 @@ const TitleBody = ({
                 <div className='titlebody-nonform'>
                     <label className='titlebody-left'>{label}</label>
                     <div className='titlebody-right'>
-                        <Button><VerticalAlignBottomOutlined style={{ transform: 'rotate(-90deg)' }} />Export excel</Button>
+                        <Excel dataArray={dataArray}> </Excel>
                         <ButtonFilter
                             onFilter={handleSubmitFromTitleBody}
                         />

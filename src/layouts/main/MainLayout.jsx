@@ -21,21 +21,20 @@ const MainLayout = ({
 
     useEffect(() => {
         const checkAuth = async () => {
-          const user = await authUtils.isAuthenticated()
-          if (user) {
+            const user = await authUtils.isAuthenticated()
+            if (user) {
 
-            dispatch(setUser(user))
-        }
-          else
-          {
-            navigate('/login');
-            dispatch(resetUser())
-          }
+                dispatch(setUser(user))
+            }
+            else {
+                navigate('/login');
+                dispatch(resetUser())
+            }
         }
         checkAuth()
     }, [navigate])
 
-    
+
 
     return (
         <>
@@ -45,7 +44,7 @@ const MainLayout = ({
                 </div>
                 <div className='layout-container' >
                     <div className='container-sidebar'>
-                        <Sidebar href={href}/>
+                        <Sidebar href={href} />
                     </div>
                     <div className='container-body'>
                         {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}

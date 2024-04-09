@@ -1,12 +1,12 @@
 .search-input-container {
     display: flex;
     flex-direction: column;
-}
 
-.search-input-container label {
-    margin-bottom: 5px;
-}
+    .bold-label {
+        font-weight: bold;
+        overflow: hidden;
+        height: 21px;
+        margin-bottom: 5px;
 
-.bold-label {
-    font-weight: bold;
+    }
 }
