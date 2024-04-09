@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.scss'
 import { Input } from 'antd';
 import { Controller } from 'react-hook-form';
@@ -16,9 +16,21 @@ const InputText = ({
   defaultValue,
   handleOnChange,
   value,
-  handleField
+  handleField,
+  setValue,
+  selectedDate,
 }) => {
 
+  useEffect(() =>{
+    if(value)
+    {
+      if(setValue)
+      {
+        setValue(name,value)
+      }
+    }
+  },[value])
+  
   const handleChange = (e, field) => {
     field.onChange(e.target.value)
     if(handleField)
@@ -42,7 +54,7 @@ const InputText = ({
               type={type}
               id={id}
               onChange={(e) => handleChange(e, field)}
-              value={value}
+              value={selectedDate ? selectedDate : field.value}
               disabled={disabled}
             />
           )

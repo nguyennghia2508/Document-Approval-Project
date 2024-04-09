@@ -58,7 +58,7 @@ const ViewDocument = () => {
     useEffect(() => {
         const getDocument = async () => {
             try {
-                const data = await documentApprovalApi.getDocumentById(id)
+                const data = await documentApprovalApi.getDocumentById(id,user.Id)
                 const document = data.document
                 const files = data.files
                 setDataDocument(data.document)
@@ -144,13 +144,20 @@ const ViewDocument = () => {
         setComment(value)
     }
 
+    const handleDocument = (value) => {
+        setDataDocument(value)
+    }
+
     return (
         <>
             <form>
                 <TitleBody
+                    handleDocument={handleDocument}
                     handleApprover={handleSelectedApprover}
                     handleSigner={handleSelectedSigner}
                     handleComment={handleComment}
+                    approveFile={selectedFilesApproved}
+                    referenceFile={selectedFileReference}
                     listApprover={approvers}
                     listSigner={signers}
                     currentUser={user}
@@ -169,27 +176,28 @@ const ViewDocument = () => {
                             </div>
                             <div className='viewtitle-statusState'>
                                 <span>Status:</span>
-                                {dataDocument.Status === 1 ?
+                                {
+                                    dataDocument.Status === 1 ?
+                                    <p style={{ color: "#2F85EF" }}>approving</p>
+                                    :
+                                    null
+                                }
+                                {dataDocument.Status === 2 ?
                                     <p style={{ color: "#4BA747" }}> Approved</p>
                                     :
                                     null
-                                }{
-                                    dataDocument.Status === 2 ?
-                                        <p style={{ color: "#2F85EF" }}>approving</p>
-                                        :
-                                        null
-                                }
-                                {
-                                    dataDocument.Status === 3 ?
-                                        <p style={{ color: "#FF3030" }}>Reject</p>
-                                        :
-                                        null
                                 }
                                 {
                                     dataDocument.Status === 4 ?
-                                        <p style={{ color: "#ECD13E" }}>Signed</p>
-                                        :
-                                        null
+                                    <p style={{ color: "#ECD13E" }}>Signed</p>
+                                    :
+                                    null
+                                }
+                                {
+                                    dataDocument.Status === 3 ?
+                                    <p style={{ color: "#FF3030" }}>Reject</p>
+                                    :
+                                    null
                                 }
                             </div>
                         </div>
@@ -197,7 +205,11 @@ const ViewDocument = () => {
                     <div className='viewInput'>
                         <div className='viewInput-top'>
                             <div className='viewInput-element'>
-                                <InputText label="Applicant" value={selectedApplicant} id="applicant" name="applicant" disabled={true} control={control} />
+                                <InputText label="Applicant" 
+                                value={selectedApplicant} 
+                                setValue={setValue} 
+                                selectedApplicant={selectedApplicant} 
+                                id="applicant" name="applicant" disabled={true} control={control} />
                             </div>
                             <div className='viewInput-element'>
                                 <InputSelection label="Department" id="department" name="department" value={selectedDepartment} control={control} options={departmentData} disabled={true} required />
@@ -221,18 +233,16 @@ const ViewDocument = () => {
                                 <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={true} control={control} />
                             </div>
                             <div className='viewInput-element'>
-                                <InputText label="Date" name="date" value={moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
-
+                                <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
                             </div>
-
                         </div >
                     </div >
                     <div className='viewDocument'>
                         <div className='viewDocument-subject'>
-                            <InputText label="Subject" id="subject" name="subject" value={selectedSubject} control={control} disabled={true} />
+                            <InputText setValue={setValue} label="Subject" id="subject" name="subject" value={selectedSubject} disabled={true} control={control} />
                         </div>
                         <div className='viewDocument-content'>
-                            <InputText label="Content summary" id="content" name="content" value={selectedContent} control={control} disabled={true} />
+                            <InputText setValue={setValue} label="Content summary" id="content" name="content" value={selectedContent} disabled={true} control={control} />
                         </div>
                         <div className='viewDocument-approve'>
                             <label>Documents to be approved/signed</label>
@@ -298,37 +308,54 @@ const ViewDocument = () => {
                                         <div>
                                             <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
                                             <span>{moment(value.comment.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
-                                            {value.comment.CommentStatus === 1 &&
-                                                <img src="/status-approved.svg" />
+                                            {value.comment.CommentStatus === 1 && 
+                                            <img src="/status-approved.svg"/>
                                             }
-                                            {value.comment.CommentStatus === 2 &&
-                                                <img src="/status-signed.svg" />
+                                            {value.comment.CommentStatus === 2 && 
+                                            <img src="/status-signed.svg"/>
+                                            }
+                                            {value.comment.CommentStatus === 3 && 
+                                            <img src="/status-rejected.svg"/>
                                             }
                                         </div>
-                                        {value.comment.CommentStatus === 1 ?
+                                        {value.comment.CommentStatus === 1 ? 
                                             <>
-                                                <div className='comment-bodyComment' >Request
-                                                    <Link to=''>
-                                                        {dataDocument.RequestCode}
-                                                    </Link>
-                                                    has been approved
-                                                </div>
-                                                <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                            <div className='comment-bodyComment'>Request 
+                                                <Link to=''>
+                                                    {dataDocument.RequestCode}
+                                                </Link>
+                                                has been approved
+                                            </div>
+                                            <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
                                             </>
-                                            : value.comment.CommentStatus === 2 ?
-                                                <>
-                                                    <div className='comment-bodyComment' >Request
-                                                        <Link to=''>
-                                                            {dataDocument.RequestCode}
-                                                        </Link>
-                                                        has been signed
-                                                    </div>
-
-                                                    <div className='comment-bodyComment'>Note:   {value.comment.CommentContent}</div>
-
-                                                </>
-                                                :
-                                                <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
+                                        : value.comment.CommentStatus === 2 ?
+                                            <>
+                                            <div className='comment-bodyComment'>Request 
+                                                <Link to="">
+                                                    {dataDocument.RequestCode}
+                                                </Link>
+                                                has been signed
+                                            </div>
+                                            <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                            </>
+                                        : value.comment.CommentStatus === 3 ?
+                                            <>
+                                            <div className='comment-bodyComment'>Request 
+                                                <Link to="">
+                                                    has been rejected
+                                                </Link>
+                                            </div>
+                                            <div className='comment-bodyComment'>Reason:{value.comment.CommentContent}</div>
+                                            </>
+                                        :
+                                            value.comment.IsFirst ? 
+                                            <div className='comment-bodyComment'>{value.comment.CommentContent}
+                                                <Link to="">
+                                                    {dataDocument.RequestCode}
+                                                </Link>
+                                            </div>
+                                            :
+                                            <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
                                         }
                                         {selectedFileComment.map((file) => (
                                             file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
