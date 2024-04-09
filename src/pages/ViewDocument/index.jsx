@@ -323,7 +323,9 @@ const ViewDocument = () => {
                                                         </Link>
                                                         has been signed
                                                     </div>
+
                                                     <div className='comment-bodyComment'>Note:   {value.comment.CommentContent}</div>
+
                                                 </>
                                                 :
                                                 <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
