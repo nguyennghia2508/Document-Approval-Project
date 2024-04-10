@@ -252,13 +252,6 @@ const ViewDocument = () => {
                             <div className='viewInput-element'>
                                 <InputSelection label="Unit" id="unit" name="unit" value={selectedUnit} control={control} options={unitOptions} disabled={true} required />
                             </div>
-                            <Divider style={{
-                                backgroundColor: 'GREY',
-                                height: '3px',
-                                margin: '20px 0',
-                                border: 'none'
-                            }} />
-
                         </div >
                         <div className='viewInput-bot'>
                             <div className='viewInput-element'>
