@@ -68,9 +68,6 @@ const EditDocument = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-
-
-
     useEffect(() => {
         const getDocument = async () => {
             try {
