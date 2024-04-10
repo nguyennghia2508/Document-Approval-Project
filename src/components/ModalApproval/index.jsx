@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal, Input } from 'antd';
 import './style.scss'
 import { Controller, useForm } from 'react-hook-form';
+import InputSelection from '../InputSelection';
 
 const { TextArea } = Input;
 
@@ -9,6 +10,8 @@ const ModalApproval = ({
   isOpen,
   isSubmit,
   isClose,
+  isForward,
+  listUser,
   name,
   status,
 }) => {
@@ -19,33 +22,33 @@ const ModalApproval = ({
     control,
     reset,
     setValue,
-} = useForm({
+  } = useForm({
     mode: "onsubmit",
 
-});
+  });
   const [approvalText, setApprovalText] = useState("");
 
-  useEffect(() =>{
-    if(status)
-    {
-      setValue("status",status)
+  useEffect(() => {
+    if (status) {
+      setValue("status", status)
     }
-  },[status])
+  }, [status])
 
-  useEffect(() =>{
-    if(isClose)
-    {
+  useEffect(() => {
+    if (isClose) {
       setApprovalText("")
     }
-  },[isClose])
+  }, [isClose])
 
   const getTitle = () => {
     if (status === 2) {
-        return "Approve";
+      return "Approve";
     } else if (status === 3) {
-        return "Sign";
+      return "Sign";
     } else if (status === 4) {
         return "Reject";
+    } else if (status === 5) {
+      return "Forward";
     }
   };
 
@@ -71,16 +74,23 @@ const ModalApproval = ({
         onCancel={isClose}
         destroyOnClose={true}
         footer={[
-          <Button key="submit" onClick={handleSubmit(onSubmit)} className='modalSubmit' 
+          <Button key="submit" onClick={handleSubmit(onSubmit)} className='modalSubmit'
             disabled={!approvalText || approvalText.length < 0 ? true : false}
           >
             {getTitle()}
           </Button>,
-          
+
           <Button key="cancel" onClick={isClose} className='modalCancel'>Cancel</Button>,
         ]}
       >
         <form>
+          {isForward &&
+          <InputSelection
+            name="selectUser"
+            control={control}
+            options={listUser}
+          />
+          }
           <Controller
             name={name}
             control={control}
@@ -88,7 +98,7 @@ const ModalApproval = ({
             render={({ field }) => (
               <TextArea
                 rows={4}
-                placeholder="Enter approval text"
+                placeholder="Enter text"
                 value={approvalText}
                 onChange={(e) => handleChange(e, field)}
               />

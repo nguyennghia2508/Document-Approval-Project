@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTabview, resetTabview } from "../../redux/features/tabviewSlice";
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
+import { loadIcon } from "@iconify/react/dist/iconify.js";
 
 
 const DocumentApproval = () => {
@@ -21,12 +23,29 @@ const DocumentApproval = () => {
   const user = useSelector((state) => state.user.value)
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
+
+  const [isLoading, setIsLoading] = useState(true);
+
+
   useEffect(() => {
     const getAllDocument = async () => {
       try {
         if (!tabView.filter) {
           const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
+          setIsLoading(true)
           setList(data)
+          if (data.state === "true") {
+            const timeout = setTimeout(() => {
+              setIsLoading(false);
+            }, 1000);
+            return () => clearTimeout(timeout);
+
+          } else {
+            const timeout = setTimeout(() => {
+              setIsLoading(false);
+            }, 1000);
+            return () => clearTimeout(timeout);
+          }
         }
         else {
           const data = await documentApprovalApi.getListDocument({
@@ -52,37 +71,36 @@ const DocumentApproval = () => {
 
 
 
-  useEffect(() => {
-    const getAllDocumentApproval = async () => {
-      try {
-        if (!tabView.filter) {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id,
-            tabName: tabView.tabName
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
-          console.log("dataDoc", dataDocument)
+  // useEffect(() => {
+  //   const getAllDocumentApproval = async () => {
+  //     try {
+  //       if (!tabView.filter) {
+  //         const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+  //           userId: user.Id,
+  //           tabName: tabView.tabName
+  //         })
+  //         setDataDocument(dataAllDocumentApproval.listDcapproval)
+  //         console.log("dataDoc", dataDocument)
 
-        }
-        else {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id, tabName: tabView.tabName,
-            dataFilter: tabView.filterList
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
-          console.log("dataDoc", dataDocument)
+  //       }
+  //       else {
+  //         const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+  //           userId: user.Id, tabName: tabView.tabName,
+  //           dataFilter: tabView.filterList
+  //         })
+  //         setDataDocument(dataAllDocumentApproval.listDcapproval)
+  //         console.log("dataDoc", dataDocument)
 
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getAllDocumentApproval();
-  }, [tabView])
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   getAllDocumentApproval();
+  // }, [tabView, user])
 
   const [exportExcel, setExportExcel] = useState('')
   useEffect(() => {
-    console.log(dataDocument)
 
     const listDocument = dataDocument.map(data => ({
       applicant: data.ApplicantId,
@@ -97,14 +115,13 @@ const DocumentApproval = () => {
       status: data.Status,
       subject: data.Subject,
       unit: data.UnitName
+
     }));
+
     setExportExcel(listDocument)
   }, [dataDocument])
 
 
-  // console.log("asdasd2", exportExcel)
-  const tabview = useSelector(state => state.tabview);
-  // console.log("export", tabview)
 
   const dataArray = [ // Chú ý dùng mảng ngoài cùng
     ['CONTRACT APPROVAL REQUEST REPORT'],
@@ -265,18 +282,22 @@ const DocumentApproval = () => {
 
   return (
     <>
-      <TitleBody dataArray={dataArray} label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
-      <TablePagination
-        list={list?.listDcapproval}
-        totalItems={list?.totalItems}
-        className='documentApproval'
-        columns={columns}
-        onChange={handleTablePageChange}
-        no={currentPage}
-        pageSize={limit}
-        useText={true}
-        href={location.pathname}
-      />
+      {isLoading ? <Loading /> :
+        <>
+          <TitleBody dataArray={dataArray} label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
+          <TablePagination
+            list={list?.listDcapproval}
+            totalItems={list?.totalItems}
+            className='documentApproval'
+            columns={columns}
+            onChange={handleTablePageChange}
+            no={currentPage}
+            pageSize={limit}
+            useText={true}
+            href={location.pathname}
+          />
+        </>
+      }
     </>
   );
 };

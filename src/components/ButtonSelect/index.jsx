@@ -28,6 +28,7 @@ const ButtonSelect = ({
             </div>
         ),
         name: value.Username,
+        email: value.Email,
     }));
     
 
@@ -43,6 +44,7 @@ const ButtonSelect = ({
                 selectedOption: userData?.find(user => user.value === person.ApprovalPersonId)?.value,
                 PersonDuty:person.PersonDuty,
                 DocumentApprovalId:person.DocumentApprovalId,
+                email:person.ApprovalPersonEmail,
                 Index:person.Index,
             }));
             
@@ -67,6 +69,7 @@ const ButtonSelect = ({
                 label: newLabel, selectedOption: undefined, 
                 PersonDuty: undefined,
                 DocumentApprovalId: undefined,
+                email: undefined,
                 Index: undefined,
             }];
         });
@@ -106,6 +109,7 @@ const ButtonSelect = ({
                     userName: userData[value].name,
                     selectedOption: value,
                     PersonDuty: PersonDuty && PersonDuty === 1 ? 1 : 2,
+                    email: userData[value].email,
                     Index:index+1,
                 };
     

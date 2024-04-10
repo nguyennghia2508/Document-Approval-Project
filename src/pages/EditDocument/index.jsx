@@ -18,6 +18,8 @@ import FileUpload from '../../components/FileUpload';
 import ButtonSelect from '../../components/ButtonSelect';
 import categoryApi from '../../api/categoryApi';
 import userApi from '../../api/userApi';
+import Loading from "../../components/Loading";
+
 
 const EditDocument = () => {
     const {
@@ -63,10 +65,18 @@ const EditDocument = () => {
     const [signers, setSigners] = useState([])
     
 
+
+    const [isLoading, setIsLoading] = useState(false);
+
+
+
+
     useEffect(() => {
         const getDocument = async () => {
             try {
-                const data = await documentApprovalApi.getEditDocumentById(id,user.Id)
+                const data = await documentApprovalApi.getEditDocumentById(id, user.Id)
+                setIsLoading(true)
+
                 const document = data.document
                 const files = data.files
                 setDataDocument(data.document)
@@ -88,7 +98,18 @@ const EditDocument = () => {
 
                 const listSigner = data.persons.filter(value => value.PersonDuty === 2);
                 setSigners(listSigner)
-
+                if (data.state === "true") {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+                } else {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+                    // setIsLoading(false)
+                }
             } catch (err) {
                 const data = err.data
                 if (data.state && data.state === "false") {
@@ -296,6 +317,7 @@ const EditDocument = () => {
                 Index:value.Index,
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                ApprovalPersonEmail: value.email,
                 PersonDuty:value.PersonDuty,
                 DocumentApprovalId:value.DocumentApprovalId,
             })),
@@ -303,6 +325,7 @@ const EditDocument = () => {
                 Index:value.Index,
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                ApprovalPersonEmail: value.email,
                 PersonDuty:value.PersonDuty,
                 DocumentApprovalId:value.DocumentApprovalId,
             })) 
@@ -325,68 +348,118 @@ const EditDocument = () => {
 
     return (
         <>
-            <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)} >
-                <TitleBody
-                    currentUser={user}
-                    dataDocument={dataDocument}
-                    label="eDocument Approval"
-                    isForm={true}
-                    isApproval={false}
-                    setValueInput={setValue} 
-                    onSubmit={handleSubmit(onSubmit)}
-                    href={"/avn/documentapproval"}
-                />
-                <div className='viewApproval-container '>
-                    <div className="viewtitle">
-                        <div className='viewtitle-status'>
+            {isLoading ? <Loading /> :
+                <>
+                <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)} >
+                    <TitleBody
+                        currentUser={user}
+                        dataDocument={dataDocument}
+                        label="eDocument Approval"
+                        isForm={true}
+                        isApproval={false}
+                        setValueInput={setValue}
+                        onSubmit={handleSubmit(onSubmit)}
+                        href={"/avn/documentapproval"}
+                    />
+                    <div className='viewApproval-container '>
+                        <div className="viewtitle">
+                            <div className='viewtitle-status'>
+                            </div>
+                            <h1 >DOCUMENT APPROVAL</h1></div>
+                        <div className='viewInput'>
+                            <div className='viewInput-top'>
+                                <div className='viewInput-element'>
+                                    <InputText label="Applicant"
+                                        setValue={setValue}
+                                        selectedApplicant={selectedApplicant}
+                                        value={selectedApplicant}
+                                        id="applicant" name="applicant"
+                                        disabled={true} control={control} />
+                                </div>
+                                <div className='viewInput-element'>
+                                    <InputSelection label="Department"
+                                        id="department"
+                                        name="department"
+                                        value={selectedDepartment}
+                                        control={control}
+                                        onChange={handleDepartmentChange}
+                                        setValue={setValue}
+                                        options={department}
+                                        disabled={false}
+                                        required />
+                                </div>
+                                <div className='viewInput-element'>
+                                    <InputSelection label="Section" id="section" name="section" setValue={setValue} value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} disabled={false} required />
+                                </div>
+                                <div className='viewInput-element'>
+                                    <InputSelection label="Unit" id="unit" name="unit" setValue={setValue} value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} disabled={false} required />
+                                </div>
+
+                            </div >
+                            <div className='viewInput-bot'>
+                                <div className='viewInput-element'>
+                                    <InputSelection label="Categories" id="category" name="category" control={control} value={selectedCategory} onChange={handleCategoryChange} options={categoryOptions} disabled={false} required />
+                                </div>
+                                <div className='viewInput-element'>
+                                    <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} disabled={false} required />
+                                </div>
+                                <div className='viewInput-element'>
+                                    <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={false} control={control} />
+                                </div>
+                                <div className='viewInput-element'>
+                                    <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
+
+                                </div>
+
+                            </div >
+                        </div >
+                        <div className='viewDocument'>
+                            <div className='viewDocument-subject'>
+                                <InputText setValue={setValue} label="Subject" id="subject" name="subject" value={selectedSubject} control={control} />
+                            </div>
+                            <div className='viewDocument-content'>
+                                <InputText setValue={setValue} label="Content summary" id="content" name="content" value={selectedContent} control={control} />
+                            </div>
+                            <div className='viewDocument-approve'>
+                                <FileUpload DocumentType={1} maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
+                                    setValue={setValue} control={control} type="primary"
+                                    files={selectedFilesApproved}
+                                />
+                            </div>
+                            <div className='viewDocument-reference'>
+                                <FileUpload DocumentType={2} maxSize={50} label="Documents for reference" id="reference" name="reference"
+                                    setValue={setValue} control={control} type="primary"
+                                    files={selectedFileReference}
+                                />
+                            </div>
+
                         </div>
-                        <h1 >DOCUMENT APPROVAL</h1></div>
-                    <div className='viewInput'>
-                        <div className='viewInput-top'>
-                            <div className='viewInput-element'>
-                                <InputText label="Applicant" 
-                                setValue={setValue} 
-                                selectedApplicant={selectedApplicant} 
-                                value={selectedApplicant} 
-                                id="applicant" name="applicant" 
-                                disabled={true} control={control} />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Department" 
-                                id="department" 
-                                name="department" 
-                                value={selectedDepartment} 
-                                control={control}  
-                                onChange={handleDepartmentChange}
-                                setValue={setValue}
-                                options={department} 
-                                disabled={false} 
-                                required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Section" id="section" name="section" setValue={setValue} value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} disabled={false} required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Unit" id="unit" name="unit" setValue={setValue} value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} disabled={false} required />
-                            </div>
+                        <Divider style={{
+                            backgroundColor: 'GREY',
+                            height: '3px',
+                            margin: '20px 0',
+                            border: 'none'
+                        }} />
 
-                        </div >
-                        <div className='viewInput-bot'>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Categories" id="category" name="category" control={control} value={selectedCategory}  onChange={handleCategoryChange} options={categoryOptions} disabled={false} required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} disabled={false} required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={false} control={control} />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
+                    </div >
+                    <div className='viewInput-bot'>
+                        <div className='viewInput-element'>
+                            <InputSelection label="Categories" id="category" name="category" control={control} value={selectedCategory}  onChange={handleCategoryChange} options={categoryOptions} disabled={false} required />
+                        </div>
+                        <div className='viewInput-element'>
+                            <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} disabled={false} required />
+                        </div>
+                        <div className='viewInput-element'>
+                            <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={false} control={control} />
+                        </div>
+                        <div className='viewInput-element'>
+                            <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
 
-                            </div>
+                        <div className='sign-email'>
+                            <ButtonSelect id="signers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={2} name="signers" listPerson={signers && signers} control={control} data={userData && userData} setValue={setValue} labelName="S" />
+                        </div>
 
-                        </div >
+                    </div >
                     </div >
                     <div className='viewDocument'>
                         <div className='viewDocument-subject'>
@@ -415,25 +488,21 @@ const EditDocument = () => {
                         margin: '20px 0',
                         border: 'none'
                     }} />
+                    <div className='signapproval-container'>
+                        <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
+                        <div className='approval-email' style={{ paddingBottom: "20px" }}>
+                            <ButtonSelect id="approvers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={1} name="approvers" listPerson={approvers && approvers} control={control} data={userData && userData} setValue={setValue} labelName="A" />
+                        </div>
+                        <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
 
-                </div >
-                <div className='signapproval-container'>
-                    <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
-                    <div className='approval-email' style={{ paddingBottom: "20px" }}>
-                        <ButtonSelect id="approvers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={1} name="approvers" listPerson={approvers && approvers} control={control} data={userData && userData} setValue={setValue} labelName="A" />
+                        <div className='sign-email'>
+                            <ButtonSelect id="signers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={2} name="signers" listPerson={signers && signers} control={control} data={userData && userData} setValue={setValue} labelName="S" />
+                        </div>
                     </div>
-                    <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
-
-                    <div className='sign-email'>
-                        <ButtonSelect id="signers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={2} name="signers" listPerson={signers && signers} control={control} data={userData && userData} setValue={setValue} labelName="S" />
-                    </div>
-                </div>
-
-            </form >
-
+                </form >
+                </>
+            }
         </>
-
-
 
     );
 };

@@ -16,6 +16,8 @@ import { CommentOutlined, EnterOutlined } from '@ant-design/icons';
 import CommentInput from '../../components/CommentInput';
 import PersonApproved from '../../components/PersonApproved';
 import commentApi from "../../api/commentApi"
+import userApi from '../../api/userApi';
+import Loading from "../../components/Loading";
 
 const ViewDocument = () => {
     const {
@@ -32,6 +34,7 @@ const ViewDocument = () => {
     const { id } = useParams();
     const urlBE = "https://localhost:44389"
 
+    const [userData, setUserData] = useState([])
     const [departmentData, setDepartmentData] = useState([]);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
@@ -54,11 +57,12 @@ const ViewDocument = () => {
     const [signers, setSigners] = useState([])
     const [comment, setComment] = useState([])
     const [activeCommentIndex, setActiveCommentIndex] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getDocument = async () => {
             try {
-                const data = await documentApprovalApi.getDocumentById(id,user.Id)
+                const data = await documentApprovalApi.getDocumentById(id, user.Id)
                 const document = data.document
                 const files = data.files
                 setDataDocument(data.document)
@@ -88,6 +92,20 @@ const ViewDocument = () => {
                 setSigners(listSigner)
 
                 setComment(data.comments)
+
+                if (data.state === "true") {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+
+                } else {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+                }
+
             } catch (err) {
                 const data = err.data
                 if (data.state && data.state === "false") {
@@ -97,6 +115,18 @@ const ViewDocument = () => {
             }
         }
         getDocument();
+    }, []);
+
+    useEffect(() => {
+        const getAllUser = async () => {
+            try {
+                const data = await userApi.getAll()
+                setUserData(data.listUser)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getAllUser();
     }, []);
 
     const handleToggleCommentInput = (index) => {
@@ -160,6 +190,8 @@ const ViewDocument = () => {
                     referenceFile={selectedFileReference}
                     listApprover={approvers}
                     listSigner={signers}
+                    comment={comment}
+                    userData={userData}
                     currentUser={user}
                     dataDocument={dataDocument}
                     label="eDocument Approval"
@@ -220,6 +252,12 @@ const ViewDocument = () => {
                             <div className='viewInput-element'>
                                 <InputSelection label="Unit" id="unit" name="unit" value={selectedUnit} control={control} options={unitOptions} disabled={true} required />
                             </div>
+                            <Divider style={{
+                                backgroundColor: 'GREY',
+                                height: '3px',
+                                margin: '20px 0',
+                                border: 'none'
+                            }} />
 
                         </div >
                         <div className='viewInput-bot'>
@@ -273,14 +311,13 @@ const ViewDocument = () => {
                     {/* <div className='approval-email' style={{ paddingBottom: "20px" }}>
                         <ButtonSelect id="approvers" name="approvers" control={control} data={userData} setValue={setValue} labelName="A" />
                     </div> */}
-                    <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
-                    <PersonApproved options={signers} />
-                    {/* <div className='sign-email'>
+                            <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
+                            <PersonApproved options={signers} />
+                            {/* <div className='sign-email'>
                         <ButtonSelect id="signers" name="signers" control={control} data={userData} setValue={setValue} labelName="S" />
                     </div> */}
 
                 </div>
-
             </form >
             <div className='comment'>
                 <div className='commentInput'>
@@ -294,81 +331,70 @@ const ViewDocument = () => {
                         submitComment={onSubmit}
                     />}
                 </div>
-
-
                 <div className="commentShow">
-                    {comment && comment.length > 0 && comment.map((value, index) => (
-                        <div className='commentGroup' key={index}>
-                            <div className='commentParent '>
-
-                                <div className='comment-element' >
-                                    {/* <Avatar className='comment-avarta'></Avatar> */}
-                                    <Image className='comment-avarta' src='/logo192.png'></Image>
-                                    <div className='comment-body'>
-                                        <div>
-                                            <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
-                                            <span>{moment(value.comment.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
-                                            {value.comment.CommentStatus === 1 && 
-                                            <img src="/status-approved.svg"/>
-                                            }
-                                            {value.comment.CommentStatus === 2 && 
-                                            <img src="/status-signed.svg"/>
-                                            }
-                                            {value.comment.CommentStatus === 3 && 
-                                            <img src="/status-rejected.svg"/>
-                                            }
-                                        </div>
-                                        {value.comment.CommentStatus === 1 ? 
-                                            <>
-                                            <div className='comment-bodyComment'>Request 
-                                                <Link to=''>
-                                                    {dataDocument.RequestCode}
-                                                </Link>
-                                                has been approved
-                                            </div>
-                                            <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
-                                            </>
-                                        : value.comment.CommentStatus === 2 ?
-                                            <>
-                                            <div className='comment-bodyComment'>Request 
-                                                <Link to="">
-                                                    {dataDocument.RequestCode}
-                                                </Link>
-                                                has been signed
-                                            </div>
-                                            <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
-                                            </>
-                                        : value.comment.CommentStatus === 3 ?
-                                            <>
-                                            <div className='comment-bodyComment'>Request 
-                                                <Link to="">
-                                                    has been rejected
-                                                </Link>
-                                            </div>
-                                            <div className='comment-bodyComment'>Reason:{value.comment.CommentContent}</div>
-                                            </>
-                                        :
-                                            value.comment.IsFirst ? 
-                                            <div className='comment-bodyComment'>{value.comment.CommentContent}
-                                                <Link to="">
-                                                    {dataDocument.RequestCode}
-                                                </Link>
-                                            </div>
-                                            :
-                                            <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
-                                        }
-                                        {selectedFileComment.map((file) => (
-                                            file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
-                                        ))}
-
-                                    </div>
-
-                                    {activeCommentIndex !== index ?
-                                        <EnterOutlined className="comment-reply" onClick={() => handleToggleCommentInput(index)} />
-                                        :
-                                        <EnterOutlined className="comment-reply" />
+                {comment && comment.length > 0 && comment.map((value, index) => (
+                    <div className='commentGroup' key={index}>
+                        <div className='commentParent '>
+                            <div className='comment-element' >
+                            {/* <Avatar className='comment-avarta'></Avatar> */}
+                            <Image className='comment-avarta' src='/logo192.png'></Image>
+                            <div className='comment-body'>
+                                <div>
+                                    <label className='comment-bodyTitle'>{value.comment.ApprovalPersonName}</label>
+                                    <span>{moment(value.comment.CreateDate).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                    {value.comment.CommentStatus === 1 && 
+                                    <img src="/status-approved.svg"/>
+                                    }
+                                    {value.comment.CommentStatus === 2 && 
+                                    <img src="/status-signed.svg"/>
+                                    }
+                                    {value.comment.CommentStatus === 3 && 
+                                    <img src="/status-rejected.svg"/>
                                     }
                                 </div>
+                                {value.comment.CommentStatus === 1 ? 
+                                    <>
+                                    <div className='comment-bodyComment'>Request 
+                                        <Link to=''>
+                                            {dataDocument.RequestCode}
+                                        </Link>
+                                        has been approved
+                                    </div>
+                                    <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                    </>
+                                : value.comment.CommentStatus === 2 ?
+                                    <>
+                                    <div className='comment-bodyComment'>Request 
+                                        <Link to="">
+                                            {dataDocument.RequestCode}
+                                        </Link>
+                                        has been signed
+                                    </div>
+                                    <div className='comment-bodyComment'>Note:{value.comment.CommentContent}</div>
+                                    </>
+                                : value.comment.CommentStatus === 3 ?
+                                    <>
+                                    <div className='comment-bodyComment'>Request 
+                                        <Link to="">
+                                            has been rejected
+                                        </Link>
+                                    </div>
+                                    <div className='comment-bodyComment'>Reason:{value.comment.CommentContent}</div>
+                                    </>
+                                :
+                                    value.comment.IsFirst ? 
+                                    <div className='comment-bodyComment'>{value.comment.CommentContent}
+                                        <Link to="">
+                                            {dataDocument.RequestCode}
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
+                                }
+                                {selectedFileComment.map((file) => (
+                                    file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>
+                                ))}
+
                             </div>
                             <div className='conment-Children'>
                                 {activeCommentIndex === index && <CommentInput
@@ -399,14 +425,13 @@ const ViewDocument = () => {
                                 </div>
                             ))
                             }
+                            </div>
                         </div>
+                    </div>
                     ))}
                 </div>
             </div>
         </>
-
-
-
     );
 };
 
