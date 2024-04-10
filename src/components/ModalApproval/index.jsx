@@ -19,33 +19,31 @@ const ModalApproval = ({
     control,
     reset,
     setValue,
-} = useForm({
+  } = useForm({
     mode: "onsubmit",
 
-});
+  });
   const [approvalText, setApprovalText] = useState("");
 
-  useEffect(() =>{
-    if(status)
-    {
-      setValue("status",status)
+  useEffect(() => {
+    if (status) {
+      setValue("status", status)
     }
-  },[status])
+  }, [status])
 
-  useEffect(() =>{
-    if(isClose)
-    {
+  useEffect(() => {
+    if (isClose) {
       setApprovalText("")
     }
-  },[isClose])
+  }, [isClose])
 
   const getTitle = () => {
     if (status === 2) {
-        return "Approve";
+      return "Approve";
     } else if (status === 3) {
-        return "Sign";
+      return "Sign";
     } else if (status === 4) {
-        return "Reject";
+      return "Reject";
     }
   };
 
@@ -71,12 +69,12 @@ const ModalApproval = ({
         onCancel={isClose}
         destroyOnClose={true}
         footer={[
-          <Button key="submit" onClick={handleSubmit(onSubmit)} className='modalSubmit' 
+          <Button key="submit" onClick={handleSubmit(onSubmit)} className='modalSubmit'
             disabled={!approvalText || approvalText.length < 0 ? true : false}
           >
             {getTitle()}
           </Button>,
-          
+
           <Button key="cancel" onClick={isClose} className='modalCancel'>Cancel</Button>,
         ]}
       >

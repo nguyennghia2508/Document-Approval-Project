@@ -47,10 +47,11 @@ const TitleBody = ({
 
     const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
+    const [isLastApprover, setIsLastApprover] = useState(false)
     const [personIndex, setPersonIndex] = useState(null)
     const [personDuty, setPersonDuty] = useState(null)
-    
-    const openModal = (value, index,PersonDuty) => {
+
+    const openModal = (value, index, PersonDuty) => {
         setPersonDuty(PersonDuty)
         setPersonIndex(index)
         setStatus(value)
@@ -75,12 +76,10 @@ const TitleBody = ({
                 handleComment(res.comments)
                 const document = res.document
                 const signers = res.signers
-                if(document && document.length)
-                {
+                if (document && document.length) {
                     handleDocument(document)
                 }
-                if(signers && signers.length)
-                {
+                if (signers && signers.length) {
                     handleSigner(signers)
                 }
             }
@@ -100,8 +99,7 @@ const TitleBody = ({
                 handleComment(res.comments)
 
                 const document = res.document
-                if(document && document.length)
-                {
+                if (document && document.length) {
                     handleDocument(document)
                 }
             }
@@ -113,7 +111,7 @@ const TitleBody = ({
                 Index: personIndex,
                 ApprovalPersonName: currentUser.Username,
                 DocumentApprovalId: dataDocument.DocumentApprovalId,
-                PersonDuty:personDuty,
+                PersonDuty: personDuty,
                 Comment: data.submiModal,
             };
             const res = await approvalPersonApi.RejectDocument(dataObject)
@@ -127,7 +125,7 @@ const TitleBody = ({
     }
 
     const handleClick = (actionType) => {
-        setValueInput("IsDraft",actionType)
+        setValueInput("IsDraft", actionType)
         onSubmit();
     };
 
@@ -157,11 +155,11 @@ const TitleBody = ({
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <PdfDownload
-                                dataDocument={dataDocument}
-                                listApprover={listApprover}
-                                listSigner={listSigner}
-                                approveFile={approveFile}
-                                referenceFile={referenceFile}
+                                    dataDocument={dataDocument}
+                                    listApprover={listApprover}
+                                    listSigner={listSigner}
+                                    approveFile={approveFile}
+                                    referenceFile={referenceFile}
                                 />
                                 <Link><ShareAltOutlined />Share</Link>
                                 {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
@@ -170,24 +168,25 @@ const TitleBody = ({
                                     &&
                                     <React.Fragment key={index}>
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
-                                        <Link onClick={() => openModal(4, value.Index,value.PersonDuty)}><CloseOutlined />Reject</Link>
+                                        <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
                                         <Link><MailOutlined />Forward</Link>
-                                    </React.Fragment>
+                                    </React.Fragment >
                                 ))}
                                 {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
                                     const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
-                                    const isLastApproverApproved = listApprover.some((ap,index) =>
+                                    const isLastApproverApproved = listApprover.some((ap, index) =>
                                         value.Index === 1 &&
                                         value.IsProcessing &&
                                         ap.ApprovalPersonId === value.ApprovalPersonId &&
                                         ap.IsLast &&
                                         ap.IsApprove
                                     );
+                                    console.log(isLastApproverApproved); // Đã di chuyển dòng này ra ngoài vòng lặp map
                                     if (isCurrentUserSigner || isLastApproverApproved) {
                                         return (
                                             <React.Fragment key={index}>
                                                 <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
-                                                <Link onClick={() => openModal(4, value.Index,value.PersonDuty)}><CloseOutlined />Reject</Link>
+                                                <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
                                                 <Link><MailOutlined />Forward</Link>
                                             </React.Fragment>
                                         );
@@ -197,12 +196,13 @@ const TitleBody = ({
                                 })}
 
 
+
                             </>
                             :
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
-                                <Link  onClick={() => handleClick(true)}><SaveOutlined />Save draft</Link>
-                                {dataDocument && dataDocument.Status === 3 && dataDocument.IsReject ? 
+                                <Link onClick={() => handleClick(true)}><SaveOutlined />Save draft</Link>
+                                {dataDocument && dataDocument.Status === 3 && dataDocument.IsReject ?
                                     <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Re-submit</Link>
                                     :
                                     <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Submit</Link>
@@ -213,7 +213,6 @@ const TitleBody = ({
                     <div className='titlebody-right'>
                     </div>
                 </div >
-
                 :
                 <div className='titlebody-nonform'>
                     <label className='titlebody-left'>{label}</label>
@@ -229,5 +228,6 @@ const TitleBody = ({
         </>
     )
 }
+
 
 export default TitleBody;

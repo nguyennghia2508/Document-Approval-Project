@@ -18,6 +18,8 @@ import FileUpload from '../../components/FileUpload';
 import ButtonSelect from '../../components/ButtonSelect';
 import categoryApi from '../../api/categoryApi';
 import userApi from '../../api/userApi';
+import Loading from "../../components/Loading";
+
 
 const EditDocument = () => {
     const {
@@ -61,12 +63,19 @@ const EditDocument = () => {
     const [selectedFileReference, setSelectedFileReference] = useState([])
     const [approvers, setApprovers] = useState([])
     const [signers, setSigners] = useState([])
-    
+
+
+    const [isLoading, setIsLoading] = useState(false);
+
+
+
 
     useEffect(() => {
         const getDocument = async () => {
             try {
-                const data = await documentApprovalApi.getEditDocumentById(id,user.Id)
+                const data = await documentApprovalApi.getEditDocumentById(id, user.Id)
+                setIsLoading(true)
+
                 const document = data.document
                 const files = data.files
                 setDataDocument(data.document)
@@ -88,7 +97,18 @@ const EditDocument = () => {
 
                 const listSigner = data.persons.filter(value => value.PersonDuty === 2);
                 setSigners(listSigner)
-
+                if (data.state === "true") {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+                } else {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+                    // setIsLoading(false)
+                }
             } catch (err) {
                 const data = err.data
                 if (data.state && data.state === "false") {
@@ -113,11 +133,11 @@ const EditDocument = () => {
     }, []);
 
     const department = departments
-    .filter(value => value.DepartmentLevel === 1)
-    .map(value => ({
-        value: value.Id,
-        label: value.DepartmentName
-    }));
+        .filter(value => value.DepartmentLevel === 1)
+        .map(value => ({
+            value: value.Id,
+            label: value.DepartmentName
+        }));
 
     const handleDepartmentChange = (value) => {
 
@@ -181,7 +201,7 @@ const EditDocument = () => {
                     setCategoryData(listCategory);
                 } else {
                     if (!initialCategorySet) {
-                        const initialSelectedCategory = categoryData.length > 0 && selectedCategory !== null ? selectedCategory :  categoryData[0].Id;
+                        const initialSelectedCategory = categoryData.length > 0 && selectedCategory !== null ? selectedCategory : categoryData[0].Id;
                         setSelectedCategory(initialSelectedCategory);
                         setInitialCategorySet(true);
                         setValue("category", initialSelectedCategory)
@@ -203,14 +223,14 @@ const EditDocument = () => {
             }
         };
         getCategory();
-    }, [selectedCategory, categoryData, initialCategorySet,setValue]);
+    }, [selectedCategory, categoryData, initialCategorySet, setValue]);
 
-    
+
     const handleCategoryChange = (value) => {
         setSelectedCategory(value);
 
     };
-    
+
     const handleDocumentTypeChange = (value) => {
         setSelectedDocumentType(value);
     };
@@ -231,14 +251,14 @@ const EditDocument = () => {
                 setSectionOptions([]);
             }
         }
-    }, [selectedDepartment,departments]);
+    }, [selectedDepartment, departments]);
 
     useEffect(() => {
         if (selectedSection) {
             setSelectedUnit(dataDocument.UnitId)
             const existSection = departments
-            .flatMap(department => department.Children || [])
-            .find(section => section.Id === selectedSection);
+                .flatMap(department => department.Children || [])
+                .find(section => section.Id === selectedSection);
             if (existSection) {
                 const units = (existSection.Children || [])
                     .filter(unit => unit.DepartmentLevel === 3)
@@ -279,7 +299,7 @@ const EditDocument = () => {
 
         formData.append("Data", JSON.stringify(dataObject));
 
-        
+
         if (data.approve && data.approve.length > 0) {
             for (let i = 0; i < data.approve.length; i++) {
                 formData.append('approve', data.approve[i]);
@@ -293,31 +313,29 @@ const EditDocument = () => {
 
         const approvalPerson = {
             approvers: data.approvers.map(value => ({
-                Index:value.Index,
+                Index: value.Index,
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
-                PersonDuty:value.PersonDuty,
-                DocumentApprovalId:value.DocumentApprovalId,
+                PersonDuty: value.PersonDuty,
+                DocumentApprovalId: value.DocumentApprovalId,
             })),
             signers: data.signers.map(value => ({
-                Index:value.Index,
+                Index: value.Index,
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
-                PersonDuty:value.PersonDuty,
-                DocumentApprovalId:value.DocumentApprovalId,
-            })) 
+                PersonDuty: value.PersonDuty,
+                DocumentApprovalId: value.DocumentApprovalId,
+            }))
         };
 
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
-        const res = await documentApprovalApi.editDocumentApproval(dataDocument.Id,formData);
+        const res = await documentApprovalApi.editDocumentApproval(dataDocument.Id, formData);
         if (res.state === "true") {
             const dc = res.dc
-            if(dc.IsDraft)
-            {
+            if (dc.IsDraft) {
                 navigate(`/avn/documentapproval/edit/${dc.Id}`)
             }
-            else
-            {
+            else {
                 navigate(`/avn/documentapproval/view/${dc.Id}`)
             }
         }
@@ -325,115 +343,117 @@ const EditDocument = () => {
 
     return (
         <>
-            <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)} >
-                <TitleBody
-                    currentUser={user}
-                    dataDocument={dataDocument}
-                    label="eDocument Approval"
-                    isForm={true}
-                    isApproval={false}
-                    setValueInput={setValue} 
-                    onSubmit={handleSubmit(onSubmit)}
-                    href={"/avn/documentapproval"}
-                />
-                <div className='viewApproval-container '>
-                    <div className="viewtitle">
-                        <div className='viewtitle-status'>
-                        </div>
-                        <h1 >DOCUMENT APPROVAL</h1></div>
-                    <div className='viewInput'>
-                        <div className='viewInput-top'>
-                            <div className='viewInput-element'>
-                                <InputText label="Applicant" 
-                                setValue={setValue} 
-                                selectedApplicant={selectedApplicant} 
-                                value={selectedApplicant} 
-                                id="applicant" name="applicant" 
-                                disabled={true} control={control} />
+            {isLoading ? <Loading /> :
+                <>
+                    <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)} >
+                        <TitleBody
+                            currentUser={user}
+                            dataDocument={dataDocument}
+                            label="eDocument Approval"
+                            isForm={true}
+                            isApproval={false}
+                            setValueInput={setValue}
+                            onSubmit={handleSubmit(onSubmit)}
+                            href={"/avn/documentapproval"}
+                        />
+                        <div className='viewApproval-container '>
+                            <div className="viewtitle">
+                                <div className='viewtitle-status'>
+                                </div>
+                                <h1 >DOCUMENT APPROVAL</h1></div>
+                            <div className='viewInput'>
+                                <div className='viewInput-top'>
+                                    <div className='viewInput-element'>
+                                        <InputText label="Applicant"
+                                            setValue={setValue}
+                                            selectedApplicant={selectedApplicant}
+                                            value={selectedApplicant}
+                                            id="applicant" name="applicant"
+                                            disabled={true} control={control} />
+                                    </div>
+                                    <div className='viewInput-element'>
+                                        <InputSelection label="Department"
+                                            id="department"
+                                            name="department"
+                                            value={selectedDepartment}
+                                            control={control}
+                                            onChange={handleDepartmentChange}
+                                            setValue={setValue}
+                                            options={department}
+                                            disabled={false}
+                                            required />
+                                    </div>
+                                    <div className='viewInput-element'>
+                                        <InputSelection label="Section" id="section" name="section" setValue={setValue} value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} disabled={false} required />
+                                    </div>
+                                    <div className='viewInput-element'>
+                                        <InputSelection label="Unit" id="unit" name="unit" setValue={setValue} value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} disabled={false} required />
+                                    </div>
+
+                                </div >
+                                <div className='viewInput-bot'>
+                                    <div className='viewInput-element'>
+                                        <InputSelection label="Categories" id="category" name="category" control={control} value={selectedCategory} onChange={handleCategoryChange} options={categoryOptions} disabled={false} required />
+                                    </div>
+                                    <div className='viewInput-element'>
+                                        <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} disabled={false} required />
+                                    </div>
+                                    <div className='viewInput-element'>
+                                        <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={false} control={control} />
+                                    </div>
+                                    <div className='viewInput-element'>
+                                        <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
+
+                                    </div>
+
+                                </div >
+                            </div >
+                            <div className='viewDocument'>
+                                <div className='viewDocument-subject'>
+                                    <InputText setValue={setValue} label="Subject" id="subject" name="subject" value={selectedSubject} control={control} />
+                                </div>
+                                <div className='viewDocument-content'>
+                                    <InputText setValue={setValue} label="Content summary" id="content" name="content" value={selectedContent} control={control} />
+                                </div>
+                                <div className='viewDocument-approve'>
+                                    <FileUpload DocumentType={1} maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
+                                        setValue={setValue} control={control} type="primary"
+                                        files={selectedFilesApproved}
+                                    />
+                                </div>
+                                <div className='viewDocument-reference'>
+                                    <FileUpload DocumentType={2} maxSize={50} label="Documents for reference" id="reference" name="reference"
+                                        setValue={setValue} control={control} type="primary"
+                                        files={selectedFileReference}
+                                    />
+                                </div>
+
                             </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Department" 
-                                id="department" 
-                                name="department" 
-                                value={selectedDepartment} 
-                                control={control}  
-                                onChange={handleDepartmentChange}
-                                setValue={setValue}
-                                options={department} 
-                                disabled={false} 
-                                required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Section" id="section" name="section" setValue={setValue} value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} disabled={false} required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Unit" id="unit" name="unit" setValue={setValue} value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} disabled={false} required />
-                            </div>
+                            <Divider style={{
+                                backgroundColor: 'GREY',
+                                height: '3px',
+                                margin: '20px 0',
+                                border: 'none'
+                            }} />
 
                         </div >
-                        <div className='viewInput-bot'>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Categories" id="category" name="category" control={control} value={selectedCategory}  onChange={handleCategoryChange} options={categoryOptions} disabled={false} required />
+                        <div className='signapproval-container'>
+                            <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
+                            <div className='approval-email' style={{ paddingBottom: "20px" }}>
+                                <ButtonSelect id="approvers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={1} name="approvers" listPerson={approvers && approvers} control={control} data={userData && userData} setValue={setValue} labelName="A" />
                             </div>
-                            <div className='viewInput-element'>
-                                <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} disabled={false} required />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={false} control={control} />
-                            </div>
-                            <div className='viewInput-element'>
-                                <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
+                            <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
 
+                            <div className='sign-email'>
+                                <ButtonSelect id="signers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={2} name="signers" listPerson={signers && signers} control={control} data={userData && userData} setValue={setValue} labelName="S" />
                             </div>
-
-                        </div >
-                    </div >
-                    <div className='viewDocument'>
-                        <div className='viewDocument-subject'>
-                            <InputText setValue={setValue} label="Subject" id="subject" name="subject" value={selectedSubject} control={control} />
-                        </div>
-                        <div className='viewDocument-content'>
-                            <InputText setValue={setValue} label="Content summary" id="content" name="content" value={selectedContent} control={control} />
-                        </div>
-                        <div className='viewDocument-approve'>
-                            <FileUpload DocumentType={1} maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
-                                setValue={setValue} control={control} type="primary" 
-                                files={selectedFilesApproved}
-                            />
-                        </div>
-                        <div className='viewDocument-reference'>
-                            <FileUpload DocumentType={2} maxSize={50} label="Documents for reference" id="reference" name="reference"
-                                setValue={setValue} control={control} type="primary" 
-                                files={selectedFileReference}
-                            />
                         </div>
 
-                    </div>
-                    <Divider style={{
-                        backgroundColor: 'GREY',
-                        height: '3px',
-                        margin: '20px 0',
-                        border: 'none'
-                    }} />
+                    </form >
 
-                </div >
-                <div className='signapproval-container'>
-                    <label className='label' style={{ fontWeight: "bold", }}>Approvers</label>
-                    <div className='approval-email' style={{ paddingBottom: "20px" }}>
-                        <ButtonSelect id="approvers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={1} name="approvers" listPerson={approvers && approvers} control={control} data={userData && userData} setValue={setValue} labelName="A" />
-                    </div>
-                    <label className='label' style={{ fontWeight: "bold", }}>Signers/Seal (if any)</label>
-
-                    <div className='sign-email'>
-                        <ButtonSelect id="signers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={2} name="signers" listPerson={signers && signers} control={control} data={userData && userData} setValue={setValue} labelName="S" />
-                    </div>
-                </div>
-
-            </form >
-
+                </>
+            }
         </>
-
-
 
     );
 };
