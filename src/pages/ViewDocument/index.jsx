@@ -301,6 +301,7 @@ const ViewDocument = () => {
                         </div>
 
                     </form >
+
                     <div className='comment'>
                         <div className='commentInput'>
                             <label className='commentInput-label'><CommentOutlined />Comment</label>
@@ -425,7 +426,6 @@ const ViewDocument = () => {
                 </>
             }
         </>
-
     );
 };
 
