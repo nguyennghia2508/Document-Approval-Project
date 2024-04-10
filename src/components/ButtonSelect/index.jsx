@@ -3,6 +3,7 @@ import { Select, Button, Input } from 'antd';
 import { PlusOutlined, DeleteOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
 import './style.scss'
 import InputSelection from '../InputSelection';
+import { v4 as uuidv4 } from 'uuid';
 
 const { Option } = Select;
 
@@ -12,13 +13,16 @@ const ButtonSelect = ({
     id,
     name,
     control,
+    PersonDuty,
     setValue,
+    listPerson,
+    DocumentApprovalId,
 }) => {
 
     const userData = data.map((value, index) => ({
         value: value.Id,
         label: (
-            <div className='filter-option' key={index}>
+            <div className='filter-option' key={uuidv4()}>
                 <span>{value.Username}</span>
                 <span>{value.Email}</span>
             </div>
@@ -29,6 +33,22 @@ const ButtonSelect = ({
 
     const [editLabelIndex, setEditLabelIndex] = useState(null);
     const [inputSelects, setInputSelects] = useState([]);
+
+    useEffect(() => {
+        if (data && data.length > 0 && listPerson && listPerson.length > 0) {
+            const initialInputSelects = listPerson.map((person, index) => ({
+                id: person.ApprovalPersonId,
+                userName: person.ApprovalPersonName,
+                label: `${labelName} ${index + 1}`, 
+                selectedOption: userData?.find(user => user.value === person.ApprovalPersonId)?.value,
+                PersonDuty:person.PersonDuty,
+                DocumentApprovalId:person.DocumentApprovalId,
+                Index:person.Index,
+            }));
+            
+            setInputSelects(initialInputSelects);
+        }
+    }, [listPerson,data]);
 
     const handleAddInputSelect = () => {
         let maxLabelNumber = 0;
@@ -43,29 +63,34 @@ const ButtonSelect = ({
 
         setInputSelects(prevInputSelects => {
             const newId = prevInputSelects.length;
-            return [...prevInputSelects, { id: newId, userName: undefined, label: newLabel, selectedOption: undefined }];
+            return [...prevInputSelects, { id: newId, userName: undefined, 
+                label: newLabel, selectedOption: undefined, 
+                PersonDuty: undefined,
+                DocumentApprovalId: undefined,
+                Index: undefined,
+            }];
         });
     };
 
 
-    const handleDeleteInputSelect = id => {
+    const handleDeleteInputSelect = (indexInput) => {
         setInputSelects(prevInputSelects => {
-            const filteredInputSelects = prevInputSelects.filter(inputSelect => inputSelect.id !== id);
+            const filteredInputSelects = prevInputSelects.filter(inputSelect => inputSelect.Index !== indexInput);
             return filteredInputSelects.map((inputSelect, index) => ({
                 ...inputSelect,
                 id: index,
+                Index:index+1,
             }));
         });
     };
 
-    const handleEditLabel = id => {
+    const handleEditLabel = (id) => {
         setEditLabelIndex(id);
     };
 
-    const handleSaveLabel = (id, newLabel) => {
-        console.log(newLabel)
+    const handleSaveLabel = (id,indexInput, newLabel) => {
         setInputSelects(inputSelects.map(inputSelect => {
-            if (inputSelect.id === id) {
+            if (inputSelect.Index === indexInput && inputSelect.id === id) {
                 return { ...inputSelect, label: newLabel };
             }
             return inputSelect;
@@ -73,14 +98,26 @@ const ButtonSelect = ({
         setEditLabelIndex(null);
     };
 
-    const handleSelectChange = (id, value) => {
-        setInputSelects(inputSelects.map(inputSelect => {
-            if (inputSelect.id === id) {
-                return { ...inputSelect, userName: userData[value].name, selectedOption: value };
+    const handleSelectChange = (id,indexInput, value) => {
+        setInputSelects(inputSelects.map((inputSelect,index) => {
+            if (inputSelect.Index === indexInput && inputSelect.id === id) {
+                const updatedInputSelect = {
+                    ...inputSelect,
+                    userName: userData[value].name,
+                    selectedOption: value,
+                    PersonDuty: PersonDuty && PersonDuty === 1 ? 1 : 2,
+                    Index:index+1,
+                };
+    
+                if (DocumentApprovalId) {
+                    updatedInputSelect.DocumentApprovalId = DocumentApprovalId;
+                }
+    
+                return updatedInputSelect;
             }
             return inputSelect;
         }));
-    };
+    };    
 
     useEffect(() => {
         setValue(name, inputSelects)
@@ -90,26 +127,26 @@ const ButtonSelect = ({
         <>
             <div className='approve-sign' >
                 {inputSelects.map(inputSelect => (
-                    <div key={inputSelect.id} className='btn-selection-container'>
+                    <div key={uuidv4()} className='btn-selection-container'>
 
                         <div className='label'>
-                            {editLabelIndex === inputSelect.id ? (
+                            {editLabelIndex === inputSelect.Index ? (
                                 <Input
                                     defaultValue={inputSelect.label}
-                                    onPressEnter={(e) => handleSaveLabel(inputSelect.id, e.target.value)}
-                                    onBlur={(e) => handleSaveLabel(inputSelect.id, e.target.value)}
+                                    onPressEnter={(e) => handleSaveLabel(inputSelect.id,inputSelect.Index, e.target.value)}
+                                    onBlur={(e) => handleSaveLabel(inputSelect.id,inputSelect.Index, e.target.value)}
                                 />
                             ) : (
                                 <span style={{ marginRight: '8px' }}>{inputSelect.label} </span>
                             )}
 
-                            {editLabelIndex === inputSelect.id ? (
-                                <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id, inputSelect.label)}>
+                            {editLabelIndex === inputSelect.Index ? (
+                                <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id,inputSelect.Index, inputSelect.label)}>
                                 </Button>
                             ) : (
-                                <Button type="danger" icon={<EditOutlined />} onClick={() => handleEditLabel(inputSelect.id)} />
+                                <Button type="danger" icon={<EditOutlined />} onClick={() => handleEditLabel(inputSelect.Index)} />
                             )}
-                            <Button type="danger" icon={<DeleteOutlined />} onClick={() => handleDeleteInputSelect(inputSelect.id)}>
+                            <Button type="danger" icon={<DeleteOutlined />} onClick={() => handleDeleteInputSelect(inputSelect.Index)}>
                             </Button>
                         </div>
 
@@ -117,14 +154,14 @@ const ButtonSelect = ({
                         <div className='selection'>
 
                             <InputSelection
-                                label="Document Type"
                                 id={id}
                                 name={name}
                                 defaultValue="--Select approver--"
                                 control={control}
                                 value={inputSelect.selectedOption}
                                 onChange={handleSelectChange}
-                                indexInput={inputSelect.id}
+                                indexInput={inputSelect.Index}
+                                idInput={inputSelect.id}
                                 options={userData}
                                 multifield={true}
                             >

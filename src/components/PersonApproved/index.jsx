@@ -1,6 +1,7 @@
 import React from 'react';
 import './style.scss';
 import { Image } from 'antd';
+import moment from 'moment';
 
 const PersonApproved = ({ options }) => {
 
@@ -18,8 +19,14 @@ const PersonApproved = ({ options }) => {
                             <tr>
                                 <td>
                                     <div className='personApproved-body'>
-                                        <label>asdasd</label>
-                                        <Image style={{ width: "100px" }} src={value.IsApprove ? '/approved.png' : undefined} />
+                                        <label>{value.ExecutionDate ? moment(value.ExecutionDate).format('DD/MM/YYYY HH:mm:ss') : ""}</label>
+                                        {value.IsApprove || value.IsReject ? (
+                                            <Image style={{ width: "100px" }} src={
+                                                value.IsApprove ? '/signed.png' : '/rejected.png'
+                                            } />
+                                        ) : (
+                                            <Image style={{ width: "100px" }} src='' />
+                                        )}
                                     </div>
                                     <span>{value.ApprovalPersonName}</span>
                                 </td>
@@ -31,13 +38,19 @@ const PersonApproved = ({ options }) => {
                         {value.PersonDuty === 2 ?
                             <>
                             <tr>
-                                <th>Approver {value.Index}</th>
+                                <th>Signer {value.Index}</th>
                             </tr>
                             <tr>
                                 <td>
                                     <div className='personApproved-body'>
-                                        <label>asdasd</label>
-                                        <Image style={{ width: "100px" }} src={value.IsSign ? '/signed.png' : undefined} />
+                                        <label>{value.ExecutionDate ? moment(value.ExecutionDate).format('DD/MM/YYYY HH:mm:ss') : ""}</label>
+                                        {value.IsSign || value.IsReject ? (
+                                            <Image style={{ width: "100px" }} src={
+                                                value.IsSign ? '/signed.png' : '/rejected.png'
+                                            } />
+                                        ) : (
+                                            <Image style={{ width: "100px" }} src='' />
+                                        )}
                                     </div>
                                     <span>{value.ApprovalPersonName}</span>
                                 </td>

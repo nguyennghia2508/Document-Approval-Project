@@ -44,7 +44,7 @@ const Login = () => {
       if (!isAuth) {
 
       } else {
-        navigate('/')
+        navigate('/avn/documentapproval')
       }
     }
     checkAuth()

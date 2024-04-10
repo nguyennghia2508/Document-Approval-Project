@@ -1,6 +1,7 @@
 import { Table, Pagination } from 'antd';
 import './style.scss';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 
 const CustomTable = ({
   list = [],
@@ -17,8 +18,18 @@ const CustomTable = ({
   // return `Hiển thị ${start} - ${end} trong ${totalItems} dữ liệu`;
   // };
 
+  const user = useSelector((state) => state.user.value)
+
   const handleRowClick = (record, index) => {
-    navigate(`${href}/view/${record.Id}`)
+    if (user.Id === record.ApplicantId && record.Status === 0 && record.IsDraft === true) {
+      navigate(`${href}/edit/${record.Id}`)
+    }
+    else if (user.Id === record.ApplicantId && record.Status === 3 && record.IsReject === true) {
+      navigate(`${href}/edit/${record.Id}`)
+    }
+    else {
+      navigate(`${href}/view/${record.Id}`)
+    }
   };
 
   return (

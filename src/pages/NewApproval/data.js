@@ -1,6 +1,4 @@
 /* eslint-disable no-useless-escape */
-
-import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 export const schema = () => {
@@ -28,10 +26,10 @@ export const schema = () => {
         .mixed()
         .required(`${message} Document type`),
     subject: yup
-        .mixed()
+        .string()
         .required(`${message} Subject`),
     content: yup
-        .mixed()
+        .string()
         .required(`${message} Content summary`),
     approve: yup
         .mixed()
