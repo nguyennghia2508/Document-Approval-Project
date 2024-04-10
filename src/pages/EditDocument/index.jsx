@@ -65,10 +65,8 @@ const EditDocument = () => {
     const [signers, setSigners] = useState([])
 
 
+
     const [isLoading, setIsLoading] = useState(false);
-
-
-
 
     useEffect(() => {
         const getDocument = async () => {
@@ -316,6 +314,7 @@ const EditDocument = () => {
                 Index: value.Index,
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                ApprovalPersonEmail: value.email,
                 PersonDuty: value.PersonDuty,
                 DocumentApprovalId: value.DocumentApprovalId,
             })),
@@ -323,6 +322,7 @@ const EditDocument = () => {
                 Index: value.Index,
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                ApprovalPersonEmail: value.email,
                 PersonDuty: value.PersonDuty,
                 DocumentApprovalId: value.DocumentApprovalId,
             }))
@@ -448,9 +448,7 @@ const EditDocument = () => {
                                 <ButtonSelect id="signers" DocumentApprovalId={dataDocument?.DocumentApprovalId} PersonDuty={2} name="signers" listPerson={signers && signers} control={control} data={userData && userData} setValue={setValue} labelName="S" />
                             </div>
                         </div>
-
                     </form >
-
                 </>
             }
         </>

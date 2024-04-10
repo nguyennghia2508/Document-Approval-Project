@@ -67,23 +67,23 @@ export const schema = () => {
                 return isValid;
             }),
         }),
-    signers: yup
-        .mixed()
-        .when("approve", {
-            is: (approve) => approve && approve.length > 0,
-            then: (schema) => schema.test("signers", `${message} Signers/Seal (if any)`, (value) => {
-                let isValid = true;
-                if (!value || value.length === 0) {
-                    isValid = false;
-                } else {
-                    value.forEach(item => {
-                        if (item.userName === undefined && item.selectedOption === undefined) {
-                            isValid = false;
-                        }
-                    });
-                }
-                return isValid;
-            }),
-        })
+    // signers: yup
+    //     .mixed()
+    //     .when("approve", {
+    //         is: (approve) => approve && approve.length > 0,
+    //         then: (schema) => schema.test("signers", `${message} Signers/Seal (if any)`, (value) => {
+    //             let isValid = true;
+    //             if (!value || value.length === 0) {
+    //                 isValid = false;
+    //             } else {
+    //                 value.forEach(item => {
+    //                     if (item.userName === undefined && item.selectedOption === undefined) {
+    //                         isValid = false;
+    //                     }
+    //                 });
+    //             }
+    //             return isValid;
+    //         }),
+    //     })
     })
 };

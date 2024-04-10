@@ -71,33 +71,33 @@ const DocumentApproval = () => {
 
 
 
-  useEffect(() => {
-    const getAllDocumentApproval = async () => {
-      try {
-        if (!tabView.filter) {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id,
-            tabName: tabView.tabName
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
-          console.log("dataDoc", dataDocument)
+  // useEffect(() => {
+  //   const getAllDocumentApproval = async () => {
+  //     try {
+  //       if (!tabView.filter) {
+  //         const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+  //           userId: user.Id,
+  //           tabName: tabView.tabName
+  //         })
+  //         setDataDocument(dataAllDocumentApproval.listDcapproval)
+  //         console.log("dataDoc", dataDocument)
 
-        }
-        else {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id, tabName: tabView.tabName,
-            dataFilter: tabView.filterList
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
-          console.log("dataDoc", dataDocument)
+  //       }
+  //       else {
+  //         const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+  //           userId: user.Id, tabName: tabView.tabName,
+  //           dataFilter: tabView.filterList
+  //         })
+  //         setDataDocument(dataAllDocumentApproval.listDcapproval)
+  //         console.log("dataDoc", dataDocument)
 
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getAllDocumentApproval();
-  }, [tabView, user])
+  //       }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   getAllDocumentApproval();
+  // }, [tabView, user])
 
   const [exportExcel, setExportExcel] = useState('')
   useEffect(() => {
@@ -117,7 +117,6 @@ const DocumentApproval = () => {
       unit: data.UnitName
 
     }));
-    console.log(dataDocument)
 
     setExportExcel(listDocument)
   }, [dataDocument])

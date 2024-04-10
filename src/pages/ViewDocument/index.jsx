@@ -16,6 +16,7 @@ import { CommentOutlined, EnterOutlined } from '@ant-design/icons';
 import CommentInput from '../../components/CommentInput';
 import PersonApproved from '../../components/PersonApproved';
 import commentApi from "../../api/commentApi"
+import userApi from '../../api/userApi';
 import Loading from "../../components/Loading";
 
 const ViewDocument = () => {
@@ -33,6 +34,7 @@ const ViewDocument = () => {
     const { id } = useParams();
     const urlBE = "https://localhost:44389"
 
+    const [userData, setUserData] = useState([])
     const [departmentData, setDepartmentData] = useState([]);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [unitOptions, setUnitOptions] = useState([]);
@@ -113,6 +115,18 @@ const ViewDocument = () => {
             }
         }
         getDocument();
+    }, []);
+
+    useEffect(() => {
+        const getAllUser = async () => {
+            try {
+                const data = await userApi.getAll()
+                setUserData(data.listUser)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getAllUser();
     }, []);
 
     const handleToggleCommentInput = (index) => {

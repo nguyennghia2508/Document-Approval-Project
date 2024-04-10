@@ -229,12 +229,14 @@ const New = () => {
             approvers: data.approvers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
+                ApprovalPersonEmail: value.email,
                 PersonDuty: value.PersonDuty
             })),
             signers: data.signers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
-                PersonDuty: value.PersonDuty
+                ApprovalPersonEmail: value.email,
+                PersonDuty: value.PersonDuty,
             }))
         };
 
