@@ -20,11 +20,18 @@ const PersonApproved = ({ options }) => {
                                 <td>
                                     <div className='personApproved-body'>
                                         <label>{value.ExecutionDate ? moment(value.ExecutionDate).format('DD/MM/YYYY HH:mm:ss') : ""}</label>
-                                        {value.IsApprove || value.IsReject ? (
-                                            <Image style={{ width: "100px" }} src={
-                                                value.IsApprove ? '/signed.png' : '/rejected.png'
-                                            } />
-                                        ) : (
+                                        {value.IsApprove ? (
+                                            <Image style={{ width: "100px" }} src={'/approved.png'} />
+                                        ) 
+                                        :
+                                        value.IsSign ? (
+                                            <Image style={{ width: "100px" }} src={'/signed.png'} />
+                                        ) 
+                                        :
+                                        value.IsReject ? (
+                                            <Image style={{ width: "100px" }} src={'/rejected.png'} />
+                                        )
+                                        : (
                                             <Image style={{ width: "100px" }} src='' />
                                         )}
                                     </div>

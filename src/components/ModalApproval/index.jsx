@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal, Input } from 'antd';
 import './style.scss'
 import { Controller, useForm } from 'react-hook-form';
+import InputSelection from '../InputSelection';
 
 const { TextArea } = Input;
 
@@ -9,6 +10,8 @@ const ModalApproval = ({
   isOpen,
   isSubmit,
   isClose,
+  isForward,
+  listUser,
   name,
   status,
 }) => {
@@ -44,6 +47,8 @@ const ModalApproval = ({
       return "Sign";
     } else if (status === 4) {
       return "Reject";
+    } else if (status === 5) {
+      return "Forward";
     }
   };
 
@@ -79,6 +84,13 @@ const ModalApproval = ({
         ]}
       >
         <form>
+          {isForward &&
+            <InputSelection
+              name="selectUser"
+              control={control}
+              options={listUser}
+            />
+          }
           <Controller
             name={name}
             control={control}
@@ -86,7 +98,7 @@ const ModalApproval = ({
             render={({ field }) => (
               <TextArea
                 rows={4}
-                placeholder="Enter approval text"
+                placeholder="Enter text"
                 value={approvalText}
                 onChange={(e) => handleChange(e, field)}
               />

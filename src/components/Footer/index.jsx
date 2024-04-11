@@ -3,6 +3,7 @@ import "./index.scss"
 import { CopyrightOutlined } from '@ant-design/icons';
 
 import { Col, Row, Image } from 'antd';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 const Footer = () => {
     return (
@@ -21,8 +22,7 @@ const Footer = () => {
             </Row>
             <Row className='footer-right'>
                 <Col className='footer-lang' >
-                    <Image src='/united-states.svg'></Image>
-                    <span>VN</span>
+                    <LanguageSwitcher />
                 </Col>
                 <Col><a href='https://tasken.io/'>Website</a></Col>
                 <Col><a href='https://tasken.io/terms'>Term</a></Col>

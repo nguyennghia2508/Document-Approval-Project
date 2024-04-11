@@ -10,6 +10,7 @@ import ModalApproval from '../ModalApproval';
 import approvalPersonApi from '../../api/approvalPersonApi';
 import Excel from '../Excel';
 import PdfDownload from '../PdfDownload';
+import { v4 as uuidv4 } from 'uuid';
 
 const { TextArea } = Input;
 
@@ -23,12 +24,14 @@ const TitleBody = ({
     href,
     dataDocument,
     currentUser,
+    userData,
     handleDocument,
     handleApprover,
     handleSigner,
     handleComment,
     listApprover,
     listSigner,
+    comment,
     dataArray,
     setValueInput,
     approveFile,
@@ -45,16 +48,31 @@ const TitleBody = ({
 
     });
 
+    const listUser = userData?.map((value, index) => ({
+        value: value.Id,
+        label: (
+            <div className='filter-option' key={uuidv4()}>
+                <span>{value.Username}</span>
+                <span>{value.Email}</span>
+            </div>
+        ),
+        name: value.Username,
+        email: value.Email,
+    }));
+
     const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
     const [isLastApprover, setIsLastApprover] = useState(false)
     const [personIndex, setPersonIndex] = useState(null)
     const [personDuty, setPersonDuty] = useState(null)
-
+    const [isForward, setIsForward] = useState(false)
     const openModal = (value, index, PersonDuty) => {
         setPersonDuty(PersonDuty)
         setPersonIndex(index)
         setStatus(value)
+        if (value === 5) {
+            setIsForward(true)
+        }
         setModalOpen(true);
     };
     const closeModal = () => {
@@ -144,6 +162,8 @@ const TitleBody = ({
                 isOpen={modalOpen}
                 isSubmit={submitModal}
                 isClose={closeModal}
+                listUser={listUser}
+                isForward={isForward}
                 name="submiModal"
                 id="submiModal"
             />
@@ -160,6 +180,7 @@ const TitleBody = ({
                                     listSigner={listSigner}
                                     approveFile={approveFile}
                                     referenceFile={referenceFile}
+                                    comment={comment}
                                 />
                                 <Link><ShareAltOutlined />Share</Link>
                                 {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
@@ -169,31 +190,33 @@ const TitleBody = ({
                                     <React.Fragment key={index}>
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
                                         <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
-                                        <Link><MailOutlined />Forward</Link>
-                                    </React.Fragment >
+                                        <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
+                                    </React.Fragment>
                                 ))}
-                                {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
-                                    const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
-                                    const isLastApproverApproved = listApprover.some((ap, index) =>
-                                        value.Index === 1 &&
-                                        value.IsProcessing &&
-                                        ap.ApprovalPersonId === value.ApprovalPersonId &&
-                                        ap.IsLast &&
-                                        ap.IsApprove
-                                    );
-                                    console.log(isLastApproverApproved); // Đã di chuyển dòng này ra ngoài vòng lặp map
-                                    if (isCurrentUserSigner || isLastApproverApproved) {
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
-                                                <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
-                                                <Link><MailOutlined />Forward</Link>
-                                            </React.Fragment>
+                                {
+                                    listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
+                                        const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
+                                        const isLastApproverApproved = listApprover.some((ap, index) =>
+                                            value.Index === 1 &&
+                                            value.IsProcessing &&
+                                            ap.ApprovalPersonId === value.ApprovalPersonId &&
+                                            ap.IsLast &&
+                                            ap.IsApprove
                                         );
-                                    } else {
-                                        return null;
-                                    }
-                                })}
+                                        console.log(isLastApproverApproved); // Đã di chuyển dòng này ra ngoài vòng lặp map
+                                        if (isCurrentUserSigner || isLastApproverApproved) {
+                                            return (
+                                                <React.Fragment key={index}>
+                                                    <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
+                                                    <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
+                                                    <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
+                                                </React.Fragment>
+                                            );
+                                        } else {
+                                            return null;
+                                        }
+                                    })
+                                }
 
 
 
