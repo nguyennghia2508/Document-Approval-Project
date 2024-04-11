@@ -40,7 +40,7 @@ const ButtonSelect = ({
     useEffect(() => {
         if (data && data.length > 0 && listPerson && listPerson.length > 0) {
             const initialInputSelects = listPerson.map((person, index) => ({
-                id: person.ApprovalPersonId,
+                id: index + 1,
                 userName: person.ApprovalPersonName,
                 label: `${labelName} ${index + 1}`,
                 selectedOption: userData?.find(user => user.value === person.ApprovalPersonId)?.value,
@@ -49,7 +49,7 @@ const ButtonSelect = ({
                 email: person.ApprovalPersonEmail,
                 Index: person.Index,
             }));
-
+            setNextId(initialInputSelects[initialInputSelects.length - 1]?.id + 1)
             setInputSelects(initialInputSelects);
         }
     }, [listPerson, data]);
@@ -61,7 +61,7 @@ const ButtonSelect = ({
             if (lastDeletedId !== null && prevInputSelects.length > 0) {
                 const lastItem = prevInputSelects[prevInputSelects.length - 1];
                 newId = lastItem.id + 1;
-                // setNextId(nextId)
+                setNextId(nextId)
                 setLastDeletedId(null);
             } else {
                 newId = nextId;
@@ -151,6 +151,9 @@ const ButtonSelect = ({
             const lastItemId = inputSelects[inputSelects.length - 1]?.id;
             setLastDeletedId(null);
             setNextId(lastItemId + 1)
+        }
+        if (inputSelects.length === 0 && lastDeletedId) {
+            setNextId(1);
         }
         setValue(name, inputSelects);
     }, [inputSelects]);
