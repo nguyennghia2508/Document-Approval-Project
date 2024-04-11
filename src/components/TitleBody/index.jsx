@@ -11,6 +11,7 @@ import approvalPersonApi from '../../api/approvalPersonApi';
 import Excel from '../Excel';
 import PdfDownload from '../PdfDownload';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 const { TextArea } = Input;
 
@@ -22,6 +23,7 @@ const TitleBody = ({
     isForm = false,
     isApproval = false,
     href,
+    handleLoading,
     dataDocument,
     currentUser,
     userData,
@@ -64,13 +66,12 @@ const TitleBody = ({
     const [modalOpen, setModalOpen] = useState(false);
     const [personIndex, setPersonIndex] = useState(null)
     const [personDuty, setPersonDuty] = useState(null)
-    const [isForward , setIsForward] = useState(false)
-    const openModal = (value, index,PersonDuty) => {
+    const [isForward, setIsForward] = useState(false)
+    const openModal = (value, index, PersonDuty) => {
         setPersonDuty(PersonDuty)
         setPersonIndex(index)
         setStatus(value)
-        if(value === 5)
-        {
+        if (value === 5) {
             setIsForward(true)
         }
         setModalOpen(true);
@@ -79,6 +80,7 @@ const TitleBody = ({
         setModalOpen(false);
     };
     const submitModal = async (data) => {
+        handleLoading(true)
         if (data.status === 2) {
             setModalOpen(false);
             const dataObject = {
@@ -90,16 +92,16 @@ const TitleBody = ({
             };
             const res = await approvalPersonApi.addApproval(dataObject)
             if (res.state === "true") {
+                handleLoading(false)
+                toast.success(res.message)
                 handleApprover(res.approvers)
                 handleComment(res.comments)
                 const document = res.document
                 const signers = res.signers
-                if(document && document.length)
-                {
+                if (document) {
                     handleDocument(document)
                 }
-                if(signers && signers.length)
-                {
+                if (signers && signers.length) {
                     handleSigner(signers)
                 }
             }
@@ -115,12 +117,13 @@ const TitleBody = ({
             };
             const res = await approvalPersonApi.addSigned(dataObject)
             if (res.state === "true") {
+                handleLoading(false)
+                toast.success(res.message)
                 handleSigner(res.signers)
                 handleComment(res.comments)
 
                 const document = res.document
-                if(document && document.length)
-                {
+                if (document) {
                     handleDocument(document)
                 }
             }
@@ -132,11 +135,12 @@ const TitleBody = ({
                 Index: personIndex,
                 ApprovalPersonName: currentUser.Username,
                 DocumentApprovalId: dataDocument.DocumentApprovalId,
-                PersonDuty:personDuty,
+                PersonDuty: personDuty,
                 Comment: data.submiModal,
             };
             const res = await approvalPersonApi.RejectDocument(dataObject)
             if (res.state === "true") {
+                handleLoading(false)
                 handleApprover(res.approvers)
                 handleSigner(res.signers)
                 handleComment(res.comments)
@@ -146,7 +150,7 @@ const TitleBody = ({
     }
 
     const handleClick = (actionType) => {
-        setValueInput("IsDraft",actionType)
+        setValueInput("IsDraft", actionType)
         onSubmit();
     };
 
@@ -178,12 +182,12 @@ const TitleBody = ({
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
                                 <PdfDownload
-                                dataDocument={dataDocument}
-                                listApprover={listApprover}
-                                listSigner={listSigner}
-                                approveFile={approveFile}
-                                referenceFile={referenceFile}
-                                comment={comment}
+                                    dataDocument={dataDocument}
+                                    listApprover={listApprover}
+                                    listSigner={listSigner}
+                                    approveFile={approveFile}
+                                    referenceFile={referenceFile}
+                                    comment={comment}
                                 />
                                 <Link><ShareAltOutlined />Share</Link>
                                 {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
@@ -192,13 +196,13 @@ const TitleBody = ({
                                     &&
                                     <React.Fragment key={index}>
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
-                                        <Link onClick={() => openModal(4, value.Index,value.PersonDuty)}><CloseOutlined />Reject</Link>
-                                        <Link onClick={() => openModal(5, value.Index,value.PersonDuty)}><MailOutlined />Forward</Link>
+                                        <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
+                                        <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
                                     </React.Fragment>
                                 ))}
                                 {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
                                     const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
-                                    const isLastApproverApproved = listApprover.some((ap,index) =>
+                                    const isLastApproverApproved = listApprover.some((ap, index) =>
                                         value.Index === 1 &&
                                         value.IsProcessing &&
                                         ap.ApprovalPersonId === value.ApprovalPersonId &&
@@ -209,22 +213,21 @@ const TitleBody = ({
                                         return (
                                             <React.Fragment key={index}>
                                                 <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
-                                                <Link onClick={() => openModal(4, value.Index,value.PersonDuty)}><CloseOutlined />Reject</Link>
-                                                <Link onClick={() => openModal(5, value.Index,value.PersonDuty)}><MailOutlined />Forward</Link>
+                                                <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
+                                                <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
                                             </React.Fragment>
                                         );
                                     } else {
                                         return null;
                                     }
-                                })}
-
-
+                                })
+                                }
                             </>
                             :
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
-                                <Link  onClick={() => handleClick(true)}><SaveOutlined />Save draft</Link>
-                                {dataDocument && dataDocument.Status === 3 && dataDocument.IsReject ? 
+                                <Link onClick={() => handleClick(true)}><SaveOutlined />Save draft</Link>
+                                {dataDocument && dataDocument.Status === 3 && dataDocument.IsReject ?
                                     <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Re-submit</Link>
                                     :
                                     <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Submit</Link>

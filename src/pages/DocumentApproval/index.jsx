@@ -71,55 +71,31 @@ const DocumentApproval = () => {
 
 
 
-  // useEffect(() => {
-  //   const getAllDocumentApproval = async () => {
-  //     try {
-  //       if (!tabView.filter) {
-  //         const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-  //           userId: user.Id,
-  //           tabName: tabView.tabName
-  //         })
-  //         setDataDocument(dataAllDocumentApproval.listDcapproval)
-  //         console.log("dataDoc", dataDocument)
-
-  //       }
-  //       else {
-  //         const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-  //           userId: user.Id, tabName: tabView.tabName,
-  //           dataFilter: tabView.filterList
-  //         })
-  //         setDataDocument(dataAllDocumentApproval.listDcapproval)
-  //         console.log("dataDoc", dataDocument)
-
-  //       }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   getAllDocumentApproval();
-  // }, [tabView, user])
-
-  const [exportExcel, setExportExcel] = useState('')
   useEffect(() => {
+    const getAllDocumentApproval = async () => {
+      try {
+        if (!tabView.filter) {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id,
+            tabName: tabView.tabName
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
 
-    const listDocument = dataDocument.map(data => ({
-      applicant: data.ApplicantId,
-      attorney: data.attorney,
-      authorizer: data.authorizer,
-      createDate: data.CreateDate,
-      department: data.DepartmentName,
-      documentType: data.DocumentTypeName,
-      processingby: data.ProcessingBy,
-      requestcode: data.RequestCode,
-      section: data.SectionName,
-      status: data.Status,
-      subject: data.Subject,
-      unit: data.UnitName
+        }
+        else {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id, tabName: tabView.tabName,
+            dataFilter: tabView.filterList
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
 
-    }));
-
-    setExportExcel(listDocument)
-  }, [dataDocument])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAllDocumentApproval();
+  }, [tabView, user])
 
 
 

@@ -230,26 +230,26 @@ const New = () => {
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
                 ApprovalPersonEmail: value.email,
-                PersonDuty:value.PersonDuty
+                PersonDuty: value.PersonDuty
             })),
             signers: data.signers.map(value => ({
                 ApprovalPersonId: value.selectedOption,
                 ApprovalPersonName: value.userName,
                 ApprovalPersonEmail: value.email,
-                PersonDuty:value.PersonDuty,
+                PersonDuty: value.PersonDuty,
             }))
         };
-        
+
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
         const res = await documentApprovalApi.addDocumentApproval(formData);
         if (res.state === "true") {
             const dc = res.dc
-            if(dc.IsDraft)
-            {
+            if (dc.IsDraft) {
+                toast.success(res.message);
                 navigate(`/avn/documentapproval/edit/${dc.Id}`)
             }
-            else
-            {
+            else {
+                toast.success(res.message);
                 navigate(`/avn/documentapproval/view/${dc.Id}`)
             }
         }
