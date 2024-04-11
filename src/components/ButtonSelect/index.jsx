@@ -31,8 +31,10 @@ const ButtonSelect = ({
         email: value.Email,
     }));
 
-
+    const [nextId, setNextId] = useState(1);
+    const [lastDeletedId, setLastDeletedId] = useState(null);
     const [editLabelIndex, setEditLabelIndex] = useState(null);
+    const [editLabelId, setEditLabelId] = useState(null);
     const [inputSelects, setInputSelects] = useState([]);
 
     useEffect(() => {
@@ -53,44 +55,62 @@ const ButtonSelect = ({
     }, [listPerson, data]);
 
     const handleAddInputSelect = () => {
-        let maxLabelNumber = 0;
-        inputSelects.forEach(inputSelect => {
-            const labelNumber = parseInt(inputSelect.label.split(' ')[1]);
-            if (!isNaN(labelNumber) && labelNumber > maxLabelNumber) {
-                maxLabelNumber = labelNumber;
-            }
-        });
-
-        const newLabel = `${labelName} ${maxLabelNumber + 1}`;
-
         setInputSelects(prevInputSelects => {
-            const newId = prevInputSelects.length;
-            return [...prevInputSelects, {
-                id: newId + 1,
-                userName: undefined,
-                label: newLabel, selectedOption: undefined,
-                PersonDuty: undefined,
-                DocumentApprovalId: undefined,
-                email: undefined,
-                Index: undefined,
-            }];
+            let newId;
+
+            if (lastDeletedId !== null && prevInputSelects.length > 0) {
+                const lastItem = prevInputSelects[prevInputSelects.length - 1];
+                newId = lastItem.id + 1;
+                // setNextId(nextId)
+                setLastDeletedId(null);
+            } else {
+                newId = nextId;
+                setNextId(prevNextId => prevNextId + 1);
+            }
+
+            const newLabel = `${labelName} ${newId}`;
+
+            return [
+                ...prevInputSelects,
+                {
+                    id: newId,
+                    userName: undefined,
+                    label: newLabel,
+                    selectedOption: undefined,
+                    PersonDuty: undefined,
+                    DocumentApprovalId: undefined,
+                    email: undefined,
+                    Index: undefined,
+                }
+            ];
         });
     };
 
-
-    const handleDeleteInputSelect = (id) => {
+    const handleDeleteInputSelect = (id, indexInput) => {
         setInputSelects(prevInputSelects => {
-            const filteredInputSelects = prevInputSelects.filter(inputSelect => inputSelect.id !== id);
-            return filteredInputSelects.map((inputSelect, index) => ({
+            const filteredInputSelects = prevInputSelects.filter(inputSelect => {
+                return inputSelect.id !== id || inputSelect.Index !== indexInput;
+            });
+
+            if (id === prevInputSelects[prevInputSelects.length - 1].id) {
+                setNextId(id + 1)
+                setLastDeletedId(id + 1);
+            }
+
+            // Cập nhật lại id và Index của các phần tử còn lại
+            const updatedInputSelects = filteredInputSelects.map((inputSelect, index) => ({
                 ...inputSelect,
-                id: index + 1,
                 Index: index + 1,
             }));
+
+            return updatedInputSelects;
         });
     }
 
-    const handleEditLabel = (id) => {
-        setEditLabelIndex(id);
+
+    const handleEditLabel = (id, index) => {
+        setEditLabelId(id)
+        setEditLabelIndex(index);
     };
 
     const handleSaveLabel = (id, indexInput, newLabel) => {
@@ -100,6 +120,7 @@ const ButtonSelect = ({
             }
             return inputSelect;
         }));
+        setEditLabelId(null);
         setEditLabelIndex(null);
     };
 
@@ -126,8 +147,14 @@ const ButtonSelect = ({
     };
 
     useEffect(() => {
-        setValue(name, inputSelects)
-    }, [inputSelects])
+        if (inputSelects.length > 0 && lastDeletedId > inputSelects[inputSelects.length - 1]?.id) {
+            const lastItemId = inputSelects[inputSelects.length - 1]?.id;
+            setLastDeletedId(null);
+            setNextId(lastItemId + 1)
+        }
+        setValue(name, inputSelects);
+    }, [inputSelects]);
+
 
     return (
         <>
@@ -136,7 +163,9 @@ const ButtonSelect = ({
                     <div key={uuidv4()} className='btn-selection-container'>
 
                         <div className='label'>
-                            {editLabelIndex === inputSelect.Index ? (
+                            {editLabelId === inputSelect.id
+                                ||
+                                editLabelIndex && editLabelIndex === inputSelect.Index && editLabelId === inputSelect.id ? (
                                 <Input
                                     defaultValue={inputSelect.label}
                                     onPressEnter={(e) => handleSaveLabel(inputSelect.id, inputSelect.Index, e.target.value)}
@@ -146,13 +175,15 @@ const ButtonSelect = ({
                                 <span style={{ marginRight: '8px' }}>{inputSelect.label} </span>
                             )}
 
-                            {editLabelIndex === inputSelect.Index ? (
+                            {editLabelId === inputSelect.id
+                                ||
+                                editLabelIndex && editLabelIndex === inputSelect.Index && editLabelId === inputSelect.id ? (
                                 <Button type="danger" icon={<SaveOutlined />} onClick={() => handleSaveLabel(inputSelect.id, inputSelect.Index, inputSelect.label)}>
                                 </Button>
                             ) : (
-                                <Button type="danger" icon={<EditOutlined />} onClick={() => handleEditLabel(inputSelect.Index)} />
+                                <Button type="danger" icon={<EditOutlined />} onClick={() => handleEditLabel(inputSelect.id, inputSelect.Index)} />
                             )}
-                            <Button type="danger" icon={<DeleteOutlined />} onClick={() => handleDeleteInputSelect(inputSelect.id)}>
+                            <Button type="danger" icon={<DeleteOutlined />} onClick={() => handleDeleteInputSelect(inputSelect.id, inputSelect.Index)}>
                             </Button>
                         </div>
 

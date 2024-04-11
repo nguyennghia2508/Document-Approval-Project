@@ -80,7 +80,6 @@ const DocumentApproval = () => {
             tabName: tabView.tabName
           })
           setDataDocument(dataAllDocumentApproval.listDcapproval)
-          console.log("dataDoc", dataDocument)
 
         }
         else {
@@ -89,7 +88,6 @@ const DocumentApproval = () => {
             dataFilter: tabView.filterList
           })
           setDataDocument(dataAllDocumentApproval.listDcapproval)
-          console.log("dataDoc", dataDocument)
 
         }
       } catch (error) {
