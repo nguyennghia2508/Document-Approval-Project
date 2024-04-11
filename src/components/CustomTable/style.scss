@@ -8,7 +8,8 @@
 
     .table_container {
 
-        // min-width: 550px;
+        min-width: 1050px;
+
         .table_content {
             .ant-table-container {
                 .ant-table-content {
@@ -28,6 +29,7 @@
                     .ant-table-thead {
                         tr>th {
                             vertical-align: bottom;
+                            height: 1.42857143;
                         }
 
                         tr:first-child>*:first-child,

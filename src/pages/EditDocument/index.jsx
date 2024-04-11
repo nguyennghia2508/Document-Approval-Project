@@ -95,7 +95,13 @@ const EditDocument = () => {
 
                 const listSigner = data.persons.filter(value => value.PersonDuty === 2);
                 setSigners(listSigner)
+
                 if (data.state === "true") {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
+                } else {
                     const timeout = setTimeout(() => {
                         setIsLoading(false);
                     }, 1000);

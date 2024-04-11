@@ -104,7 +104,7 @@ const ButtonSelect = ({
 
             return updatedInputSelects;
         });
-    };
+    }
 
 
     const handleEditLabel = (id, index) => {
