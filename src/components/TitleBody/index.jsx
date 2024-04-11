@@ -11,6 +11,7 @@ import approvalPersonApi from '../../api/approvalPersonApi';
 import Excel from '../Excel';
 import PdfDownload from '../PdfDownload';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
 
 const { TextArea } = Input;
 
@@ -22,6 +23,7 @@ const TitleBody = ({
     isForm = false,
     isApproval = false,
     href,
+    handleLoading,
     dataDocument,
     currentUser,
     userData,
@@ -79,6 +81,7 @@ const TitleBody = ({
         setModalOpen(false);
     };
     const submitModal = async (data) => {
+        handleLoading(true)
         if (data.status === 2) {
             setModalOpen(false);
             const dataObject = {
@@ -90,11 +93,13 @@ const TitleBody = ({
             };
             const res = await approvalPersonApi.addApproval(dataObject)
             if (res.state === "true") {
+                handleLoading(false)
+                toast.success(res.message)
                 handleApprover(res.approvers)
                 handleComment(res.comments)
                 const document = res.document
                 const signers = res.signers
-                if (document && document.length) {
+                if (document) {
                     handleDocument(document)
                 }
                 if (signers && signers.length) {
@@ -113,11 +118,13 @@ const TitleBody = ({
             };
             const res = await approvalPersonApi.addSigned(dataObject)
             if (res.state === "true") {
+                handleLoading(false)
+                toast.success(res.message)
                 handleSigner(res.signers)
                 handleComment(res.comments)
 
                 const document = res.document
-                if (document && document.length) {
+                if (document) {
                     handleDocument(document)
                 }
             }
@@ -134,6 +141,7 @@ const TitleBody = ({
             };
             const res = await approvalPersonApi.RejectDocument(dataObject)
             if (res.state === "true") {
+                handleLoading(false)
                 handleApprover(res.approvers)
                 handleSigner(res.signers)
                 handleComment(res.comments)
@@ -193,33 +201,28 @@ const TitleBody = ({
                                         <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
                                     </React.Fragment>
                                 ))}
-                                {
-                                    listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
-                                        const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
-                                        const isLastApproverApproved = listApprover.some((ap, index) =>
-                                            value.Index === 1 &&
-                                            value.IsProcessing &&
-                                            ap.ApprovalPersonId === value.ApprovalPersonId &&
-                                            ap.IsLast &&
-                                            ap.IsApprove
+                                {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
+                                    const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
+                                    const isLastApproverApproved = listApprover.some((ap, index) =>
+                                        value.Index === 1 &&
+                                        value.IsProcessing &&
+                                        ap.ApprovalPersonId === value.ApprovalPersonId &&
+                                        ap.IsLast &&
+                                        ap.IsApprove
+                                    );
+                                    if (isCurrentUserSigner || isLastApproverApproved) {
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
+                                                <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
+                                                <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
+                                            </React.Fragment>
                                         );
-                                        console.log(isLastApproverApproved); // Đã di chuyển dòng này ra ngoài vòng lặp map
-                                        if (isCurrentUserSigner || isLastApproverApproved) {
-                                            return (
-                                                <React.Fragment key={index}>
-                                                    <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
-                                                    <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
-                                                    <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
-                                                </React.Fragment>
-                                            );
-                                        } else {
-                                            return null;
-                                        }
-                                    })
+                                    } else {
+                                        return null;
+                                    }
+                                })
                                 }
-
-
-
                             </>
                             :
                             <>

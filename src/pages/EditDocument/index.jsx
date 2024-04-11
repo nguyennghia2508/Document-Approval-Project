@@ -66,7 +66,7 @@ const EditDocument = () => {
 
 
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getDocument = async () => {
@@ -100,12 +100,6 @@ const EditDocument = () => {
                         setIsLoading(false);
                     }, 1000);
                     return () => clearTimeout(timeout);
-                } else {
-                    const timeout = setTimeout(() => {
-                        setIsLoading(false);
-                    }, 1000);
-                    return () => clearTimeout(timeout);
-                    // setIsLoading(false)
                 }
             } catch (err) {
                 const data = err.data
@@ -330,13 +324,39 @@ const EditDocument = () => {
 
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
         const res = await documentApprovalApi.editDocumentApproval(dataDocument.Id, formData);
+        setIsLoading(true)
         if (res.state === "true") {
-            const dc = res.dc
-            if (dc.IsDraft) {
-                navigate(`/avn/documentapproval/edit/${dc.Id}`)
+            const document = res.dc
+            const files = res.files
+            setDataDocument(document)
+            setSelectedApplicant(document.ApplicantName)
+            setSelectedDepartment(document.DepartmentId)
+            setSelectedCategory(document.CategoryId)
+            setSelectedDate(document.CreateDate)
+            setSelectedSubject(document.Subject)
+            setSelectedContent(document.ContentSum)
+
+            const selectedFilesApproved = files.filter(file => file.DocumentType === 1);
+            setSelectedFilesApproved(selectedFilesApproved);
+
+            const selectedFilesReference = files.filter(file => file.DocumentType === 2);
+            setSelectedFileReference(selectedFilesReference);
+
+            const listApprover = res.persons.filter(value => value.PersonDuty === 1);
+            setApprovers(listApprover)
+
+            const listSigner = res.persons.filter(value => value.PersonDuty === 2);
+            setSigners(listSigner)
+            if (document.IsDraft) {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 500)
+                toast.success(res.message);
+                navigate(`/avn/documentapproval/edit/${document.Id}`)
             }
             else {
-                navigate(`/avn/documentapproval/view/${dc.Id}`)
+                toast.success(res.message);
+                navigate(`/avn/documentapproval/view/${document.Id}`)
             }
         }
     };
@@ -452,7 +472,6 @@ const EditDocument = () => {
                 </>
             }
         </>
-
     );
 };
 

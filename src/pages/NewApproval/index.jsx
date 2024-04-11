@@ -245,9 +245,11 @@ const New = () => {
         if (res.state === "true") {
             const dc = res.dc
             if (dc.IsDraft) {
+                toast.success(res.message);
                 navigate(`/avn/documentapproval/edit/${dc.Id}`)
             }
             else {
+                toast.success(res.message);
                 navigate(`/avn/documentapproval/view/${dc.Id}`)
             }
         }

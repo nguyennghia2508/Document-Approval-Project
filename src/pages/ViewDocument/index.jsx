@@ -133,6 +133,10 @@ const ViewDocument = () => {
         setActiveCommentIndex(activeCommentIndex === index ? null : index);
     }
 
+    const handleLoading = (value) => {
+        setIsLoading(value);
+    };
+
     const onSubmit = async (data) => {
 
         const formData = new FormData();
@@ -185,6 +189,7 @@ const ViewDocument = () => {
                 <>
                     <form>
                         <TitleBody
+                            handleLoading={handleLoading}
                             handleDocument={handleDocument}
                             handleApprover={handleSelectedApprover}
                             handleSigner={handleSelectedSigner}
@@ -193,6 +198,8 @@ const ViewDocument = () => {
                             referenceFile={selectedFileReference}
                             listApprover={approvers}
                             listSigner={signers}
+                            comment={comment}
+                            userData={userData}
                             currentUser={user}
                             dataDocument={dataDocument}
                             label="eDocument Approval"
