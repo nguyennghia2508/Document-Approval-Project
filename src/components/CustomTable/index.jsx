@@ -21,16 +21,13 @@ const CustomTable = ({
   const user = useSelector((state) => state.user.value)
 
   const handleRowClick = (record, index) => {
-    if(user.Id === record.ApplicantId && record.Status === 0 && record.IsDraft === true)
-    {
+    if (user.Id === record.ApplicantId && record.Status === 0 && record.IsDraft === true) {
       navigate(`${href}/edit/${record.Id}`)
     }
-    else if(user.Id === record.ApplicantId && record.Status === 3 && record.IsReject === true)
-    {
+    else if (user.Id === record.ApplicantId && record.Status === 3 && record.IsReject === true) {
       navigate(`${href}/edit/${record.Id}`)
     }
-    else
-    {
+    else {
       navigate(`${href}/view/${record.Id}`)
     }
   };

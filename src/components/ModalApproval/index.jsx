@@ -46,7 +46,7 @@ const ModalApproval = ({
     } else if (status === 3) {
       return "Sign";
     } else if (status === 4) {
-        return "Reject";
+      return "Reject";
     } else if (status === 5) {
       return "Forward";
     }
@@ -85,11 +85,11 @@ const ModalApproval = ({
       >
         <form>
           {isForward &&
-          <InputSelection
-            name="selectUser"
-            control={control}
-            options={listUser}
-          />
+            <InputSelection
+              name="selectUser"
+              control={control}
+              options={listUser}
+            />
           }
           <Controller
             name={name}

@@ -64,6 +64,7 @@ const TitleBody = ({
 
     const [status, setStatus] = useState(null)
     const [modalOpen, setModalOpen] = useState(false);
+    const [isLastApprover, setIsLastApprover] = useState(false)
     const [personIndex, setPersonIndex] = useState(null)
     const [personDuty, setPersonDuty] = useState(null)
     const [isForward, setIsForward] = useState(false)

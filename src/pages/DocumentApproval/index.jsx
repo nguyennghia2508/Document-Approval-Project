@@ -61,7 +61,7 @@ const DocumentApproval = () => {
     }
     getAllDocument();
     window.scrollTo(0, 0);
-  }, [tabView, currentPage,user]);
+  }, [tabView, currentPage, user]);
 
   useEffect(() => {
     setCurrentPage(1)
