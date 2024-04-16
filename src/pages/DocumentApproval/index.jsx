@@ -1,7 +1,7 @@
 import TitleBody from "../../components/TitleBody";
 import TablePagination from "../../components/TablePagination";
 import "./style.scss"
-import { useState, useEffect } from "react";
+import { useState, useEffect, Children } from "react";
 import documentApprovalApi from "../../api/documentApprovalApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabview, resetTabview } from "../../redux/features/tabviewSlice";
@@ -167,7 +167,19 @@ const DocumentApproval = () => {
       title: 'Created date',
       align: 'center',
       render: (text) => {
-        return text.createDate;
+        return {
+          props: {
+            style: {}
+          },
+          children:
+            <div style={{
+              backgroundColor: (text.Status === 1 ? " #2F85EF" : (text.Status === 2 ? "#4BA747" : (text.Status === 3 ? "#FF3030" : (text.status === 4 ? " #ecd13e" : " #f5ad5f")))),
+              color: "#fff",
+              marginLeft: "15%",
+              width: "70%",
+              minWidth: "80px"
+            }} >{text.createDate}</div>
+        };
       },
     },
     {

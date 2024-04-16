@@ -5,7 +5,6 @@ import { combineReducers } from "redux";
 import userReducer from './features/userSlice'
 import departmentReducer from './features/departmenttSlice'
 import tabviewReducer from "./features/tabviewSlice";
-
 const persistConfig = {
   key: 'root',
   storage,
@@ -17,6 +16,8 @@ const rootReducer = combineReducers({
   tabview: tabviewReducer,
 });
 
+
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
@@ -25,5 +26,8 @@ export const store = configureStore({
     serializableCheck: false,
   }),
 });
+
+
+
 
 export const persistor = persistStore(store);

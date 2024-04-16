@@ -1,1 +1,29 @@
-.documentApproval-container {}
+.box {
+    width: 200px;
+    height: 200px;
+    border: 2px solid black;
+    border-radius: 20px;
+    /* Điều này tạo ra các góc bo tròn */
+    position: relative;
+}
+
+.box::before,
+.box::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background: black;
+    top: 0;
+    left: 0;
+}
+
+.box::before {
+    border-radius: 100% 0 0 0;
+    /* Góc trái trên */
+}
+
+.box::after {
+    border-radius: 0 100% 0 0;
+    /* Góc phải trên */
+}
