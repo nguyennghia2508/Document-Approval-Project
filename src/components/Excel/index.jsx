@@ -23,6 +23,12 @@ const Excel = ({ dataArray }) => {
         worksheet.mergeCells('A3:P3');
         worksheet.mergeCells('A4:P4');
 
+        worksheet.getCell("A5").border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+        };
 
 
         const cellA1 = worksheet.getCell('A1');

@@ -82,27 +82,29 @@
             }
 
             .link-create {
+                height: 29px;
                 margin-left: 10px;
                 background-color: #5cb85c;
                 color: #FFF;
                 text-decoration: none;
-                padding-top: 4PX;
+                padding-top: 5PX;
                 padding-bottom: 7PX;
                 border-radius: 5PX;
+                overflow: hidden;
+
+                >a,
+                .ant-typography {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    color: #FFF;
+                    font-weight: bold;
+                }
 
                 // font-size: 16;
                 .anticon {
                     margin-right: 8PX;
                 }
 
-            }
-
-            >a,
-            .ant-typography {
-                padding-left: 10px;
-                padding-right: 10px;
-                color: #8894A1;
-                font-weight: bold;
             }
         }
     }
@@ -184,37 +186,45 @@
 
         .titlebody-right {
 
+            display: flex;
 
             .ant-btn {
                 font-weight: bold;
                 margin-left: 10PX;
+
                 // width: 30%;
+
             }
 
             .link-create {
-
+                height: 29px;
                 margin-left: 10px;
                 background-color: #5cb85c;
                 color: #FFF;
                 text-decoration: none;
-                padding-top: 4PX;
+                padding-top: 5PX;
                 padding-bottom: 7PX;
                 border-radius: 5PX;
+                overflow: hidden;
+
+                >a,
+                .ant-typography {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    color: #FFF;
+                    font-weight: bold;
+                }
 
                 // font-size: 16;
                 .anticon {
+
+                    font-weight: 20px;
                     margin-right: 8PX;
                 }
 
             }
 
-            >a,
-            .ant-typography {
-                padding-left: 10px;
-                padding-right: 10px;
-                color: #8894A1;
-                font-weight: bold;
-            }
+
         }
     }
 }

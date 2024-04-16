@@ -24,7 +24,7 @@ const DocumentApproval = () => {
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   useEffect(() => {
@@ -97,6 +97,33 @@ const DocumentApproval = () => {
     getAllDocumentApproval();
   }, [tabView, user])
 
+  const [exportExcel, setExportExcel] = useState('')
+  useEffect(() => {
+    const getAllDocumentApproval = async () => {
+      try {
+        if (!tabView.filter) {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id,
+            tabName: tabView.tabName
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
+
+        }
+        else {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id, tabName: tabView.tabName,
+            dataFilter: tabView.filterList
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
+
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAllDocumentApproval();
+  }, [tabView, user])
+
 
 
   const dataArray = [ // Chú ý dùng mảng ngoài cùng
@@ -135,7 +162,7 @@ const DocumentApproval = () => {
     {
       title: 'Request Code',
       align: 'left',
-      width: '13%',
+      // width: '13%',
       render: (text, record, index) => {
         return text.RequestCode
       },
@@ -177,8 +204,21 @@ const DocumentApproval = () => {
               color: "#fff",
               marginLeft: "15%",
               width: "70%",
-              minWidth: "80px"
-            }} >{text.createDate}</div>
+              minWidth: "80px",
+              position: "relative",
+              paddingRight: "10px"
+            }
+            } > <div style={{
+              borderLeft: "0px solid transparent",
+              borderRight: "10px solid transparent",
+              borderRightColor: "white",
+              borderTop: "10px solid ",
+              borderTopColor: (text.Status === 1 ? " #2F85EF" : (text.Status === 2 ? "#4BA747" : (text.Status === 3 ? "#FF3030" : (text.status === 4 ? " #ecd13e" : " #f5ad5f")))),
+              borderBottom: "10px solid ",
+              borderBottomColor: (text.Status === 1 ? " #2F85EF" : (text.Status === 2 ? "#4BA747" : (text.Status === 3 ? "#FF3030" : (text.status === 4 ? " #ecd13e" : " #f5ad5f")))),
+              right: "0",
+              position: "absolute"
+            }}></div> {text.createDate}</div >
         };
       },
     },

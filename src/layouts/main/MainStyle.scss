@@ -1,23 +1,3 @@
-.layout-wrapper {
-    height: 100vh;
-    // min-width: 481px;
-
-
-
-    .layout-container {
-        display: flex;
-        // padding-bottom: 30px;
-        min-height: calc(100vh - 50px);
-        width: 100%;
-        position: relative;
-        overflow-x: auto
-    }
-
-    .layout-footer {
-        width: 100%;
-    }
-}
-
 @media (max-width:767px) {
     .layout-wrapper {
         // min-width: calc(100%/3);
@@ -65,6 +45,19 @@
             }
         }
 
+        .container-bodyRotated {
+            width: 100%;
+
+            .page-scroll {
+                .main-content {
+                    padding: 10px 20px 50px 20px;
+                    transition: all 0.3s;
+                    background-color: #ffffff;
+                }
+            }
+        }
+
+
         .container-sidebar {
             position: fixed;
             margin-top: 50px;
@@ -81,52 +74,101 @@
 
 
 @media only screen and (min-device-width: 768px) {
-    .page-scroll {
-        height: calc(100vh - 80px);
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
     .layout-wrapper {
+        height: 100vh;
+        // min-width: 481px;
         min-width: calc(100%/3);
-    }
 
-    ::-webkit-scrollbar {
-        width: 7px;
-        height: 7px;
-    }
 
-    ::-webkit-scrollbar-thumb {
-        background: #5aa75e;
-        border-radius: 5px;
-    }
 
-    ::-webkit-scrollbar-track {
-        background-color: #cfd1d2;
-        box-shadow: inset 0 0 2px #bbb;
-    }
-
-    .layout-container {
-        display: flex;
-        // padding-bottom: 30px;
-        // min-height: 100vh;
-        width: 100%;
-
-        .container-body {
-            // width: calc(100% - 230px);
+        .layout-container {
+            display: flex;
+            // padding-bottom: 30px;
+            min-height: calc(100vh - 50px);
             width: 100%;
+            position: relative;
+            overflow-x: auto;
 
+            .container-body {
+                width: calc(100% - 230px);
 
+                .page-scroll {
+                    height: calc(100vh - 80px);
+                    overflow-y: auto;
+                    overflow-x: hidden;
 
-            .page-scroll {
-                .main-content {
-                    padding: 10px 20px;
-                    transition: all 0.3s;
-                    background-color: #ffffff;
+                    .main-content {
+                        padding: 10px 20px;
+                        transition: all 0.3s;
+                        background-color: #ffffff;
+                    }
+                }
+
+                ::-webkit-scrollbar {
+                    width: 7px;
+                    height: 7px;
+                }
+
+                ::-webkit-scrollbar-thumb {
+                    background: #5aa75e;
+                    border-radius: 5px;
+                }
+
+                ::-webkit-scrollbar-track {
+                    background-color: #cfd1d2;
+                    box-shadow: inset 0 0 2px #bbb;
+                }
+
+            }
+
+            .container-bodyRotated {
+                width: 100%;
+
+                .page-scroll {
+                    height: calc(100vh - 80px);
+                    overflow-y: auto;
+                    overflow-x: hidden;
+
+                    .main-content {
+                        padding: 10px 20px;
+                        transition: all 0.3s;
+                        background-color: #ffffff;
+                    }
+                }
+
+                ::-webkit-scrollbar {
+                    width: 7px;
+                    height: 7px;
+                }
+
+                ::-webkit-scrollbar-thumb {
+                    background: #5aa75e;
+                    border-radius: 5px;
+                }
+
+                ::-webkit-scrollbar-track {
+                    background-color: #cfd1d2;
+                    box-shadow: inset 0 0 2px #bbb;
                 }
             }
+
+
+
         }
+
+        .layout-footer {
+            width: 100%;
+        }
+
+
     }
+
+
+
+
+
+
+
 }
 
 // .footer-layout {}

@@ -203,14 +203,14 @@ const FileUpload = ({
                         }}
                     >
                     </Controller>
-                    <span style={{ paddingLeft: "10px" }}>(Maximum 20MB per file)</span>
+                    <span style={{ paddingLeft: "10px", width: "100%" }}>(Maximum 20MB per file)</span>
                 </div>
             </div>
             {fileListUpload.map((file, index) => (
                 <div key={index} className="file-item">
-                    <span>{file.name}</span>
-                    <Button>
-                        <Link to={`/test/${file.id}?id=${file.DocumentApprovalId}`}>View Details</Link>
+                    <span className='fileUpload-fileItem'>{file.name}</span>
+                    <Button className='fileUpload-viewDetail'>
+                        <Link to={`/test/${file.id}?id=${file.DocumentApprovalId}`}>Tag</Link>
                     </Button>
                     <Button
                         icon={<DeleteOutlined />}

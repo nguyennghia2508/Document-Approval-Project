@@ -184,8 +184,7 @@ const ButtonFilter = ({
                 setSelectProcessingBy(userData[0]?.value);
             }
 
-            if(tabView.switchTab)
-            {
+            if (tabView.switchTab) {
                 const regex = /^status(\d+)$/;
                 const match = tabView.tabName.match(regex);
 
@@ -200,13 +199,10 @@ const ButtonFilter = ({
                     }
                 }
             }
-            else
-            {
-                if(tabView.filter)
-                {
+            else {
+                if (tabView.filter) {
                     const statusIndex = tabView.filterList?.status
-                    if (status.some(st => st.value === statusIndex)) 
-                    {
+                    if (status.some(st => st.value === statusIndex)) {
                         // Nếu có, in ra value của status tương ứng
                         setSelectStatus(status.find(st => st.value === statusIndex).value);
                         setValue("status", status.find(st => st.value === statusIndex).value)
