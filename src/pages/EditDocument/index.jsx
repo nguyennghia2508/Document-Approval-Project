@@ -323,6 +323,7 @@ const EditDocument = () => {
         };
 
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
+
         const res = await documentApprovalApi.editDocumentApproval(dataDocument.Id, formData);
         setIsLoading(true)
         if (res.state === "true") {
@@ -438,12 +439,14 @@ const EditDocument = () => {
                                 <div className='viewDocument-approve'>
                                     <FileUpload DocumentType={1} maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
                                         setValue={setValue} control={control} type="primary"
+                                        document={dataDocument}
                                         files={selectedFilesApproved}
                                     />
                                 </div>
                                 <div className='viewDocument-reference'>
                                     <FileUpload DocumentType={2} maxSize={50} label="Documents for reference" id="reference" name="reference"
                                         setValue={setValue} control={control} type="primary"
+                                        document={dataDocument}
                                         files={selectedFileReference}
                                     />
                                 </div>
