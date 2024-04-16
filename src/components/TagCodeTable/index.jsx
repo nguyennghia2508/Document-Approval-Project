@@ -4,7 +4,6 @@ const TagCodeTable = ({
     handleFieldSetup,
 }) => {
     const handClick = (e, mode, name, index) => {
-        console.log(e.target.value)
         handleFieldSetup(mode, name, index, e.target.value);
     };
 

@@ -54,11 +54,11 @@ const PDFViewer = () => {
   function getNewIndex(name) {
     const viewer = document.getElementById('container').ej2_instances[0];
     try {
-      const fields_match_name = viewer?.formFieldCollections.filter(f => f.name.includes(name));
-      if (fields_match_name?.length === 0) return 0;
+      const fields_match_name = viewer.formFieldCollections.filter(f => f.name.includes(name));
+      if (fields_match_name.length === 0) return 0;
       return Math.max(...fields_match_name.map(f => parseInt(f.name.split('.')[1].replace('}]', '')))) + 1;
     } catch (e) {
-      return viewer?.formFields.filter(e => e.properties.name.indexOf(name) >= 0)?.length;
+      return viewer.formFields.filter(e => e.properties.name.indexOf(name) >= 0).length;
     }
   }
 
@@ -69,11 +69,13 @@ const PDFViewer = () => {
       const formDesignerModule = viewer.formDesignerModule;
 
       viewer.isFormDesignerToolbarVisible = true
-      formDesignerModule.isSetFormFieldMode = true;
+
+      const initNameField = name.replace('[{', '').replace('}]', '')
+      const nameField = '[{' + initNameField + '.' + getNewIndex(initNameField) + '}]'
 
       formDesignerModule.pdfViewer.drawingObject = {
         formFieldAnnotationType: mode,
-        name: '[{' + name.replace('[{', '').replace('}]', '') + '.' + getNewIndex(name) + '}]',
+        name: nameField,
         fontFamily: "Times New Roman",
         fontSize: 11,
         fontStyle: 'None',
@@ -96,6 +98,7 @@ const PDFViewer = () => {
         }
       };
       formDesignerModule.pdfViewer.tool = "DrawTool";
+      formDesignerModule.isSetFormFieldMode = true;
     }
   };
 
@@ -154,7 +157,12 @@ const PDFViewer = () => {
   const handleLoading = (e) => {
     if (e.documentName) {
       const viewer = document.getElementById('container').ej2_instances[0];
-      console.log(viewer)
+      const initFields = viewer.formFieldCollections
+      if (initFields.length) {
+        initFields.map(f => {
+          document.getElementById(`${f.id}_designer_name`).style.display = "none"
+        })
+      }
       setIsLoading(false)
     }
   };
