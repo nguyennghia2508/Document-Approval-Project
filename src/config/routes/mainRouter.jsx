@@ -9,6 +9,7 @@ import NewApproval from '../../pages/NewApproval';
 import Test from '../../components/Test';
 import ViewDocument from '../../pages/ViewDocument';
 import EditDocument from '../../pages/EditDocument';
+import PDFViewer from '../../components/PdfViewer';
 
 
 const mainRouter = [
@@ -46,17 +47,17 @@ const mainRouter = [
     element: <Login />,
   },
   {
-    path: '/test',
-    element: <Test />,
+    path: '/test/:id',
+    element: <PDFViewer />,
   },
-  {
-    path: '*',
-    element: <Navigate to='/404' />,
-  },
-  {
-    path: '/404',
-    element: <NotFound />,
-  },
+  // {
+  //   path: '*',
+  //   element: <Navigate to='/404' />,
+  // },
+  // {
+  //   path: '/404',
+  //   element: <NotFound />,
+  // },
 ];
 
 export default mainRouter;

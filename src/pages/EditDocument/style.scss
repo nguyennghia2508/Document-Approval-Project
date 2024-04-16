@@ -13,10 +13,11 @@
                 .editInput-top {
                     padding-bottom: 20px;
                     display: flex;
+                    flex-direction: column;
 
                     // justify-content: space-between;
                     .editInput-element {
-                        width: 24%;
+                        width: 100%;
                         margin-right: 25px;
 
                     }
@@ -24,10 +25,12 @@
 
                 .editInput-bot {
                     display: flex;
+                    flex-direction: column;
+
                     // justify-content: space-between;
 
                     .editInput-element {
-                        width: 24%;
+                        width: 100%;
                         margin-right: 20px;
                     }
                 }
@@ -95,7 +98,7 @@
                     // justify-content: space-between;
                     .editInput-element {
                         width: 24%;
-                        margin-right: 25px;
+                        margin-right: 20px;
 
                     }
                 }
