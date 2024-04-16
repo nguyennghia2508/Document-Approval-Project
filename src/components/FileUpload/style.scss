@@ -17,3 +17,20 @@
 .bold-label {
     font-weight: bold;
 }
+
+.file-item {
+    .fileUpload-fileItem {
+        display: inline-block;
+        width: 50%;
+        overflow: hidden;
+    }
+
+    .fileUpload-viewDetail {
+        background-color: #337ab7;
+        color: #FFF;
+        margin-left: 20px;
+        margin-right: 10px;
+
+
+    }
+}

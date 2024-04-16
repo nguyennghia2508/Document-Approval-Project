@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer';
 // import TitleBody from '../../components/TitleBody';
@@ -18,6 +18,7 @@ const MainLayout = ({
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [isRotated, setIsRotated] = useState(false);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -35,7 +36,7 @@ const MainLayout = ({
     }, [navigate])
 
 
-
+    console.log("isrotate", isRotated)
     return (
         <>
             <div className='layout-wrapper'>
@@ -44,10 +45,10 @@ const MainLayout = ({
                 </div>
                 <div className='layout-container' >
                     <div className='container-sidebar'>
-                        <Sidebar href={href} />
+                        <Sidebar isRotated={isRotated} setIsRotated={setIsRotated} href={href} />
                     </div>
-                    <div className='container-body'>
-                        {/* <div className='body-title'><TitleBody label="ASDASD" /></div> */}
+                    {/* <div className='container-body'> */}
+                    <div className={isRotated ? 'container-bodyRotated' : 'container-body'}>
                         <div className='page-scroll'>
                             <div className='main-content'>
                                 <div className='content-view'>

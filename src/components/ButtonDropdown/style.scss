@@ -1,0 +1,50 @@
+.buttonDropdown {
+
+    width: 300px;
+    height: calc(100vh - 85px);
+
+    .btn-Dropdown-QHeader {
+        display: flex;
+        justify-content: space-between;
+        font-size: 28px;
+    }
+
+    .btn-Dropdown-QLabel {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .btn-Dropdown-Qa {
+
+        padding-left: 20px;
+
+        span {
+            color: #4BA747;
+        }
+    }
+
+    ///////////////////////////////////////////////
+    .btn-Dropdown-UserHeader {
+        display: flex;
+        justify-content: space-between;
+        font-size: 28px;
+    }
+
+    .btn-Dropdown-UserLabel {
+        padding: 10px 0;
+        display: flex;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+
+    }
+
+    .btn-Dropdown-Usera {
+
+        padding-left: 20px;
+
+        span {
+            color: #4BA747;
+        }
+    }
+
+}

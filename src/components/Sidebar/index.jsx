@@ -15,6 +15,8 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 library.add(fas, far, fab);
 
 const Sidebar = ({
+    isRotated,
+    setIsRotated,
     href
 }) => {
 
@@ -106,7 +108,6 @@ const Sidebar = ({
             setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
     };
-    const [isRotated, setIsRotated] = useState(false);
 
     const handleArrowClick = () => {
         setIsRotated(!isRotated); // Thay đổi trạng thái xoay
@@ -125,7 +126,6 @@ const Sidebar = ({
                 openKeys={openKeys}
                 onOpenChange={onOpenChange}
             >
-
             </Menu>
             {/* <Button className='sidebar-on'>asdsadasd</Button> */}
             <div className={isRotated ? 'sidebar-off' : 'sidebar-on'} onClick={handleArrowClick}>

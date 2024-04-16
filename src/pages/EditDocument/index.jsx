@@ -101,6 +101,11 @@ const EditDocument = () => {
                         setIsLoading(false);
                     }, 1000);
                     return () => clearTimeout(timeout);
+                } else {
+                    const timeout = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1000);
+                    return () => clearTimeout(timeout);
                 }
             } catch (err) {
                 const data = err.data
@@ -378,14 +383,14 @@ const EditDocument = () => {
                             onSubmit={handleSubmit(onSubmit)}
                             href={"/avn/documentapproval"}
                         />
-                        <div className='viewApproval-container '>
+                        <div className='editApproval-container '>
                             <div className="viewtitle">
-                                <div className='viewtitle-status'>
+                                <div className='edittitle-status'>
                                 </div>
                                 <h1 >DOCUMENT APPROVAL</h1></div>
-                            <div className='viewInput'>
-                                <div className='viewInput-top'>
-                                    <div className='viewInput-element'>
+                            <div className='editInput'>
+                                <div className='editInput-top'>
+                                    <div className='editInput-element'>
                                         <InputText label="Applicant"
                                             setValue={setValue}
                                             selectedApplicant={selectedApplicant}
@@ -393,7 +398,7 @@ const EditDocument = () => {
                                             id="applicant" name="applicant"
                                             disabled={true} control={control} />
                                     </div>
-                                    <div className='viewInput-element'>
+                                    <div className='editInput-element'>
                                         <InputSelection label="Department"
                                             id="department"
                                             name="department"
@@ -405,46 +410,46 @@ const EditDocument = () => {
                                             disabled={false}
                                             required />
                                     </div>
-                                    <div className='viewInput-element'>
+                                    <div className='editInput-element'>
                                         <InputSelection label="Section" id="section" name="section" setValue={setValue} value={selectedSection} control={control} onChange={handleSectionChange} options={sectionOptions} disabled={false} required />
                                     </div>
-                                    <div className='viewInput-element'>
+                                    <div className='editInput-element'>
                                         <InputSelection label="Unit" id="unit" name="unit" setValue={setValue} value={selectedUnit} control={control} onChange={handleUnitChange} options={unitOptions} disabled={false} required />
                                     </div>
 
                                 </div >
-                                <div className='viewInput-bot'>
-                                    <div className='viewInput-element'>
+                                <div className='editInput-bot'>
+                                    <div className='editInput-element'>
                                         <InputSelection label="Categories" id="category" name="category" control={control} value={selectedCategory} onChange={handleCategoryChange} options={categoryOptions} disabled={false} required />
                                     </div>
-                                    <div className='viewInput-element'>
+                                    <div className='editInput-element'>
                                         <InputSelection label="Document Type" id="documentType" name="documentType" control={control} value={selectedDocumentType} onChange={handleDocumentTypeChange} options={documentTypeOptions} disabled={false} required />
                                     </div>
-                                    <div className='viewInput-element'>
+                                    <div className='editInput-element'>
                                         <InputSearch label="Related Proposal (if any)" id="proposal" name="proposal" disabled={false} control={control} />
                                     </div>
-                                    <div className='viewInput-element'>
+                                    <div className='editInput-element'>
                                         <InputText label="Date" name="date" selectedDate={selectedDate && moment(selectedDate).format("DD/MM/YYYY")} control={control} required disabled={true} />
 
                                     </div>
 
                                 </div >
                             </div >
-                            <div className='viewDocument'>
-                                <div className='viewDocument-subject'>
+                            <div className='editDocument'>
+                                <div className='editDocument-subject'>
                                     <InputText setValue={setValue} label="Subject" id="subject" name="subject" value={selectedSubject} control={control} />
                                 </div>
-                                <div className='viewDocument-content'>
+                                <div className='editDocument-content'>
                                     <InputText setValue={setValue} label="Content summary" id="content" name="content" value={selectedContent} control={control} />
                                 </div>
-                                <div className='viewDocument-approve'>
+                                <div className='editDocument-approve'>
                                     <FileUpload DocumentType={1} maxSize={50} label="Documents to be approved/signed" id="approve" name="approve"
                                         setValue={setValue} control={control} type="primary"
                                         document={dataDocument}
                                         files={selectedFilesApproved}
                                     />
                                 </div>
-                                <div className='viewDocument-reference'>
+                                <div className='editDocument-reference'>
                                     <FileUpload DocumentType={2} maxSize={50} label="Documents for reference" id="reference" name="reference"
                                         setValue={setValue} control={control} type="primary"
                                         document={dataDocument}
