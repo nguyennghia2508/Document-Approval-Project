@@ -34,14 +34,14 @@ const FileUpload = ({
 
                 return fileObj;
             });
-    
+
             setFileList(formattedFiles);
             setValue(name, formattedFiles); // Update the value in react-hook-form
         } else {
             setFileList([]);
             setValue(name, []); // Reset the value in react-hook-form when files are null or empty
         }
-    }, [files]);    
+    }, [files]);
 
     const handleUploadChange = (info) => {
         const { fileList: newFileList } = info;
@@ -60,26 +60,23 @@ const FileUpload = ({
                 // Thêm các tệp mới vào fileList
                 setFileList(filteredFileList);
                 const files = filteredFileList.map(file => {
-                    if(DocumentType)
-                    {
+                    if (DocumentType) {
                         if (file.originFileObj) {
                             file.originFileObj.DocumentType = DocumentType
                             return file.originFileObj
-                        } 
+                        }
                         else {
                             return file
                         }
                     }
-                    else
-                    {
-                        if(file.originFileObj)
-                        {
+                    else {
+                        if (file.originFileObj) {
                             return file.originFileObj
                         }
                         return file
                     }
                 })
-                
+
                 setValue(name, files);
             }
         }
@@ -114,8 +111,7 @@ const FileUpload = ({
         const updatedFileList = fileList.filter(item => item.uid !== file.uid);
         setFileList(updatedFileList);
         setValue(name, updatedFileList.map(file => {
-            if(file.originFileObj)
-            {
+            if (file.originFileObj) {
                 return file.originFileObj
             }
             return file
@@ -129,7 +125,7 @@ const FileUpload = ({
     }, [handleFileListReset]);
 
     return (
-        <label className='file-upload-container'>
+        <div className='file-upload-container'>
             <label className="bold-label">{label}</label>
             <div>
                 <Controller
@@ -160,7 +156,7 @@ const FileUpload = ({
                 </Controller>
                 <span style={{ paddingLeft: "10px" }}>(Maximum 20MB per file)</span>
             </div>
-        </label>
+        </div>
     );
 };
 

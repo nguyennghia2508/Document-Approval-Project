@@ -1,6 +1,6 @@
 // TitleBody.js
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, Input } from 'antd';
+import { Button, Modal, Input, Row } from 'antd';
 import { Link } from "react-router-dom";
 import { SwapLeftOutlined, FileTextOutlined, ShareAltOutlined, CheckOutlined, CloseOutlined, MailOutlined, SaveOutlined, SendOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import ButtonFilter from '../ButtonFilter';
@@ -247,7 +247,10 @@ const TitleBody = ({
                         <ButtonFilter
                             onFilter={handleSubmitFromTitleBody}
                         />
-                        <Link className='link-create' to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
+                        <Row className='link-create'>
+                            <Link to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
+
+                        </Row>
                     </div>
                 </div>
             }

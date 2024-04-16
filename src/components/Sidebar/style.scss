@@ -63,9 +63,34 @@
         width: 230px;
         // width: 0;
         display: flex;
+
         // z-index: -1;
+        @keyframes sidebarOff {
+            from {
+                margin-left: 186px;
+
+            }
+
+            to {
+                margin-left: 0;
+
+
+            }
+        }
+
+        @keyframes sidebarOn {
+            from {
+                margin-left: 0;
+
+            }
+
+            to {
+                margin-left: 184px;
+            }
+        }
 
         .sidebar-on {
+
             position: absolute;
             // margin-bottom: 31px;
             border: 1px solid #2f85ef;
@@ -73,6 +98,7 @@
             align-items: center;
             color: #FFFFFF;
             background-color: #2f85ef;
+            animation: sidebarOn 0.5s forwards;
 
             >.anticon-arrow-left {
                 font-size: 24px;
@@ -91,6 +117,7 @@
             align-items: center;
             color: #FFFFFF;
             background-color: #2f85ef;
+            animation: sidebarOff 0.5s forwards;
 
             >.anticon-arrow-left {
                 font-size: 24px;
@@ -199,6 +226,33 @@
         // width: 0;
         display: flex;
 
+        @keyframes sidebarOff {
+            from {
+                margin-left: 230px;
+
+            }
+
+            to {
+                margin-left: 0;
+
+
+            }
+        }
+
+        @keyframes sidebarOn {
+            from {
+                margin-left: 0;
+
+            }
+
+            to {
+                margin-left: 230px;
+
+
+
+            }
+        }
+
         .sidebar-on {
             position: absolute;
             margin-bottom: 31px;
@@ -208,6 +262,7 @@
             color: #FFFFFF;
             background-color: #2f85ef;
             z-index: 1;
+            animation: sidebarOn 0.5s forwards;
 
             >.anticon-arrow-left {
                 font-size: 24px;
@@ -227,6 +282,7 @@
             color: #FFFFFF;
             background-color: #2f85ef;
             z-index: 1;
+            animation: sidebarOff 0.5s forwards;
 
             >.anticon-arrow-left {
                 font-size: 24px;

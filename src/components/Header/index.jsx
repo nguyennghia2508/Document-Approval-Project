@@ -5,13 +5,14 @@ import {
   MoreOutlined,
   SettingOutlined,
   BellOutlined,
-  QuestionOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
 import { Col, Row, Image, Menu, Drawer } from 'antd';
 
 import logo from '../../assets/images/brand.png';
 import user_default_image from '../../assets/images/default-user-profile.png';
+import { Link } from 'react-router-dom';
+import ButtonDropdown from '../ButtonDropdown';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -41,9 +42,9 @@ const Header = () => {
           <MenuHeader />
         </Drawer>
 
-        <Col className={isMobile ? 'header-brandMobile' : 'header-brand'}>
+        <Link to={"/avn/documentapproval"} className={isMobile ? 'header-brandMobile' : 'header-brand'}>
           <Image width={200} src={logo} preview={false} />
-        </Col>
+        </Link>
         <Col className='header-span'>
           <span>eOffice</span>
         </Col>
@@ -55,17 +56,18 @@ const Header = () => {
         </Col>
 
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
-          <QuestionOutlined />
+          <ButtonDropdown isQ={true} />
         </Col>
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
-          <BellOutlined />
+          <ButtonDropdown isNo={true} />
         </Col>
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
           <SettingOutlined />
         </Col>
         <Col className='header-user'>
-          {' '}
-          <Image preview={false} src={user_default_image} ></Image>{' '}
+
+          <ButtonDropdown />
+
         </Col>
       </Row>
     </div>
