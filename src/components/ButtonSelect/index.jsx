@@ -62,6 +62,7 @@ const ButtonSelect = ({
                 const lastItem = prevInputSelects[prevInputSelects.length - 1];
                 newId = lastItem.id + 1;
                 setNextId(nextId)
+                setLastDeletedId(null);
             } else {
                 newId = nextId;
                 setNextId(prevNextId => prevNextId + 1);
@@ -104,7 +105,7 @@ const ButtonSelect = ({
 
             return updatedInputSelects;
         });
-    }
+    };
 
 
     const handleEditLabel = (id, index) => {
