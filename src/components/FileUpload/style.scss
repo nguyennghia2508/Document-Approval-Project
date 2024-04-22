@@ -19,17 +19,23 @@
 }
 
 .file-item {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+
     .fileUpload-fileItem {
         display: inline-block;
         width: 50%;
         overflow: hidden;
+        text-overflow: ellipsis;
+
     }
 
     .fileUpload-viewDetail {
         background-color: #337ab7;
         color: #FFF;
         margin-left: 20px;
-        margin-right: 10px;
+        margin-right: 20px;
 
 
     }

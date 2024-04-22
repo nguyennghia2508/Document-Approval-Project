@@ -1,4 +1,4 @@
-import { Menu } from 'antd';
+import { Avatar, Menu } from 'antd';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -6,19 +6,13 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 import { useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setTabview } from "../../redux/features/tabviewSlice"
-
+import { Row, Col } from "antd";
 library.add(fas, far, fab);
 
 const CustomMenu = ({
-  href
 }) => {
-  
-  const [currentTabIndex, setCurrenTabIndex] = useState(null)
-  const dispatch = useDispatch()
+
+
 
   const [openKeys, setOpenKeys] = useState(['sub1']);
   const rootSubmenuKeys = ['sub1', 'sub2', 'sub3', 'sub4'];
@@ -45,57 +39,42 @@ const CustomMenu = ({
     };
   };
 
-  const handleTableView = async (tabIndex,tabName) => {
-    setCurrenTabIndex(tabIndex)
-    if(tabIndex !== currentTabIndex)
-    {
-      dispatch(setTabview({
-        tabIndex:tabIndex,
-        tabName:tabName,
-        filter:false,
-        filterList:[],
-        switchTab:true
-      }))
-    }
-  };
+
 
   const items = [
     getItem(
-      'Requests',
+      'Reqsuests',
       'sub1',
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
-      [ <Link to={href} onClick={() => handleTableView(1,"all")}>All requests</Link >,
-        <Link to={href} onClick={() => handleTableView(2,"sendToMe")}>Send to me</Link >,
-        <Link to={href} onClick={() => handleTableView(3,"sendByMe")}>Send to others</Link >,
-        <Link to={href} onClick={() => handleTableView(4,"shareWithMe")}>Share with others</Link >,
+      [<Row className='customMenu-Element'>
+        <Col className='customMenu-ElementAvatar'>
+          <Avatar src="/logo192.png"></Avatar>
+        </Col>
+        <Col className='customMenu-ElementContain'>
+          <Row className='customMenu-ElementContain-item' >Nhan Nguyen Minh has commented on request 00007-eDoc-LMart-2004</Row>
+          <Row className='customMenu-ElementContain-item'>17/04/2024</Row>
+        </Col>
+      </Row >,
       ],
-      { paddingLeft: '70.5px' }
-    ), // 4 mục con trong submenu
+    ),
     getItem(
       'Status',
       'sub2',
       <FontAwesomeIcon icon='fa-solid fa-chart-column' />,
       'submenu',
-      [
-        <Link to={href} onClick={() => handleTableView(5,"status0")}>Draft</Link >,
-        <Link to={href} onClick={() => handleTableView(6,"status1")}>Waiting for approval</Link >,
-        <Link to={href} onClick={() => handleTableView(7,"status2")}>Approved</Link >,
-        <Link to={href} onClick={() => handleTableView(8,"status3")}>Rejected</Link >,
-        <Link to={href} onClick={() => handleTableView(9,"status4")}>Digitally Signed</Link >,
-        <Link to={href} onClick={() => handleTableView(10,"status4")}>Signed</Link >,
+      [<Row className='customMenu-Element'>
+        <Col className='customMenu-ElementAvatar'>
+          <Avatar src="/logo192.png"></Avatar>
+        </Col>
+        <Col className='customMenu-ElementContain'>
+          <Row className='customMenu-ElementContain-item' >Nhan Nguyen Minh has commented on request 00007-eDoc-LMart-2004</Row>
+          <Row className='customMenu-ElementContain-item'>17/04/2024</Row>
+        </Col>
+      </Row >,
       ],
-      { paddingLeft: '70.5px' }
     ), // 2 mục con trong submenu
-    getItem(
-      'Report',
-      'sub3',
-      <FontAwesomeIcon icon='fa-solid fa-chart-column' />,
-      'submenu',
-      ['Chart'],
-      { paddingLeft: '70.5px' }
-    ), // 3 mục con trong submenu
-    // getItem('Budget Management', 'sub4',  <Icon icon="ion:md-wallet" />, 'submenu', ['Option 10', 'Option 11', 'Option 12']), // 3 mục con trong submenu
+
   ];
 
   const onOpenChange = (keys) => {
@@ -110,7 +89,7 @@ const CustomMenu = ({
 
   return (
     <Menu
-      className='list-menu'
+      className='customMenu'
       mode='inline'
       style={{ borderInlineEnd: 'none' }}
       defaultSelectedKeys={['sub1-1']}

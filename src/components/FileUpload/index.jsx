@@ -30,6 +30,8 @@ const FileUpload = ({
     const [listFileToDelete, setListFileToDelete] = useState([])
     const urlBE = "https://localhost:44389"
 
+    const allowedFileTypes = ['.doc', '.pdf', '.docx'];
+
     useEffect(() => {
         if (files && files.length > 0) {
             const formattedFiles = files.map((file) => {
@@ -55,7 +57,7 @@ const FileUpload = ({
     const handleUploadChange = (info) => {
         const { fileList: newFileList } = info;
         if (fileList.length === 0) {
-            const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize);
+            const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize && allowedFileTypes.some(type => file.name.endsWith(type)));
             const uniqueNewFiles = !filteredFileList.every(newFile => fileListUpload.some(existingFile => existingFile.name.toLowerCase().trim() === newFile.name.toLowerCase().trim()));
             if (uniqueNewFiles) {
                 setFileList(filteredFileList);
@@ -72,7 +74,7 @@ const FileUpload = ({
                 || fileListUpload.some(existingFile => existingFile.name.toLowerCase().trim() === newFile.name.toLowerCase().trim())
             );
             if (uniqueNewFiles) {
-                const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize);
+                const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize && allowedFileTypes.some(type => file.name.endsWith(type)));
                 // Thêm các tệp mới vào fileList
                 setFileList(filteredFileList);
                 const files = filteredFileList.map(file => {
@@ -100,7 +102,6 @@ const FileUpload = ({
         }
     };
 
-
     const beforeUpload = (file) => {
         const normalizedFileName = file.name.toLowerCase().trim();
         const isDuplicate = fileList.some(existingFile => existingFile.name.toLowerCase().trim() === normalizedFileName) || fileListUpload.some(existingFile =>
@@ -122,7 +123,11 @@ const FileUpload = ({
             // }
             return false
         }
-
+        const isValidType = allowedFileTypes.some(type => file.name.endsWith(type));
+        if (!isValidType) {
+            toast.error('Only .doc and .pdf files are allowed!');
+            return false
+        }
         return false; // Thêm file hợp lệ vào fileList
     };
 
@@ -195,6 +200,7 @@ const FileUpload = ({
                         render={({ field }) => {
                             return (
                                 <Upload
+                                    accept='.doc,.docx,application/pdf'
                                     disabled={disabled}
                                     id={id}
                                     name={name}

@@ -188,6 +188,7 @@ const DocumentApproval = () => {
       align: 'center',
       render: (text) => {
         return text.subject;
+
       },
     },
     {
@@ -195,18 +196,13 @@ const DocumentApproval = () => {
       align: 'center',
       render: (text) => {
         return {
+
           props: {
-            style: {}
+            className: "documentApproval-createDateCss",
           },
           children:
-            <div style={{
+            <div className="documentApproval-createDateCss-child" style={{
               backgroundColor: (text.Status === 1 ? " #2F85EF" : (text.Status === 2 ? "#4BA747" : (text.Status === 3 ? "#FF3030" : (text.status === 4 ? " #ecd13e" : " #f5ad5f")))),
-              color: "#fff",
-              marginLeft: "15%",
-              width: "70%",
-              minWidth: "80px",
-              position: "relative",
-              paddingRight: "10px"
             }
             } > <div style={{
               borderLeft: "0px solid transparent",

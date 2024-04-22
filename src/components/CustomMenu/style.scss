@@ -89,92 +89,22 @@
 }
 
 @media (min-width:768px) {
-    .sidebar {
-        height: 100%;
 
-        .list-menu {
-            width: 100%;
-            background-color: #1D2A34;
+    .customMenu {
+        .ant-menu-item {
+            height: 90px;
+            padding: 0 !important;
 
-
-            .ant-menu-submenu-inline {
-                text-align: left;
-                text-decoration: none;
-                outline: none;
-                transition: all 0.3s;
-                border-radius: 0px;
-                cursor: pointer;
-
-                .ant-menu-submenu-title {
-                    border-radius: 0px;
-                    border-left: 5px solid #1D2A34;
-                    // &:hover {
-                    //     background: #bce2e4;
-                    // }
-
-                    svg {
-                        margin-right: 10px;
-                    }
-
-                    svg,
-                    i,
-                    span {
-                        color: #606060;
-                        font-weight: 700;
-                    }
-                }
-
-                .ant-menu-item {
-                    background-color: transparent;
-                    color: transparent;
-                }
-
-                // .ant-menu.ant-menu-item-selected{
-                //     color: transparent;
-                // }
-
+            .customMenu-ElementAvatar {
+                width: 15%;
             }
 
-            .ant-menu-inline .ant-menu-item {
-                margin-block: 0px;
-                margin-inline: 0px;
-                width: auto;
-            }
+            .customMenu-ElementContain {
+                width: 80%;
 
-            .ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-open {
-                color: #FFFFFF;
-                background: #0F1922;
-
-                .ant-menu-submenu-title {
-                    border-left: 5px solid #4BA747;
-
-                    span {
-                        color: #FFFFFF;
-                    }
-
-                    svg {
-                        color: #4BA747;
-                    }
-
-                    &:hover {
-                        background: #0F1922;
-                    }
-                }
-
-                .ant-menu-item-selected {
-                    font-weight: bold;
-                    color: #FFFFFF;
-                    border-radius: 0px;
-                }
-
-                .ant-menu-item:not(.ant-menu-item-selected) {
-                    color: #606060;
-                    border-radius: 0px;
-
-                    &:hover {
-                        background: #bce2e4;
-                        border-radius: 0px;
-                    }
+                .customMenu-ElementContain-item {
+                    text-wrap: wrap;
+                    line-height: 20px;
                 }
             }
         }
