@@ -6,7 +6,7 @@ import { Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import PDFViewer from '../PdfViewer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FileUpload = ({
     disabled,
@@ -22,8 +22,15 @@ const FileUpload = ({
     DocumentType,
     document
 }) => {
+
+    const navigate = useNavigate()
+
     const [fileList, setFileList] = useState([]);
     const [fileListUpload, setFileListUpload] = useState([])
+    const [listFileToDelete, setListFileToDelete] = useState([])
+    const urlBE = "https://localhost:44389"
+
+    const allowedFileTypes = ['.doc', '.pdf', '.docx'];
 
     useEffect(() => {
         if (files && files.length > 0) {
@@ -50,7 +57,7 @@ const FileUpload = ({
     const handleUploadChange = (info) => {
         const { fileList: newFileList } = info;
         if (fileList.length === 0) {
-            const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize);
+            const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize && allowedFileTypes.includes(file.name));
             const uniqueNewFiles = !filteredFileList.every(newFile => fileListUpload.some(existingFile => existingFile.name.toLowerCase().trim() === newFile.name.toLowerCase().trim()));
             if (uniqueNewFiles) {
                 setFileList(filteredFileList);
@@ -95,7 +102,6 @@ const FileUpload = ({
         }
     };
 
-
     const beforeUpload = (file) => {
         const normalizedFileName = file.name.toLowerCase().trim();
         const isDuplicate = fileList.some(existingFile => existingFile.name.toLowerCase().trim() === normalizedFileName) || fileListUpload.some(existingFile =>
@@ -117,7 +123,11 @@ const FileUpload = ({
             // }
             return false
         }
-
+        const isValidType = allowedFileTypes.some(type => file.name.endsWith(type));
+        if (!isValidType) {
+            toast.error('Only .doc and .pdf files are allowed!');
+            return false
+        }
         return false; // Thêm file hợp lệ vào fileList
     };
 
@@ -147,6 +157,7 @@ const FileUpload = ({
     const handleRemoveFileUpload = (file) => {
         const updatedFileList = fileListUpload.filter(item => item.id !== file.id);
         setFileListUpload(updatedFileList)
+        setListFileToDelete(prevList => [...prevList, file])
         if (fileList.length) {
             const fileObjects = fileList.map(file => {
                 const fileObj = new File([file], file.name, {
@@ -162,8 +173,8 @@ const FileUpload = ({
         }
     };
 
-    const handleViewFile = (file) => {
-        console.log(file)
+    const handleNavigate = (id, DocumentApprovalId) => {
+        navigate(`/test/${id}?id=${DocumentApprovalId}`)
     };
 
     useEffect(() => {
@@ -171,6 +182,12 @@ const FileUpload = ({
             setFileList([])
         }
     }, [handleFileListReset]);
+
+    useEffect(() => {
+        if (listFileToDelete.length > 0) {
+            setValue("listToDelete", listFileToDelete);
+        }
+    }, [listFileToDelete]);
 
     return (
         <>
@@ -183,6 +200,7 @@ const FileUpload = ({
                         render={({ field }) => {
                             return (
                                 <Upload
+                                    accept='.doc,.docx,application/pdf'
                                     disabled={disabled}
                                     id={id}
                                     name={name}
@@ -208,9 +226,9 @@ const FileUpload = ({
             </div>
             {fileListUpload.map((file, index) => (
                 <div key={index} className="file-item">
-                    <span className='fileUpload-fileItem'>{file.name}</span>
-                    <Button className='fileUpload-viewDetail'>
-                        <Link to={`/test/${file.id}?id=${file.DocumentApprovalId}`}>Tag</Link>
+                    <Link className='fileUpload-fileItem' to={`${urlBE}/${file.path}`}>{file.name}</Link>
+                    <Button className='fileUpload-viewDetail' onClick={() => handleNavigate(file.id, file.DocumentApprovalId)}>
+                        Tag
                     </Button>
                     <Button
                         icon={<DeleteOutlined />}

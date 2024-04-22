@@ -330,8 +330,20 @@ const EditDocument = () => {
 
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
 
-        const res = await documentApprovalApi.editDocumentApproval(dataDocument.Id, formData);
+        const listFileDelete = data.listToDelete?.map(value => ({
+            DocumentApprovalId: value.DocumentApprovalId,
+            DocumentType: value.DocumentType,
+            DocumentFileId: value.id,
+            FileName: value.name,
+            FilePath: value.path,
+            FileType: value.type,
+            FileSize: value.length,
+        }))
+
+        formData.append('listFileDelete', JSON.stringify(listFileDelete));
+
         setIsLoading(true)
+        const res = await documentApprovalApi.editDocumentApproval(dataDocument.Id, formData);
         if (res.state === "true") {
             const document = res.dc
             const files = res.files
