@@ -161,6 +161,13 @@ const ViewDocument = () => {
         if (res.state === "true") {
             setComment(res.comments)
             const files = res.files
+
+            const selectedFilesApproved = files.filter(file => file.DocumentType === 1);
+            setSelectedFilesApproved(selectedFilesApproved);
+
+            const selectedFilesReference = files.filter(file => file.DocumentType === 2);
+            setSelectedFileReference(selectedFilesReference);
+
             const selectedFilesComment = files.filter(file => file.DocumentType === 3);
             setSelectedFileComment(selectedFilesComment);
         }
