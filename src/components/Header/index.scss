@@ -165,6 +165,45 @@
 
         }
 
+
+
+    }
+
+    .header-DrawerLabel {
+        margin-left: -15px;
+        font-size: 25px;
+        height: 25px;
+        font-weight: bold;
+    }
+
+    .header-DrawerMenu {
+        width: 100%;
+
+        .header-DrawerItem {
+            width: 46%;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 15px 5px;
+            display: flex;
+
+
+            .header-DrawerItem-Content {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding-top: 12px;
+                color: #333333;
+            }
+
+            .anticon {
+                color: #2882f2;
+                font-size: 26px;
+                padding-right: 5px;
+
+            }
+        }
+
+
     }
 
 }
