@@ -139,7 +139,7 @@ const TitleBody = ({
                 PersonDuty: personDuty,
                 Comment: data.submiModal,
             };
-            const res = await approvalPersonApi.RejectDocument(dataObject)
+            const res = await approvalPersonApi.rejectDocument(dataObject)
             if (res.state === "true") {
                 handleLoading(false)
                 handleApprover(res.approvers)
