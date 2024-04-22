@@ -3,7 +3,10 @@ import "./style.scss"
 import { BellOutlined, CloseOutlined, QuestionOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Menu, Divider, Image } from 'antd';
 import { useSelector } from 'react-redux';
+import { use } from 'i18next';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import CustomMenu from '../CustomMenu';
 const { Item } = Menu;
 const ButtonDropdown = ({ isQ, isNo = false }) => {
 
@@ -96,20 +99,26 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
 
         ];
     }
-    const CustomMenu = (
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const handleClickIcon = () => {
+        setDropdownVisible(!dropdownVisible); // Xử lý sự kiện khi nhấn vào icon để mở hoặc đóng Dropdown
+    };
+    const CustomMenuHeader = (
+
 
         <Menu className='buttonDropdown' style={{ marginTop: "7px" }}>
-            {
+            {isNo ? (
+                <CustomMenu />
+            ) : (
                 items.map(item => (
-                    <Item key={item.key}>
+                    <Menu.Item key={item.key}>
                         {item.label}
-                    </Item>
+                    </Menu.Item>
                 ))
-            }
-        </Menu >
+            )}
+        </Menu>
 
-    );
-
+    )
     const renderIcon = () => {
         if (isQ) {
             return <QuestionOutlined style={{ color: "#FFF" }} />;
@@ -126,10 +135,12 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
 
     return (
         < Dropdown
-            overlay={CustomMenu}
+            overlay={CustomMenuHeader}
             trigger={['click']}
+            visible={dropdownVisible}
+            onVisibleChange={visible => setDropdownVisible(visible)}
         >
-            <a onClick={(e) => e.preventDefault()}>
+            <a onClick={handleClickIcon}>
                 <Space>
                     {renderIcon()}
                 </Space>

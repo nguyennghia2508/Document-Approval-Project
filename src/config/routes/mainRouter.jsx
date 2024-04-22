@@ -39,7 +39,7 @@ const mainRouter = [
 
   {
     path: '/',
-    element: <MainLayout />
+    element: <Test />
   },
 
   {

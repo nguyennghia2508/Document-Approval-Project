@@ -34,7 +34,7 @@ import {
   UndoOutlined,
   DropboxOutlined,
 } from '@ant-design/icons';
-import { Col, Row, Image, Menu, Drawer } from 'antd';
+import { Col, Image, Menu, Drawer, Row } from 'antd';
 
 import logo from '../../assets/images/brand.png';
 import user_default_image from '../../assets/images/default-user-profile.png';
@@ -50,7 +50,7 @@ const Header = () => {
   };
 
   return (
-    <div className='header'>
+    <Col className='header'>
       <Row className='header-left '>
         <Col className='header-menu'>
           <MenuOutlined
@@ -97,7 +97,7 @@ const Header = () => {
 
         </Col>
       </Row>
-    </div>
+    </Col>
   );
 };
 
@@ -105,153 +105,95 @@ const Header = () => {
 
 
 function MenuHeader() {
-  let items;
 
-  items =
-    [
-      {
-        label: <>
-          {/* <div style={{ display: "flex" }}> */}
-          <Link to='google.com' style={{ width: "50%", fontSize: "16px", color: "#337ab7", fontWeight: "bold" }}><PullRequestOutlined style={{ fontSize: "24px" }} />Approval</Link>
-          {/* </div> */}
-        </>
-        ,
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%", fontSize: "16px", color: "#337ab7", fontWeight: "bold" }}><PullRequestOutlined style={{ fontSize: "24px" }} />Approval</div>
-            <div style={{ width: "50%" }}><BarChartOutlined />Project</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><FolderOutlined />DMS</div>
-            <div style={{ width: "50%" }}><GlobalOutlined />Intranet Portal</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><ChromeOutlined />Helpdesk</div>
-            <div style={{ width: "50%" }}><SendOutlined />Leave</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><CreditCardOutlined />Payment</div>
-            <div style={{ width: "50%" }}><BankOutlined />Budget</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><FullscreenExitOutlined />CRM</div>
-            <div style={{ width: "50%" }}><SettingOutlined />Information</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><ShoppingCartOutlined />Elnvoice</div>
-            <div style={{ width: "50%" }}><ClockCircleOutlined />Attendance</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><UsergroupAddOutlined />Employee</div>
-            <div style={{ width: "50%" }}><TeamOutlined />Organization</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><UserOutlined />Partner Direction</div>
-            <div style={{ width: "50%" }}><CodeSandboxOutlined />Product Direction</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><DesktopOutlined />Assets Directory</div>
-            <div style={{ width: "50%" }}><LogoutOutlined />Employee Off</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><CarOutlined />Car Booking</div>
-            <div style={{ width: "50%" }}><FolderOpenOutlined />Document Approval</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><GiftOutlined />Promotion</div>
-            <div style={{ width: "50%" }}><SolutionOutlined />Contact</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><ReloadOutlined /> Assets in/</div>
-            <div style={{ width: "50%" }}><TagsOutlined />Capital Expen</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><PayCircleOutlined />Scheme</div>
-            <div style={{ width: "50%" }}><SwapOutlined />Assets tranfer</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><ToTopOutlined />SMOS</div>
-            <div style={{ width: "50%" }}><TagOutlined />Capex Disposal</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><CreditCardOutlined />Prepayment</div>
-            <div style={{ width: "50%" }}><FolderOpenOutlined />Re</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><FolderOpenOutlined />AVN Document</div>
-            <div style={{ width: "50%" }}><FolderOpenOutlined />AVN Proposal</div>
-          </div>
-      },
-
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><UndoOutlined />eGoodsOut</div>
-            <div style={{ width: "50%" }}><PullRequestOutlined />Puchase Order</div>
-          </div>
-      },
-      {
-        label:
-          <div style={{ display: "flex" }}>
-            <div style={{ width: "50%" }}><DropboxOutlined />eOrderSlip</div>
-          </div>
-      },
-    ];
   return (
-    <Menu
-    >
-      {
-        items.map(item => (
-          <Item key={item.key}>
-            {item.label}
-          </Item>
-        ))
-      }
+    <Menu>
+      <Row className='header-DrawerLabel'>Apps</Row>
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem' ><PullRequestOutlined /> <span className='header-DrawerItem-Content'> Approval</span></a>
+        <a className='header-DrawerItem'><BarChartOutlined /> <span className='header-DrawerItem-Content'> Project</span></a>
+      </Row >
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><FolderOutlined /> <span className='header-DrawerItem-Content'> DMS</span></a>
+        <a className='header-DrawerItem'><GlobalOutlined /> <span className='header-DrawerItem-Content'> Intranet Portal</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><ChromeOutlined /> <span className='header-DrawerItem-Content'> Helpdesk</span></a>
+        <a className='header-DrawerItem'><SendOutlined /> <span className='header-DrawerItem-Content'> Leave</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><CreditCardOutlined /> <span className='header-DrawerItem-Content'> Payment</span></a>
+        <a className='header-DrawerItem'><BankOutlined /> <span className='header-DrawerItem-Content'> Budget</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><FullscreenExitOutlined /> <span className='header-DrawerItem-Content'> CRM</span></a>
+        <a className='header-DrawerItem'><SettingOutlined /> <span className='header-DrawerItem-Content'> Information</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><ShoppingCartOutlined /> <span className='header-DrawerItem-Content'> Elnvoice</span></a>
+        <a className='header-DrawerItem'><ClockCircleOutlined /> <span className='header-DrawerItem-Content'> Attendance</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><UsergroupAddOutlined /> <span className='header-DrawerItem-Content'> Employee</span></a>
+        <a className='header-DrawerItem'><TeamOutlined /> <span className='header-DrawerItem-Content'> Organization</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><UserOutlined /> <span className='header-DrawerItem-Content'> Partner Direction</span></a>
+        <a className='header-DrawerItem'><CodeSandboxOutlined /> <span className='header-DrawerItem-Content'> Product Direction</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><DesktopOutlined /> <span className='header-DrawerItem-Content'> Assets Directory</span></a>
+        <a className='header-DrawerItem'><LogoutOutlined /> <span className='header-DrawerItem-Content'> Employee Off</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><CarOutlined /> <span className='header-DrawerItem-Content'> Car Booking</span> </a>
+        <a className='header-DrawerItem'><FolderOpenOutlined /> <span className='header-DrawerItem-Content'> Document Approval</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><GiftOutlined /> <span className='header-DrawerItem-Content'> Promotion</span></a>
+        <a className='header-DrawerItem'><SolutionOutlined /> <span className='header-DrawerItem-Content'> Contact</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><ReloadOutlined />  <span className='header-DrawerItem-Content'> Assets in/</span></a>
+        <a className='header-DrawerItem'><TagsOutlined /> <span className='header-DrawerItem-Content'> Capital Expen</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><PayCircleOutlined /> <span className='header-DrawerItem-Content'> Scheme</span></a>
+        <a className='header-DrawerItem'><SwapOutlined /> <span className='header-DrawerItem-Content'> Assets tranfer</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><ToTopOutlined /> <span className='header-DrawerItem-Content'> SMOS</span></a>
+        <a className='header-DrawerItem'><TagOutlined /> <span className='header-DrawerItem-Content'> Capex Disposal</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><CreditCardOutlined /> <span className='header-DrawerItem-Content'> Prepayment</span></a>
+        <a className='header-DrawerItem'><FolderOpenOutlined /> <span className='header-DrawerItem-Content'> Re</span></a>
+      </Row>
+
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><FolderOpenOutlined /> <span className='header-DrawerItem-Content'> AVN Document</span></a>
+        <a className='header-DrawerItem'><FolderOpenOutlined /> <span className='header-DrawerItem-Content'> AVN Proposal</span></a>
+      </Row>
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><UndoOutlined /> <span className='header-DrawerItem-Content'> eGoodsOut</span></a>
+        <a className='header-DrawerItem'><PullRequestOutlined /> <span className='header-DrawerItem-Content'> Puchase Order</span></a>
+      </Row>
+      < Row className='header-DrawerMenu' >
+        <a className='header-DrawerItem'><DropboxOutlined /> <span className='header-DrawerItem-Content'> eOrderSlip</span></a>
+      </Row>
     </Menu>
   );
 }
