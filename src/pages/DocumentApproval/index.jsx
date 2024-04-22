@@ -24,7 +24,7 @@ const DocumentApproval = () => {
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
