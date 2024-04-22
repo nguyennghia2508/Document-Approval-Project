@@ -60,6 +60,8 @@ const FileUpload = ({
 
             const filteredFileList = newFileList.filter(file => file.size / 1024 / 1024 <= maxSize && allowedFileTypes.some(type => file.name.endsWith(type)));
 
+
+
             const uniqueNewFiles = !filteredFileList.every(newFile => fileListUpload.some(existingFile => existingFile.name.toLowerCase().trim() === newFile.name.toLowerCase().trim()));
             if (uniqueNewFiles) {
                 setFileList(filteredFileList);

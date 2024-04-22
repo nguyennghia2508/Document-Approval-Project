@@ -1,0 +1,28 @@
+.ant-modal-body {
+
+    .ant-upload-wrapper.ModalSignature__Upload {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+
+        .ant-upload-list.ant-upload-list-picture-card {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+
+            .ant-upload-list-item-container {
+                width: 400px;
+                height: 100%;
+            }
+        }
+    }
+
+    .ModalSignature__Image {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+}
