@@ -101,7 +101,6 @@ const Login = () => {
 
 
   const login = async (user) => {
-    console.log(user)
     try {
       const response = await authApi.login(user);
       if (response.state === "true") {
