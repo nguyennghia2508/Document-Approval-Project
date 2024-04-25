@@ -114,8 +114,26 @@ const PDFViewer = () => {
         //   label =
       } else if (name.includes("Title")) {
         label = dataDocument.Subject
-      } else if (name.includes("SignerName")) {
-        label = listSigner[parseInt(name.substring(0, name.lastIndexOf('.')).replace('SignerName', '')) - 1].ApprovalPersonName;
+      }
+      else if (name.includes("Signature")) {
+
+        label = formField.name
+
+        const formFieldObject = document.getElementById(`${formField.id}_content_html_element`).children[0]
+        formFieldObject.style.backgroundImage = `url(${urlBE}/${listSigner[parseInt(name.substring(0, name.lastIndexOf('.')).replace('Signature', '')) - 1].SignaturePath})`
+        formFieldObject.style.backgroundPosition = "center center"
+        formFieldObject.style.backgroundRepeat = "no-repeat"
+        formFieldObject.style.backgroundSize = "contain"
+
+        formFieldNameElement.style.backgroundImage = `url(${urlBE}/${listSigner[parseInt(name.substring(0, name.lastIndexOf('.')).replace('Signature', '')) - 1].SignaturePath})`
+        formFieldNameElement.style.backgroundPosition = "center center"
+        formFieldNameElement.style.backgroundRepeat = "no-repeat"
+        formFieldNameElement.style.backgroundSize = "contain"
+        formFieldNameElement.style.color = "transparent"
+
+      }
+      else if (name.includes("SignerName")) {
+        label = listSigner[parseInt(name.substring(0, name.lastIndexOf('.')).replace('SignerName', '')) - 1].ApprovalPerson.ApprovalPersonName;
       }
       else {
         label = formField.name
