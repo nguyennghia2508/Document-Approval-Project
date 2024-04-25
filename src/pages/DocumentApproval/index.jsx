@@ -24,7 +24,7 @@ const DocumentApproval = () => {
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   useEffect(() => {
@@ -99,30 +99,25 @@ const DocumentApproval = () => {
 
   const [exportExcel, setExportExcel] = useState('')
   useEffect(() => {
-    const getAllDocumentApproval = async () => {
-      try {
-        if (!tabView.filter) {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id,
-            tabName: tabView.tabName
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
 
-        }
-        else {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id, tabName: tabView.tabName,
-            dataFilter: tabView.filterList
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
+    const listDocument = dataDocument.map(data => ({
+      applicant: data.ApplicantId,
+      attorney: data.attorney,
+      authorizer: data.authorizer,
+      createDate: data.CreateDate,
+      department: data.DepartmentName,
+      documentType: data.DocumentTypeName,
+      processingby: data.ProcessingBy,
+      requestcode: data.RequestCode,
+      section: data.SectionName,
+      status: data.Status,
+      subject: data.Subject,
+      unit: data.UnitName
 
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getAllDocumentApproval();
-  }, [tabView, user])
+    }));
+
+    setExportExcel(listDocument)
+  }, [dataDocument])
 
 
 
@@ -308,7 +303,7 @@ const DocumentApproval = () => {
     <>
       {isLoading ? <Loading /> :
         <>
-          <TitleBody dataArray={dataArray} label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
+          <TitleBody dataArray={dataArray} label="eDocument Approval" isNoForm={true} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
           <TablePagination
             list={list?.listDcapproval}
             totalItems={list?.totalItems}

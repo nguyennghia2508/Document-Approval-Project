@@ -1,0 +1,129 @@
+@media (max-width:767px) {
+
+    .Setting {
+        margin-top: 50px;
+
+        .Setting__Header {
+            font-weight: bold;
+            color: #d59b9b;
+            font-size: 26px;
+
+        }
+
+        .Setting__Element {
+            margin-top: 20px;
+            border: 1px solid #d7dadb;
+            margin-left: 10px;
+            padding: 10px 20px 20px 20px;
+
+            .Setting__Link {
+                width: 98px;
+                height: 108px;
+                display: block;
+
+
+                .Setting__Title {
+                    text-align: center;
+                    height: 40px;
+                    display: block;
+                    color: #b9a9a9;
+
+                }
+
+                .Setting__Icon {
+                    justify-content: center;
+                    font-size: 79px;
+                    color: #d59b9b;
+
+                }
+
+                .Setting__Office {
+                    justify-content: center;
+                    font-size: 79px;
+
+                    .Setting__Image {
+                        width: 100%;
+                        display: block;
+                        width: 50px;
+                        color: #d59b9b;
+
+                    }
+
+                    .Setting__Button {
+                        background-color: #d59b9b;
+                        color: #FFF;
+                        border: none;
+                        width: 70%;
+                        font-weight: bold;
+                        display: block;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-device-width: 768px) {
+
+    .Setting {
+        .Setting__Header {
+            font-weight: bold;
+            color: #d59b9b;
+            font-size: 26px;
+
+        }
+
+        .Setting__Element {
+            margin-top: 20px;
+            border: 1px solid #d7dadb;
+            margin-left: 10px;
+            padding: 10px 20px 20px 20px;
+
+            .Setting__Link {
+                width: 98px;
+                height: 108px;
+                display: block;
+
+
+                .Setting__Title {
+                    text-align: center;
+                    height: 40px;
+                    display: block;
+                    color: #b9a9a9;
+
+                }
+
+                .Setting__Icon {
+                    justify-content: center;
+                    font-size: 79px;
+                    color: #d59b9b;
+
+                }
+
+                .Setting__Office {
+                    justify-content: center;
+                    font-size: 79px;
+
+                    .Setting__Image {
+                        width: 100%;
+                        display: block;
+                        width: 50px;
+                        color: #d59b9b;
+
+                    }
+
+                    .Setting__Button {
+                        background-color: #d59b9b;
+                        color: #FFF;
+                        border: none;
+                        width: 70%;
+                        font-weight: bold;
+                        display: block;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+        }
+    }
+}

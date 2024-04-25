@@ -3,6 +3,7 @@ import "./style.scss"
 import { BellOutlined, CloseOutlined, QuestionOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Menu, Divider, Image } from 'antd';
 import { useSelector } from 'react-redux';
+import { use } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import CustomMenu from '../CustomMenu';
