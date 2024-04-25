@@ -308,7 +308,7 @@ const DocumentApproval = () => {
     <>
       {isLoading ? <Loading /> :
         <>
-          <TitleBody dataArray={dataArray} label="eDocument Approval" isForm={false} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
+          <TitleBody dataArray={dataArray} label="eDocument Approval" isNoForm={true} onSubmitFromTitleBody={handleSubmitFromTitleBody} />
           <TablePagination
             list={list?.listDcapproval}
             totalItems={list?.totalItems}

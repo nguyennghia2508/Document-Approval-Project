@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { resetTabview } from "./redux/features/tabviewSlice"
 import { useEffect } from "react";
 
+
 function App() {
 
   const dispatch = useDispatch()
@@ -47,9 +48,6 @@ function App() {
             );
           });
         })}
-
-
-
       </Routes>
 
 
