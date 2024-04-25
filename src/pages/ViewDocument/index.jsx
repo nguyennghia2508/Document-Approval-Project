@@ -173,6 +173,10 @@ const ViewDocument = () => {
         }
     };
 
+    const handleSelectedFilesApproved = (value) => {
+        setSelectedFilesApproved(value)
+    }
+
     const handleSelectedApprover = (value) => {
         setApprovers(value)
     }
@@ -201,6 +205,7 @@ const ViewDocument = () => {
                             handleApprover={handleSelectedApprover}
                             handleSigner={handleSelectedSigner}
                             handleComment={handleComment}
+                            handleApproveFile={handleSelectedFilesApproved}
                             approveFile={selectedFilesApproved}
                             referenceFile={selectedFileReference}
                             listApprover={approvers}
