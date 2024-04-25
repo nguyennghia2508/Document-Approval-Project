@@ -1,6 +1,6 @@
 // TitleBody.js
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, Input, Row } from 'antd';
+import { Button, Modal, Input, Row, Col } from 'antd';
 import { Link } from "react-router-dom";
 import { SwapLeftOutlined, FileTextOutlined, ShareAltOutlined, CheckOutlined, CloseOutlined, MailOutlined, SaveOutlined, SendOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
 import ButtonFilter from '../ButtonFilter';
@@ -22,6 +22,8 @@ const TitleBody = ({
     label,
     isForm = false,
     isApproval = false,
+    isNoForm = false,
+    isSysTemEmployee = false,
     href,
     handleLoading,
     dataDocument,
@@ -240,19 +242,28 @@ const TitleBody = ({
                     </div>
                 </div >
                 :
-                <div className='titlebody-nonform'>
-                    <label className='titlebody-left'>{label}</label>
-                    <div className='titlebody-right'>
-                        <Excel dataArray={dataArray}> </Excel>
-                        <ButtonFilter
-                            onFilter={handleSubmitFromTitleBody}
-                        />
-                        <Row className='link-create'>
-                            <Link to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
+                isNoForm ?
+                    <div className='titlebody-nonform'>
+                        <label className='titlebody-left'>{label}</label>
+                        <div className='titlebody-right'>
+                            <Excel dataArray={dataArray}> </Excel>
+                            <ButtonFilter
+                                onFilter={handleSubmitFromTitleBody}
+                            />
+                            <Row className='link-create'>
+                                <Link to='/avn/documentapproval/new'><PlusOutlined />Create new</Link>
 
-                        </Row>
+                            </Row>
+                        </div>
                     </div>
-                </div>
+                    : null
+            }
+            {
+                isSysTemEmployee ?
+                    <Row className='TitleBody__Return'>
+                        <Link to={href}><SwapLeftOutlined /> Return</Link>
+                    </Row>
+                    : <div>asdasd</div>
             }
         </>
     )

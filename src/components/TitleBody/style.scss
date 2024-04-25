@@ -109,6 +109,47 @@
         }
     }
 
+    .TitleBody__Return {
+        display: flex;
+        top: 0;
+        width: 100%;
+        justify-content: space-between;
+        background-color: #f5f6fa;
+        border-bottom: 1px solid #e1e1e1;
+        margin-left: -20px;
+        margin-right: -15px;
+        margin-top: 50px;
+        min-height: 61px;
+        align-items: center;
+        z-index: 999;
+        position: fixed;
+
+        >a {
+            padding-left: 10px;
+            padding-right: 10px;
+            color: #8894A1;
+            text-decoration: none;
+            font-weight: bold;
+
+            &:hover,
+            :active,
+            :focus {
+                text-decoration: none;
+                outline: none;
+                transition: all 0.3s;
+                cursor: pointer;
+                color: #333;
+
+            }
+
+
+            .anticon {
+                padding-right: 5px;
+            }
+
+        }
+    }
+
 }
 
 @media (min-width:768px) {
@@ -126,10 +167,6 @@
         align-items: center;
         z-index: 999;
         position: fixed;
-
-
-
-
 
         .titlebody-left {
             font-weight: bold;
@@ -224,6 +261,47 @@
 
             }
 
+
+        }
+    }
+
+    .TitleBody__Return {
+        display: flex;
+        top: 0;
+        width: 100%;
+        justify-content: space-between;
+        background-color: #f5f6fa;
+        border-bottom: 1px solid #e1e1e1;
+        margin-left: -20px;
+        margin-right: -15px;
+        margin-top: 50px;
+        min-height: 61px;
+        align-items: center;
+        z-index: 999;
+        position: fixed;
+
+        >a {
+            padding-left: 10px;
+            padding-right: 10px;
+            color: #8894A1;
+            text-decoration: none;
+            font-weight: bold;
+
+            &:hover,
+            :active,
+            :focus {
+                text-decoration: none;
+                outline: none;
+                transition: all 0.3s;
+                cursor: pointer;
+                color: #333;
+
+            }
+
+
+            .anticon {
+                padding-right: 5px;
+            }
 
         }
     }

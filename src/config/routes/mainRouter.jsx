@@ -1,15 +1,15 @@
-import { Navigate } from 'react-router';
-
-import NotFound from '../../pages/404';
-import DocumentApproval from '../../pages/DocumentApproval';
-
-import Login from '../../pages/Login';
 import MainLayout from '../../layouts/main/MainLayout';
+import SystemLayout from '../../layouts/system/SystemLayout';
+import DocumentApproval from '../../pages/DocumentApproval';
+import Login from '../../pages/Login';
 import NewApproval from '../../pages/NewApproval';
 import Test from '../../components/Test';
 import ViewDocument from '../../pages/ViewDocument';
 import EditDocument from '../../pages/EditDocument';
 import PDFViewer from '../../components/PdfViewer';
+import Setting from '../../pages/Setting';
+import SystemEmployee from '../../pages/SystemEmployee';
+
 
 
 const mainRouter = [
@@ -33,6 +33,22 @@ const mainRouter = [
         path: '/avn/documentapproval/edit/:id',
         Component: EditDocument,
       },
+
+    ],
+  },
+  {
+    path: '/setting',
+    element: <SystemLayout />,
+    children: [
+      {
+        path: '/setting',
+        Component: Setting,
+      },
+      {
+        path: '/setting/system/employee',
+        Component: SystemEmployee,
+      },
+
 
     ],
   },
