@@ -33,6 +33,7 @@ const TitleBody = ({
     handleApprover,
     handleSigner,
     handleComment,
+    handleApproveFile,
     listApprover,
     listSigner,
     comment,
@@ -124,6 +125,12 @@ const TitleBody = ({
                 toast.success(res.message)
                 handleSigner(res.signers)
                 handleComment(res.comments)
+
+                const files = res.files
+                if (files) {
+                    const selectedFilesApproved = files.filter(file => file.DocumentType === 1)
+                    handleApproveFile(selectedFilesApproved)
+                }
 
                 const document = res.document
                 if (document) {

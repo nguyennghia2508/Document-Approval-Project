@@ -1,10 +1,13 @@
 import React from 'react';
+import "./style.scss"
 
 const TagCodeTable = ({
     handleFieldSetup,
     document,
     listSigner,
 }) => {
+    const urlBE = "https://localhost:44389"
+
     const handClick = (e, mode, name) => {
         handleFieldSetup(mode, name);
     };
@@ -53,25 +56,46 @@ const TagCodeTable = ({
                                         className="draggable"
                                         draggable
                                         value="[{SignerName1}]"
-                                        onClick={(e) => handClick(e, "Textbox", `[{SignedDate${item.Index}}]`)}
+                                        onClick={(e) => handClick(e, "Textbox", `[{SignedDate${item.ApprovalPerson.Index}}]`)}
                                     >
-                                        {`[{SignedDate${item.Index}}]`}
+                                        {`[{SignedDate${item.ApprovalPerson.Index}}]`}
                                     </span>
                                 </td>
-                                <td>Thời gian ký {item.Index}</td>
+                                <td>Thời gian ký {item.ApprovalPerson.Index}</td>
                             </tr>
+                            {item.SignaturePath &&
+                                <tr>
+                                    <td>
+                                        <span
+                                            className="draggable"
+                                            style={{
+                                                height: "50px",
+                                                display: "flex",
+                                                backgroundColor: "pink",
+                                                backgroundImage: item.SignaturePath && `url(${urlBE}/${item.SignaturePath})`,
+                                                backgroundPosition: "center center",
+                                                backgroundRepeat: "no-repeat",
+                                                backgroundSize: "contain",
+                                            }}
+                                            onClick={(e) => handClick(e, "SignatureField", `[{Signature${item.ApprovalPerson.Index}}]`)}
+                                        >
+                                        </span>
+                                    </td>
+                                    <td>Người ký {item.ApprovalPerson.Index}</td>
+                                </tr>
+                            }
                             <tr>
                                 <td>
                                     <span
                                         className="draggable"
                                         draggable
                                         value="[{SignerName1}]"
-                                        onClick={(e) => handClick(e, "Textbox", `[{SignerName${item.Index}}]`)}
+                                        onClick={(e) => handClick(e, "Textbox", `[{SignerName${item.ApprovalPerson.Index}}]`)}
                                     >
-                                        {item.ApprovalPersonName}
+                                        {item.ApprovalPerson.ApprovalPersonName}
                                     </span>
                                 </td>
-                                <td>Tên người ký {item.Index}</td>
+                                <td>Tên người ký {item.ApprovalPerson.Index}</td>
                             </tr>
                         </React.Fragment>
                     ))}
