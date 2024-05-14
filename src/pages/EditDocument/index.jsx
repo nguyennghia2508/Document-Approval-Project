@@ -101,11 +101,6 @@ const EditDocument = () => {
                         setIsLoading(false);
                     }, 1000);
                     return () => clearTimeout(timeout);
-                } else {
-                    const timeout = setTimeout(() => {
-                        setIsLoading(false);
-                    }, 1000);
-                    return () => clearTimeout(timeout);
                 }
             } catch (err) {
                 const data = err.data

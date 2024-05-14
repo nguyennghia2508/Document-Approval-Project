@@ -9,7 +9,10 @@ import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 import { loadIcon } from "@iconify/react/dist/iconify.js";
+import { hubConnection } from "signalr-no-jquery";
 
+const connection = hubConnection("https://localhost:44389/signalr")
+const hubProxy = connection.createHubProxy('SignalRHub')
 
 const DocumentApproval = () => {
 
@@ -24,8 +27,7 @@ const DocumentApproval = () => {
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
 
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getAllDocument = async () => {
@@ -35,11 +37,19 @@ const DocumentApproval = () => {
           setIsLoading(true)
           setList(data)
           if (data.state === "true") {
+            // connection.start()
+            //   .done(() => {
+            //     try {
+            //       console.log("sending message");
+            //       hubProxy.invoke("SendMessage", "Admin", "Hello");
+            //     } catch (e) {
+            //       console.log("Errors sending message", e);
+            //     }
+            //   })
             const timeout = setTimeout(() => {
               setIsLoading(false);
             }, 1000);
             return () => clearTimeout(timeout);
-
           } else {
             const timeout = setTimeout(() => {
               setIsLoading(false);
@@ -99,25 +109,30 @@ const DocumentApproval = () => {
 
   const [exportExcel, setExportExcel] = useState('')
   useEffect(() => {
+    const getAllDocumentApproval = async () => {
+      try {
+        if (!tabView.filter) {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id,
+            tabName: tabView.tabName
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
 
-    const listDocument = dataDocument.map(data => ({
-      applicant: data.ApplicantId,
-      attorney: data.attorney,
-      authorizer: data.authorizer,
-      createDate: data.CreateDate,
-      department: data.DepartmentName,
-      documentType: data.DocumentTypeName,
-      processingby: data.ProcessingBy,
-      requestcode: data.RequestCode,
-      section: data.SectionName,
-      status: data.Status,
-      subject: data.Subject,
-      unit: data.UnitName
+        }
+        else {
+          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
+            userId: user.Id, tabName: tabView.tabName,
+            dataFilter: tabView.filterList
+          })
+          setDataDocument(dataAllDocumentApproval.listDcapproval)
 
-    }));
-
-    setExportExcel(listDocument)
-  }, [dataDocument])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAllDocumentApproval();
+  }, [tabView, user])
 
 
 
