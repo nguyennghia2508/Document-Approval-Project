@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import CustomMenu from '../CustomMenu';
 
-import ModalSignature from '../ModalSignature';
-
 const { Item } = Menu;
 const ButtonDropdown = ({ isQ, isNo = false }) => {
 
@@ -95,12 +93,8 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
                 key: '7',
             },
             {
-                label: <ModalSignature />,
-                key: '8',
-            },
-            {
                 label: <a onClick={handleLogout} className='btn-Dropdown-Qa'><span>Sign Out</span></a>,
-                key: '9',
+                key: '8',
             },
 
         ];

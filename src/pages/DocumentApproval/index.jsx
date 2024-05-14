@@ -9,7 +9,10 @@ import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 import { loadIcon } from "@iconify/react/dist/iconify.js";
+import { hubConnection } from "signalr-no-jquery";
 
+const connection = hubConnection("https://localhost:44389/signalr")
+const hubProxy = connection.createHubProxy('SignalRHub')
 
 const DocumentApproval = () => {
 
@@ -26,7 +29,6 @@ const DocumentApproval = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-
   useEffect(() => {
     const getAllDocument = async () => {
       try {
@@ -35,11 +37,19 @@ const DocumentApproval = () => {
           setIsLoading(true)
           setList(data)
           if (data.state === "true") {
+            // connection.start()
+            //   .done(() => {
+            //     try {
+            //       console.log("sending message");
+            //       hubProxy.invoke("SendMessage", "Admin", "Hello");
+            //     } catch (e) {
+            //       console.log("Errors sending message", e);
+            //     }
+            //   })
             const timeout = setTimeout(() => {
               setIsLoading(false);
             }, 1000);
             return () => clearTimeout(timeout);
-
           } else {
             const timeout = setTimeout(() => {
               setIsLoading(false);
