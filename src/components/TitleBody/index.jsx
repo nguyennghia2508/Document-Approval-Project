@@ -12,7 +12,7 @@ import Excel from '../Excel';
 import PdfDownload from '../PdfDownload';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-
+import { FaRegSave } from "react-icons/fa";
 const { TextArea } = Input;
 
 const TitleBody = ({
@@ -24,6 +24,7 @@ const TitleBody = ({
     isApproval = false,
     isNoForm = false,
     isSysTemEmployee = false,
+    isSystemEmployeeSave = false,
     href,
     handleLoading,
     dataDocument,
@@ -270,7 +271,15 @@ const TitleBody = ({
                     <Row className='TitleBody__Return'>
                         <Link to={href}><SwapLeftOutlined /> Return</Link>
                     </Row>
-                    : <div>asdasd</div>
+                    : null
+            }
+            {
+                isSystemEmployeeSave ?
+                    <Row className='TitleBody__Return'>
+                        <Link to={href}><SwapLeftOutlined /> Return</Link>
+                        <Button><FaRegSave />Save</Button>
+                    </Row>
+                    : null
             }
         </>
     )

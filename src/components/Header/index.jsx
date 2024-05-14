@@ -89,7 +89,8 @@ const Header = () => {
           <ButtonDropdown isNo={true} />
         </Col>
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
-          <SettingOutlined />
+
+          <Link to={"/setting"}> <SettingOutlined /></Link>
         </Col>
         <Col className='header-user'>
 

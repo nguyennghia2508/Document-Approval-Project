@@ -4,7 +4,7 @@ import { BellOutlined, CloseOutlined, QuestionOutlined, SettingOutlined } from '
 import { Dropdown, Space, Menu, Divider, Image } from 'antd';
 import { useSelector } from 'react-redux';
 import { use } from 'i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import CustomMenu from '../CustomMenu';
 
@@ -88,7 +88,7 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
                 key: '5',
             },
             {
-                label: <a className='btn-Dropdown-Qa'><span>My Profile</span></a>,
+                label: <Link to={"/setting/system/employee"} className='btn-Dropdown-Qa'><span>My Profile</span></Link>,
                 key: '6',
             },
             {

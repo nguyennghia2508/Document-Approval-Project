@@ -168,134 +168,134 @@ const SystemEmployee = () => {
                         key="1"
                     >
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Login</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Email</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Employee number</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>First name</Col>
+                            <Col xs={16} md={18} lg={18}>
+                                <Input disabled size="large" className='SystemEmployee__Input' />
+                            </Col>
+                        </Row>
+                        <Row className='SystemEmployee__TabElement'>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Last name</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Sex</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Birth day</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Job title</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Position</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Company</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Unit</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Function</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Department</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Sections/Teams</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Groups</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Office location</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Line Manager</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Belong to departments</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Cost Center</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Rank</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Employee type</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
-                                <Input size="large" className='SystemEmployee__Input' />
-                            </Col>
-                        </Row>
-                        <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Rights</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
@@ -306,69 +306,69 @@ const SystemEmployee = () => {
                         key="2"
                     >
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Nation</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Phone</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>ID card number</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Date of ID card</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Place of ID card</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Health insurance</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Starting date</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Starting date offical</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         <Row className='SystemEmployee__TabElement'>
-                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Leaving date</Col>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
                         < div className='SystemEmployee__Container'>
                             <Row className='SystemEmployee__Title'>Literacy</Row>
                             <Row className='SystemEmployee__TabElement'>
-                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
+                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Academic level</Col>
                                 <Col xs={16} md={18} lg={20}>
                                     <Input size="large" className='SystemEmployee__Input' />
                                 </Col>
                             </Row>
                             <Row className='SystemEmployee__TabElement'>
-                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
+                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Specialized qualification</Col>
                                 <Col xs={16} md={18} lg={20}>
                                     <Input size="large" className='SystemEmployee__Input' />
                                 </Col>
@@ -377,19 +377,19 @@ const SystemEmployee = () => {
                         < div className='SystemEmployee__Container'>
                             <Row className='SystemEmployee__Title'>Contact Info</Row>
                             <Row className='SystemEmployee__TabElement'>
-                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
+                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Business phone</Col>
                                 <Col xs={16} md={18} lg={20}>
                                     <Input size="large" className='SystemEmployee__Input' />
                                 </Col>
                             </Row>
                             <Row className='SystemEmployee__TabElement'>
-                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
+                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Home phone</Col>
                                 <Col xs={16} md={18} lg={20}>
                                     <Input size="large" className='SystemEmployee__Input' />
                                 </Col>
                             </Row>
                             <Row className='SystemEmployee__TabElement'>
-                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
+                                <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>Personal email</Col>
                                 <Col xs={16} md={18} lg={20}>
                                     <Input size="large" className='SystemEmployee__Input' />
                                 </Col>
@@ -484,7 +484,7 @@ const SystemEmployee = () => {
                     >
                         <Row className='SystemEmployee__TabElement'>
                             <Col xs={8} md={6} lg={4} className='SystemEmployee__Label'>asdasdsad</Col>
-                            <Col xs={16} md={18} lg={20}>
+                            <Col xs={16} md={18} lg={18}>
                                 <Input size="large" className='SystemEmployee__Input' />
                             </Col>
                         </Row>
