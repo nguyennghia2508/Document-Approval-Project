@@ -9,7 +9,10 @@ import userApi from '../../api/userApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from "../../redux/features/userSlice"
 
-const ModalSignature = () => {
+const SignatureUpload = ({
+    isOpen = false,
+    switchTab = false
+}) => {
     const {
         rows,
         formState: { errors },
@@ -26,7 +29,6 @@ const ModalSignature = () => {
     const user = useSelector((state) => state.user.value)
     const urlBE = "https://localhost:44389"
 
-    const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -37,7 +39,13 @@ const ModalSignature = () => {
     const name = "signature"
 
     useEffect(() => {
-        if (user.SignatureFileName && user.SignatureFilePath && open) {
+        if (switchTab) {
+            setFileList([])
+        }
+    }, [switchTab]);
+
+    useEffect(() => {
+        if (user.SignatureFileName && user.SignatureFilePath) {
             setFileListUpload(null)
             const fileObj = new File([null], user.SignatureFileName, {
                 type: "image/png",
@@ -51,11 +59,8 @@ const ModalSignature = () => {
             setFileList([])
             setValue(name, null);
         }
-    }, [user, open]);
+    }, [user, isOpen]);
 
-    const showModal = () => {
-        setOpen(true);
-    };
     const onSubmit = async (data) => {
         setConfirmLoading(true);
         if (fileList.length === 0) {
@@ -78,9 +83,6 @@ const ModalSignature = () => {
             }
         }
         // setOpen(false);
-    };
-    const handleCancel = () => {
-        setOpen(false);
     };
 
     const handleUploadChange = (info) => {
@@ -180,70 +182,64 @@ const ModalSignature = () => {
     return (
 
         <>
-            <Link className='btn-Dropdown-Qa' onClick={showModal}>
-                <span>My Signature</span>
-            </Link>
-            <Modal
-                width={800}
-                title="My Signature"
-                open={open}
-                onOk={handleSubmit(onSubmit)}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
+            <Upload
+                listType="picture-card"
+                fileList={fileList}
+                style={{
+                    display: "flex",
+                    justifyContent: "center"
+                }}
+                accept='.png,.jpg,.jpeg'
+                beforeUpload={beforeUpload}
+                onPreview={handlePreview}
+                onChange={handleUploadChange}
+                onRemove={handleRemove}
+                className='ModalSignature__Upload'
             >
-                <Upload
-                    listType="picture-card"
-                    fileList={fileList}
-                    accept='.png,.jpg,.jpeg'
-                    beforeUpload={beforeUpload}
-                    onPreview={handlePreview}
-                    onChange={handleUploadChange}
-                    onRemove={handleRemove}
-                    className='ModalSignature__Upload'
-                >
-                    {fileListUpload ? null : fileList.length >= 1 ? null : uploadButton}
-                </Upload>
-                {fileListUpload !== null ?
-                    <>
-                        <Image
-                            wrapperStyle={
-                                {
-                                    width: "100%",
-                                    height: "100%",
-                                    display: "flex",
-                                    justifyContent: "center"
-                                }
+                {fileListUpload ? null : fileList.length >= 1 ? null : uploadButton}
+            </Upload>
+            {fileListUpload ?
+                <>
+                    <Image
+                        wrapperStyle={
+                            {
+                                width: "100%",
+                                height: "100%",
+                                display: "flex",
+                                justifyContent: "center"
                             }
-                            // style={{ width: "auto", }}
-                            preview={{
-                                visible: previewOpen,
-                                onVisibleChange: (visible) => setPreviewOpen(visible),
-                                mask: (
-                                    <>
-                                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
-                                                <Button
-                                                    type="text"
-                                                    icon={<EyeOutlined />}
-                                                    onClick={() => setPreviewOpen(!previewOpen)}
-                                                    style={{ color: '#fff' }}
-                                                />
-                                                <Button
-                                                    type="text"
-                                                    icon={<DeleteOutlined />}
-                                                    onClick={handleRemoveUpload}
-                                                    style={{ color: '#fff' }}
-                                                />
-                                            </div>
+                        }
+                        // style={{ width: "auto", }}
+                        preview={{
+                            visible: previewOpen,
+                            onVisibleChange: (visible) => setPreviewOpen(visible),
+                            mask: (
+                                <>
+                                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+                                            <Button
+                                                type="text"
+                                                icon={<EyeOutlined />}
+                                                onClick={() => setPreviewOpen(!previewOpen)}
+                                                style={{ color: '#fff' }}
+                                            />
+                                            <Button
+                                                type="text"
+                                                icon={<DeleteOutlined />}
+                                                onClick={handleRemoveUpload}
+                                                style={{ color: '#fff' }}
+                                            />
                                         </div>
-                                    </>
-                                ),
-                            }}
-                            src={`${urlBE}/${fileListUpload?.path}`}
-                        />
-                    </>
-                    :
-                    previewImage && (
+                                    </div>
+                                </>
+                            ),
+                        }}
+                        src={`${urlBE}/${fileListUpload?.path}`}
+                    />
+                </>
+                :
+                <>
+                    {previewImage && (
                         <Image
 
                             wrapperStyle={{
@@ -256,11 +252,12 @@ const ModalSignature = () => {
                             }}
                             src={previewImage}
                         />
-                    )
-                }
-            </Modal>
+                    )}
+                    <Button onClick={handleSubmit(onSubmit)}>Upload</Button>
+                </>
+            }
         </>
     )
 }
 
-export default ModalSignature
+export default SignatureUpload

@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
-import './style.scss';
+import { Select } from 'antd';
+const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
 
-function Test() {
+const Test = () => {
 
-
+    const [selectedItems, setSelectedItems] = useState([]);
+    const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
     return (
-        <div className="container">
-            Nhân pro
-        </div>
-    );
+        <Select
+            mode="multiple"
+            placeholder="Inserted are removed"
+            value={selectedItems}
+            onChange={setSelectedItems}
+            style={{
+                width: '100%',
+            }}
+            options={filteredOptions.map((item) => ({
+                value: item,
+                label: item,
+            }))}
+        />
+    )
 }
 
-export default Test;
+export default Test

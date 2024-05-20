@@ -1,8 +1,8 @@
 // TitleBody.js
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Input, Row, Col } from 'antd';
 import { Link } from "react-router-dom";
-import { SwapLeftOutlined, FileTextOutlined, ShareAltOutlined, CheckOutlined, CloseOutlined, MailOutlined, SaveOutlined, SendOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
+import { SwapLeftOutlined, ShareAltOutlined, CheckOutlined, CloseOutlined, MailOutlined, SaveOutlined, SendOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import ButtonFilter from '../ButtonFilter';
 import './style.scss';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,6 @@ import PdfDownload from '../PdfDownload';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import { FaRegSave } from "react-icons/fa";
-const { TextArea } = Input;
 
 const TitleBody = ({
     onSubmitFromTitleBody,
@@ -72,12 +71,31 @@ const TitleBody = ({
     const [personIndex, setPersonIndex] = useState(null)
     const [personDuty, setPersonDuty] = useState(null)
     const [isForward, setIsForward] = useState(false)
+    const [isShare, setIsShare] = useState(false)
+
+    const [disableNew, setDisableNew] = useState(false)
+
+
+
     const openModal = (value, index, PersonDuty) => {
         setPersonDuty(PersonDuty)
         setPersonIndex(index)
         setStatus(value)
         if (value === 5) {
             setIsForward(true)
+            setIsShare(false)
+
+        }
+        else if (value === 6) {
+            setIsShare(true)
+            setIsForward(false)
+
+        }
+
+        else {
+
+            setIsForward(false)
+            setIsShare(false)
         }
         setModalOpen(true);
     };
@@ -158,18 +176,60 @@ const TitleBody = ({
                 handleDocument(res.document)
             }
         }
+        if (data.status === 5) {
+
+            setModalOpen(false);
+            const user = userData.find(user => user.Id === data.selectUser);
+
+            const dataObject = {
+                ApprovalPersonId: data.selectUser,
+                Index: personIndex,
+                ApprovalPersonName: user.Username,
+                DocumentApprovalId: dataDocument.DocumentApprovalId,
+                PersonDuty: personDuty,
+                Comment: data.submiModal,
+                ApprovalPersonEmail: user.Email,
+            }
+            const res = await approvalPersonApi.forwardPerson(dataObject)
+            if (res.state === "true") {
+                handleLoading(false)
+                handleApprover(res.approvers)
+                handleSigner(res.signers)
+                handleComment(res.comments)
+                handleDocument(res.document)
+            }
+
+
+
+        }
+        if (data.status === 6) {
+            setModalOpen(false);
+            const dataObject = data.selectUser.map((item => ({
+                ApprovalPersonId: item,
+                DocumentApprovalId: dataDocument.DocumentApprovalId,
+                Comment: data.submiModal,
+            })))
+
+            const res = await approvalPersonApi.sharePerson(dataObject)
+            if (res.state === "true") {
+                handleLoading(false)
+            }
+
+        }
     }
 
     const handleClick = (actionType) => {
         setValueInput("IsDraft", actionType)
         onSubmit();
+        setDisableNew(true);
+        setTimeout(() => {
+            setDisableNew(false);
+        }, 1000);
     };
 
     const handleSubmitFromTitleBody = (rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy) => {
         onSubmitFromTitleBody(rCode, dType, subject, rProposal, createStart, createEnd, to, author, attoney, periodStart, periodEnd, applicant, depart, section, unit, status, procBy)
     };
-    // console.log("IDPERSON", currentUser)
-    // console.log("IDPERSON", listSigner)
 
 
 
@@ -182,6 +242,7 @@ const TitleBody = ({
                 isClose={closeModal}
                 listUser={listUser}
                 isForward={isForward}
+                isShare={isShare}
                 name="submiModal"
                 id="submiModal"
             />
@@ -200,12 +261,14 @@ const TitleBody = ({
                                     referenceFile={referenceFile}
                                     comment={comment}
                                 />
-                                <Link><ShareAltOutlined />Share</Link>
+
+
                                 {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
                                     value.ApprovalPersonId === currentUser?.Id
                                     && value.IsProcessing
                                     &&
                                     <React.Fragment key={index}>
+                                        <Link onClick={() => openModal(6, value.Index, value.PersonDuty)}><ShareAltOutlined />Share</Link>
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
                                         <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
                                         <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
@@ -220,15 +283,19 @@ const TitleBody = ({
                                         ap.IsLast &&
                                         ap.IsApprove
                                     );
+
                                     if (isCurrentUserSigner || isLastApproverApproved) {
                                         return (
                                             <React.Fragment key={index}>
+                                                <Link onClick={() => openModal(6, value.Index, value.PersonDuty)}><ShareAltOutlined />Share</Link>
                                                 <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
                                                 <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
                                                 <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
                                             </React.Fragment>
                                         );
-                                    } else {
+                                    }
+
+                                    else {
                                         return null;
                                     }
                                 })
@@ -237,11 +304,14 @@ const TitleBody = ({
                             :
                             <>
                                 <Link to={href}><SwapLeftOutlined /> Return</Link>
-                                <Link onClick={() => handleClick(true)}><SaveOutlined />Save draft</Link>
+                                <Button disabled={disableNew} onClick={() => handleClick(true)}><SaveOutlined />Save draft</Button>
                                 {dataDocument && dataDocument.Status === 3 && dataDocument.IsReject ?
-                                    <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Re-submit</Link>
+                                    <>
+                                        <Link to={afterSubmit} onClick={() => handleClick(false)}><DeleteOutlined /> Delete</Link>
+                                        <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Re-submit</Link>
+                                    </>
                                     :
-                                    <Link to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Submit</Link>
+                                    <Button disabled={disableNew} to={afterSubmit} onClick={() => handleClick(false)}><SendOutlined />Submit</Button>
                                 }
                             </>
                         }

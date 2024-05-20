@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TitleBody from "../../components/TitleBody";
 import { Row, Col, Avatar, Image, Typography, Input } from 'antd';
 import { FaUserEdit } from "react-icons/fa";
 import './style.scss'
 import { Tabs } from 'antd';
 import { Table } from 'antd';
+import SignatureUpload from '../../components/SignatureUpload';
+import { useSelector } from 'react-redux';
 const { TabPane } = Tabs;
 
 const SystemEmployee = () => {
+
+    const user = useSelector((state) => state.user.value)
+    const [isOpen, setIsOpen] = useState(false)
+    const [switchTab, setSwitchTab] = useState(false)
+
     const renderTabLabel = (Icon, label1) => (
         < div className='SystemEmployee__Container'>
             <Row>asdasd</Row>
@@ -136,6 +143,17 @@ const SystemEmployee = () => {
 
     ];
 
+    const handleSwitchTable = (key) => {
+        if (key === "5") {
+            setIsOpen(true)
+            setSwitchTab(true)
+        }
+        else {
+            setIsOpen(false)
+            setSwitchTab(false)
+        }
+    }
+
     return (
         <div className='SystemEmployee'>
             <Row className='SystemEmployee__Header'>
@@ -155,14 +173,14 @@ const SystemEmployee = () => {
                     />
                 </Col>
                 <Col className='SystemEmployee__UserName'>
-                    <Typography.Paragraph>Nguyễn Minh Nhân</Typography.Paragraph>
+                    <Typography.Paragraph>{user.Username}</Typography.Paragraph>
                 </Col>
                 <Col className='SystemEmployy__EditIcon'>
                     <FaUserEdit />
                 </Col>
             </Row>
             <Row className='SystemEmployee__Tabs'>
-                <Tabs defaultActiveKey="1">
+                <Tabs defaultActiveKey="1" onChange={handleSwitchTable}>
                     <TabPane
                         tab={'Overview'}
                         key="1"
@@ -621,7 +639,7 @@ const SystemEmployee = () => {
                     >
                         <Row>
                             <Col span={8} offset={8} style={{ textAlign: "center" }}>
-                                <Image src='/logo192.png' />
+                                <SignatureUpload isOpen={isOpen} switchTab={switchTab} />
                             </Col>
                         </Row>
                     </TabPane>

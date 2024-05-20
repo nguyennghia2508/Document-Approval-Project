@@ -38,10 +38,13 @@ import { Col, Image, Menu, Drawer, Row } from 'antd';
 
 import logo from '../../assets/images/brand.png';
 import user_default_image from '../../assets/images/default-user-profile.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ButtonDropdown from '../ButtonDropdown';
 const { Item } = Menu;
 const Header = () => {
+
+  const navigate = useNavigate()
+
   const [openMenu, setOpenMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
 
@@ -89,8 +92,7 @@ const Header = () => {
           <ButtonDropdown isNo={true} />
         </Col>
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
-
-          <Link to={"/setting"}> <SettingOutlined /></Link>
+          <SettingOutlined onClick={() => navigate("/setting")} />
         </Col>
         <Col className='header-user'>
 

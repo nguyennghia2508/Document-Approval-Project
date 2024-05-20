@@ -45,6 +45,34 @@
                 }
 
             }
+
+            .ant-btn {
+                font-weight: bold;
+                border: none;
+                padding-left: 10px;
+                padding-right: 10px;
+                color: #8894A1;
+                text-decoration: none;
+                background-color: #f5f6fa;
+
+
+                &:hover,
+                :active,
+                :focus {
+                    text-decoration: none;
+                    outline: none;
+                    transition: all 0.3s;
+                    cursor: pointer;
+                    color: #333;
+                    background-color: #f5f6fa;
+
+                }
+
+
+                .anticon {
+                    padding-right: 5px;
+                }
+            }
         }
 
         // .titlebody-right {}
@@ -173,6 +201,7 @@
             font-size: 14px;
 
             >a {
+
                 padding-left: 10px;
                 padding-right: 10px;
                 color: #8894A1;
@@ -194,6 +223,34 @@
                     padding-right: 5px;
                 }
 
+            }
+
+            .ant-btn {
+                font-weight: bold;
+                border: none;
+                padding-left: 10px;
+                padding-right: 10px;
+                color: #8894A1;
+                text-decoration: none;
+                background-color: #f5f6fa;
+
+
+                &:hover,
+                :active,
+                :focus {
+                    text-decoration: none;
+                    outline: none;
+                    transition: all 0.3s;
+                    cursor: pointer;
+                    color: #333;
+                    background-color: #f5f6fa;
+
+                }
+
+
+                .anticon {
+                    padding-right: 5px;
+                }
             }
         }
 
