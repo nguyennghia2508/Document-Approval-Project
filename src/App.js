@@ -4,10 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
 import { resetTabview } from "./redux/features/tabviewSlice"
 import { useEffect } from "react";
-import { hubConnection } from 'signalr-no-jquery';
-
-const connection = hubConnection("https://localhost:44389/signalr")
-const hubProxy = connection.createHubProxy('SignalRHub')
 
 function App() {
 
@@ -25,29 +21,6 @@ function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [dispatch]);
-
-  const signalRConnection = () => {
-    connection.start()
-      .done(() => {
-        console.log('SignalR connected');
-        try {
-          console.log("sending message");
-        } catch (e) {
-          console.log("Errors sending message", e);
-        }
-      })
-      .fail((error) => {
-        console.error('SignalR connection error: ' + error);
-      });
-  };
-
-  hubProxy.on("addNewMessage", (method, sender, message) => {
-    console.log(`Received message from ${sender}: ${message} with method: ${method}`);
-  });
-
-  useEffect(() => {
-    signalRConnection()
-  }, [])
 
   return (
     <Router>
