@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import userReducer from './features/userSlice'
 import departmentReducer from './features/departmenttSlice'
 import tabviewReducer from "./features/tabviewSlice";
+import languageReducer from "./features/languageSlice"
 const persistConfig = {
   key: 'root',
   storage,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   department: departmentReducer,
   tabview: tabviewReducer,
+  language: languageReducer,
 });
 
 

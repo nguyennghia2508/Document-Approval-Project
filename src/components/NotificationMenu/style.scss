@@ -91,9 +91,18 @@
 @media (min-width:768px) {
 
     .customMenu {
+        .ant-menu-item-selected {
+            background: #ededed;
+            // color: #333;
+        }
+
         .ant-menu-item {
             height: 90px;
             padding: 0 !important;
+
+            .ant-menu-light.ant-menu-item-selected {
+                background: #cfd1d2;
+            }
 
             .customMenu-ElementAvatar {
                 width: 15%;
@@ -102,9 +111,16 @@
             .customMenu-ElementContain {
                 width: 80%;
 
+
                 .customMenu-ElementContain-item {
                     text-wrap: wrap;
                     line-height: 20px;
+                }
+
+                .customMenu-ElementContain-itemDate {
+                    text-wrap: wrap;
+                    line-height: 20px;
+                    color: #79bd43;
                 }
             }
         }

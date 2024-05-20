@@ -59,7 +59,9 @@ const ViewDocument = () => {
     const [activeCommentIndex, setActiveCommentIndex] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+
     useEffect(() => {
+        setIsLoading(true)
         const getDocument = async () => {
             try {
                 const data = await documentApprovalApi.getDocumentById(id, user.Id)
@@ -128,6 +130,8 @@ const ViewDocument = () => {
         }
         getAllUser();
     }, []);
+
+
 
     const handleToggleCommentInput = (index) => {
         setActiveCommentIndex(activeCommentIndex === index ? null : index);
@@ -400,15 +404,26 @@ const ViewDocument = () => {
                                                                 </div>
                                                                 <div className='comment-bodyComment'>Reason:{value.comment.CommentContent}</div>
                                                             </>
-                                                            :
-                                                            value.comment.IsFirst ?
-                                                                <div className='comment-bodyComment'>{value.comment.CommentContent}
-                                                                    <Link to="">
-                                                                        {dataDocument.RequestCode}
-                                                                    </Link>
-                                                                </div>
+                                                            : value.comment.CommentStatus === 4 ?
+                                                                <>
+                                                                    <div className='comment-bodyComment'>Request
+                                                                        <Link to="">
+                                                                            {dataDocument.RequestCode}
+                                                                        </Link>
+                                                                        has been forward to {value.comment.ForwardName}
+
+                                                                    </div>
+                                                                    <div className='comment-bodyComment'>Reason:{value.comment.CommentContent}</div>
+                                                                </>
                                                                 :
-                                                                <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
+                                                                value.comment.IsFirst ?
+                                                                    <div className='comment-bodyComment'>{value.comment.CommentContent}
+                                                                        <Link to="">
+                                                                            {dataDocument.RequestCode}
+                                                                        </Link>
+                                                                    </div>
+                                                                    :
+                                                                    <div className='comment-bodyComment'>{value.comment.CommentContent}</div>
                                                 }
                                                 {selectedFileComment.map((file) => (
                                                     file.CommentId === value.comment.CommentId && <Link key={file.Id} to={`${urlBE}/${file.FilePath}`} download>{file.FileName}</Link>

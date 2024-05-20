@@ -3,6 +3,10 @@ import { Button, Modal, Input } from 'antd';
 import './style.scss'
 import { Controller, useForm } from 'react-hook-form';
 import InputSelection from '../InputSelection';
+import { Value } from 'sass';
+import MultiSeLection from '../MultiSelection';
+import MultiSelection from '../MultiSelection';
+import { values } from 'pdf-lib';
 
 const { TextArea } = Input;
 
@@ -11,6 +15,7 @@ const ModalApproval = ({
   isSubmit,
   isClose,
   isForward,
+  isShare,
   listUser,
   name,
   status,
@@ -27,6 +32,9 @@ const ModalApproval = ({
 
   });
   const [approvalText, setApprovalText] = useState("");
+  const [personForward, setPersonForward] = useState("")
+  const [personShare, setPersonShare] = useState([])
+
 
   useEffect(() => {
     if (status) {
@@ -37,6 +45,8 @@ const ModalApproval = ({
   useEffect(() => {
     if (isClose) {
       setApprovalText("")
+      setPersonForward("")
+      setPersonShare([])
     }
   }, [isClose])
 
@@ -49,6 +59,8 @@ const ModalApproval = ({
       return "Reject";
     } else if (status === 5) {
       return "Forward";
+    } else if (status === 6) {
+      return "Share To";
     }
   };
 
@@ -62,7 +74,27 @@ const ModalApproval = ({
     setApprovalText("")
     reset({ status: status })
   };
+  const handleForward = (value) => {
+    setPersonForward(value)
+  }
+  const handleShare = (value) => {
+    setPersonShare(value);
+  }
 
+  const handleDisable = (approvalText, personForward, personShare) => {
+    if (isShare && personShare.length > 0) {
+      return false
+    }
+    else if (approvalText.length > 0 && personForward) {
+      return false
+    }
+    else if (approvalText.length > 0 && !isForward && !isShare) {
+      return false
+    }
+    else {
+      return true
+    }
+  }
 
   return (
     <div className='modal'>
@@ -75,7 +107,7 @@ const ModalApproval = ({
         destroyOnClose={true}
         footer={[
           <Button key="submit" onClick={handleSubmit(onSubmit)} className='modalSubmit'
-            disabled={!approvalText || approvalText.length < 0 ? true : false}
+            disabled={handleDisable(approvalText, personForward, personShare)}
           >
             {getTitle()}
           </Button>,
@@ -89,24 +121,37 @@ const ModalApproval = ({
               name="selectUser"
               control={control}
               options={listUser}
+              onChange={handleForward}
+
+            />
+          }{
+            isShare &&
+            <MultiSeLection
+              name="selectUser"
+              control={control}
+              options={listUser}
+              setValue={setValue}
+              onChange={handleShare}
             />
           }
-          <Controller
-            name={name}
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <TextArea
-                rows={4}
-                placeholder="Enter text"
-                value={approvalText}
-                onChange={(e) => handleChange(e, field)}
-              />
-            )}
-          />
+          {!isShare &&
+            <Controller
+              name={name}
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextArea
+                  rows={4}
+                  placeholder="Enter text"
+                  value={approvalText}
+                  onChange={(e) => handleChange(e, field)}
+                />
+              )}
+            />
+          }
         </form>
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   )
 }
 

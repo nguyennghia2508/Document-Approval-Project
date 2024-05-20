@@ -93,7 +93,7 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
                 key: '5',
             },
             {
-                label: <a className='btn-Dropdown-Qa'><span>My Profile</span></a>,
+                label: <Link to={"/setting/system/employee"} className='btn-Dropdown-Qa'><span>My Profile</span></Link>,
                 key: '6',
             },
             {
@@ -132,7 +132,11 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
             return <QuestionOutlined style={{ color: "#FFF" }} />;
         } else if (isNo) {
             // Xử lý cho trường hợp isNo
-            return <BellOutlined style={{ color: "#FFF" }} />;
+            return (<div className='NotificationIcon'>
+                <BellOutlined className='BellNotification' />
+                <div className='CountNotification'>23</div>
+            </div>
+            );
         } else {
             // Xử lý cho trường hợp còn lại
             return <Image preview={false} src='/default-user-profile.png' ></Image>;
