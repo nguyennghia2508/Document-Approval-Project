@@ -3,7 +3,8 @@ import "./style.scss"
 import { BellOutlined, CloseOutlined, QuestionOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Menu, Divider, Image } from 'antd';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { use } from 'i18next';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import CustomMenu from '../CustomMenu';
 
@@ -85,7 +86,7 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
                 key: '5',
             },
             {
-                label: <a className='btn-Dropdown-Qa'><span>My Profile</span></a>,
+                label: <Link to={"/setting/system/employee"} className='btn-Dropdown-Qa'><span>My Profile</span></Link>,
                 key: '6',
             },
             {
@@ -124,7 +125,11 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
             return <QuestionOutlined style={{ color: "#FFF" }} />;
         } else if (isNo) {
             // Xử lý cho trường hợp isNo
-            return <BellOutlined style={{ color: "#FFF" }} />;
+            return (<div className='NotificationIcon'>
+                <BellOutlined className='BellNotification' />
+                <div className='CountNotification'>23</div>
+            </div>
+            );
         } else {
             // Xử lý cho trường hợp còn lại
             return <Image preview={false} src='/default-user-profile.png' ></Image>;

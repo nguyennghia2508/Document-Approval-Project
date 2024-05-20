@@ -11,6 +11,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTabview } from "../../redux/features/tabviewSlice"
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import LanguageSwitcher from '../LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 library.add(fas, far, fab);
 
@@ -19,7 +21,7 @@ const Sidebar = ({
     setIsRotated,
     href
 }) => {
-
+    const { t } = useTranslation();
     const [currentTabIndex, setCurrenTabIndex] = useState(null)
     const dispatch = useDispatch()
 
@@ -67,10 +69,10 @@ const Sidebar = ({
             'sub1',
             <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
             'submenu',
-            [<Link to={href} onClick={() => handleTableView(1, "all")}>All requests</Link >,
-            <Link to={href} onClick={() => handleTableView(2, "sendToMe")}>Send to me</Link >,
-            <Link to={href} onClick={() => handleTableView(3, "sendByMe")}>Send to others</Link >,
-            <Link to={href} onClick={() => handleTableView(4, "shareWithMe")}>Share with others</Link >,
+            [<Link to={href} onClick={() => handleTableView(1, "all")}>{t('AllRequest')}</Link >,
+            <Link to={href} onClick={() => handleTableView(2, "sendToMe")}>{t('SentToMe')}</Link >,
+            <Link to={href} onClick={() => handleTableView(3, "sendByMe")}>{t('SentToOrthers')}</Link >,
+            <Link to={href} onClick={() => handleTableView(4, "shareWithMe")}>{t('SharedWithMe')}</Link >,
             ],
             { paddingLeft: '70.5px' }
         ), // 4 mục con trong submenu

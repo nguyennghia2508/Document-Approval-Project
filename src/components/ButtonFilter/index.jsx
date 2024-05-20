@@ -323,8 +323,44 @@ const ButtonFilter = ({
 
     const onSubmit = async (data) => {
         onFilter(data)
+        console.log('data', data)
     };
 
+    const handleReset = (data) => {
+
+        reset();
+        setRequestCode("");
+        setSubject("")
+        setSelectedDocumentType(documentTypeOptions[0]?.value)
+        setSelectUser(userData[0]?.value);
+        setSelectAuthor(userData[0]?.value);
+        setSelectAttoney(userData[0]?.value);
+        setSelectStatus(status[0]?.value);
+        setSelectedDepartment(department[0]?.value)
+        setSelectedSection("Select Section")
+        setSelectedUnit("Select Unit")
+        setSelectProcessingBy(userData[0]?.value);
+
+        data.applicant = undefined;
+        data.attorney = "all"
+        data.authorizer = "all"
+        data.createEnd = undefined
+        data.createStart = undefined
+        data.department = "all"
+        data.documentType = "all"
+        data.periodEnd = undefined
+        data.periodStart = undefined
+        data.processingby = "all"
+        data.proposal = undefined
+        data.requestcode = undefined
+        data.section = undefined
+        data.status = "all"
+        data.subject = undefined
+        data.to = undefined
+        data.unit = undefined
+        onFilter(data)
+
+    }
     const menu = (
         <form encType="multipart/form-data">
             <div className="buttonFilter-menu" mode="vertical" direction="rtl">
@@ -332,7 +368,7 @@ const ButtonFilter = ({
                     <label className='buttonFilter-title-left'>Filter</label>
                     <div className='buttonFilter-title-right' >
                         <a onClick={handleSubmit(onSubmit)} style={{ backgroundColor: "#5cb85c", color: "#fff" }}>Apply</a>
-                        <a style={{ color: "#5cb85c" }}>Clear</a>
+                        <a onClick={handleReset} style={{ color: "#5cb85c" }}>Clear</a>
 
                     </div>
                 </div>

@@ -43,7 +43,7 @@ const CustomMenu = ({
 
   const items = [
     getItem(
-      'Reqsuests',
+      'Project Task',
       'sub1',
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
@@ -53,13 +53,13 @@ const CustomMenu = ({
         </Col>
         <Col className='customMenu-ElementContain'>
           <Row className='customMenu-ElementContain-item' >Nhan Nguyen Minh has commented on request 00007-eDoc-LMart-2004</Row>
-          <Row className='customMenu-ElementContain-item'>17/04/2024</Row>
+          <Row className='customMenu-ElementContain-itemDate'>17/04/2024</Row>
         </Col>
       </Row >,
       ],
     ),
     getItem(
-      'Status',
+      'AVN Document Approval',
       'sub2',
       <FontAwesomeIcon icon='fa-solid fa-chart-column' />,
       'submenu',
@@ -69,10 +69,20 @@ const CustomMenu = ({
         </Col>
         <Col className='customMenu-ElementContain'>
           <Row className='customMenu-ElementContain-item' >Nhan Nguyen Minh has commented on request 00007-eDoc-LMart-2004</Row>
-          <Row className='customMenu-ElementContain-item'>17/04/2024</Row>
+          <Row className='customMenu-ElementContain-itemDate'>17/04/2024</Row>
+        </Col>
+      </Row >,
+      <Row className='customMenu-Element'>
+        <Col className='customMenu-ElementAvatar'>
+          <Avatar src="/logo192.png"></Avatar>
+        </Col>
+        <Col className='customMenu-ElementContain'>
+          <Row className='customMenu-ElementContain-item' >Nhan Nguyen Minh has commented on request 00007-eDoc-LMart-2004</Row>
+          <Row className='customMenu-ElementContain-itemDate'>17/04/2024</Row>
         </Col>
       </Row >,
       ],
+
     ), // 2 mục con trong submenu
 
   ];

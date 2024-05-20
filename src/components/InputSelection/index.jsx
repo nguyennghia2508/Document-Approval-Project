@@ -19,25 +19,26 @@ const InputSelection = ({
     indexInput,
     idInput,
     setValue,
+    mode
 }) => {
 
-    useEffect(() =>{
-        if(value)
-        {
-          if(setValue)
-          {
-            setValue(name,value)
-          }
+    useEffect(() => {
+        if (value) {
+            if (setValue) {
+                setValue(name, value)
+            }
         }
-    },[value])
+    }, [value])
 
     const handleSelected = (e, field) => {
         if (multifield) {
-            onChange(idInput,indexInput, e);
+            onChange(idInput, indexInput, e);
+
         }
         else {
             field.onChange(e)
             onChange(e);
+
         }
     };
 
@@ -51,6 +52,7 @@ const InputSelection = ({
                 render={({ field }) => {
                     return (
                         <Select
+                            mode={mode}
                             id={id}
                             value={value}
                             defaultValue={defaultValue}

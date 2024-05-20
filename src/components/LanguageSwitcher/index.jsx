@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLanguage } from '../../redux/features/languageSlice';
 
 const LanguageSwitcher = () => {
-    const [language, setLanguage] = useState('VN');
+    const dispatch = useDispatch();
+    const lang = useSelector((state) => state.language.lang);
 
-    const toggleLanguage = () => {
-        setLanguage(language === 'VN' ? 'EN' : 'VN');
+    const handleLanguageChange = () => {
+        const newLang = lang === 'vi' ? 'en' : 'vi';
+        dispatch(setLanguage(newLang));
     };
 
     return (
-        <div className='footer-lang' onClick={toggleLanguage}>
-            {language === 'VN' ? (
-                <>
-                    <Image preview={false} src='/vietnam.svg'></Image>
-                    <span>VN</span>
-                </>
-            ) : (
-                <>
-                    <Image preview={false} src='/united-states.svg'></Image>
-                    <span>EN</span>
-                </>
-            )}
+        <div className='footer-lang' onClick={handleLanguageChange}>
+            <Image
+                preview={false}
+                src={lang === 'vi' ? '/vietnam.svg' : '/united-states.svg'}
+            />
+            <span>{lang.toUpperCase()}</span>
         </div>
     );
 };
