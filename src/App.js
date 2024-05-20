@@ -9,6 +9,7 @@ import { hubConnection } from 'signalr-no-jquery';
 const connection = hubConnection("https://localhost:44389/signalr")
 const hubProxy = connection.createHubProxy('SignalRHub')
 
+
 function App() {
 
   const dispatch = useDispatch()
