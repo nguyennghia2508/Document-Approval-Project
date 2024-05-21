@@ -107,30 +107,6 @@ const DocumentApproval = () => {
     getAllDocumentApproval();
   }, [tabView, user])
 
-  const [exportExcel, setExportExcel] = useState('')
-  useEffect(() => {
-
-    const listDocument = dataDocument.map(data => ({
-      applicant: data.ApplicantId,
-      attorney: data.attorney,
-      authorizer: data.authorizer,
-      createDate: data.CreateDate,
-      department: data.DepartmentName,
-      documentType: data.DocumentTypeName,
-      processingby: data.ProcessingBy,
-      requestcode: data.RequestCode,
-      section: data.SectionName,
-      status: data.Status,
-      subject: data.Subject,
-      unit: data.UnitName
-
-    }));
-
-    setExportExcel(listDocument)
-  }, [dataDocument])
-
-
-
   const dataArray = [ // Chú ý dùng mảng ngoài cùng
     ['CONTRACT APPROVAL REQUEST REPORT'],
     [`From ${moment().format('DD/MM/YYYY')} to ${moment().format('DD/MM/YYYY')}`],
