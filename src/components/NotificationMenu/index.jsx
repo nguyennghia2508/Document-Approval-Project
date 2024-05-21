@@ -5,22 +5,18 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Row, Col } from "antd";
+
 library.add(fas, far, fab);
 
-const CustomMenu = ({
+const NotificationMenu = ({
 }) => {
-
-
 
   const [openKeys, setOpenKeys] = useState(['sub1']);
   const rootSubmenuKeys = ['sub1', 'sub2', 'sub3', 'sub4'];
 
   const getItem = (label, key, icon, type, childrenLabels, styles = []) => {
-
-
-
 
     const children = childrenLabels.map((childLabel, index) => {
       return {
@@ -114,4 +110,4 @@ const CustomMenu = ({
   );
 };
 
-export default CustomMenu;
+export default NotificationMenu;

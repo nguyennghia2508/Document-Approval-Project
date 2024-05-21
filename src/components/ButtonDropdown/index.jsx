@@ -2,18 +2,25 @@ import React from 'react';
 import "./style.scss"
 import { BellOutlined, CloseOutlined, QuestionOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Menu, Divider, Image } from 'antd';
-import { useSelector } from 'react-redux';
-import { use } from 'i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { resetUser } from '../../redux/features/userSlice';
 import { useState } from 'react';
-import CustomMenu from '../CustomMenu';
+import NotificationMenu from '../NotificationMenu';
+import { hubConnection } from 'signalr-no-jquery';
 
 const { Item } = Menu;
 const ButtonDropdown = ({ isQ, isNo = false }) => {
 
+    const dispatch = useDispatch()
+
+    const connection = hubConnection("https://localhost:44389/signalr");
+
     const user = useSelector((state) => state.user.value)
     const navigate = useNavigate();
     const handleLogout = () => {
+        connection.stop()
+        dispatch(resetUser())
         localStorage.removeItem('token');
         navigate('/login');
     };
@@ -71,8 +78,8 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
                 label: <div className='btn-Dropdown-UserLabel' >
                     <div style={{ width: "64px", paddingRight: "25px" }}><Image preview={false} src='/default-user-profile.png' ></Image></div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
-                        <span>{user.Username}</span>
-                        <span>{user.Email}</span>
+                        <span>{user?.Username}</span>
+                        <span>{user?.Email}</span>
                     </div>
                 </div>,
                 key: '3',
@@ -109,7 +116,7 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
 
         <Menu className='buttonDropdown' style={{ marginTop: "7px" }}>
             {isNo ? (
-                <CustomMenu />
+                <NotificationMenu />
             ) : (
                 items.map(item => (
                     <Menu.Item key={item.key}>

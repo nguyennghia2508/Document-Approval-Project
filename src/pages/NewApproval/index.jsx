@@ -241,6 +241,7 @@ const New = () => {
         };
 
         formData.append('ApprovalPerson', JSON.stringify(approvalPerson));
+        setIsLoading(true)
         const res = await documentApprovalApi.addDocumentApproval(formData);
         if (res.state === "true") {
             const dc = res.dc

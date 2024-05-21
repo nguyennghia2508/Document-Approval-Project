@@ -1,5 +1,5 @@
 import './index.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MenuOutlined,
   MoreOutlined,
@@ -40,6 +40,7 @@ import logo from '../../assets/images/brand.png';
 import user_default_image from '../../assets/images/default-user-profile.png';
 import { Link, useNavigate } from 'react-router-dom';
 import ButtonDropdown from '../ButtonDropdown';
+
 const { Item } = Menu;
 const Header = () => {
 

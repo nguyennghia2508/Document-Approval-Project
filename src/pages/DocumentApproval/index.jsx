@@ -33,7 +33,7 @@ const DocumentApproval = () => {
     const getAllDocument = async () => {
       try {
         if (!tabView.filter) {
-          const data = await documentApprovalApi.getListDocument({ userId: user.Id, tabName: tabView.tabName, page: currentPage })
+          const data = await documentApprovalApi.getListDocument({ userId: user?.Id, tabName: tabView.tabName, page: currentPage })
           setIsLoading(true)
           setList(data)
           if (data.state === "true") {
@@ -59,7 +59,7 @@ const DocumentApproval = () => {
         }
         else {
           const data = await documentApprovalApi.getListDocument({
-            userId: user.Id, tabName: tabView.tabName, page: currentPage,
+            userId: user?.Id, tabName: tabView.tabName, page: currentPage,
             dataFilter: tabView.filterList
           })
           setList(data)
@@ -86,7 +86,7 @@ const DocumentApproval = () => {
       try {
         if (!tabView.filter) {
           const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id,
+            userId: user?.Id,
             tabName: tabView.tabName
           })
           setDataDocument(dataAllDocumentApproval.listDcapproval)
@@ -94,7 +94,7 @@ const DocumentApproval = () => {
         }
         else {
           const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user.Id, tabName: tabView.tabName,
+            userId: user?.Id, tabName: tabView.tabName,
             dataFilter: tabView.filterList
           })
           setDataDocument(dataAllDocumentApproval.listDcapproval)
