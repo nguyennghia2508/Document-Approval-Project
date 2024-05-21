@@ -21,7 +21,10 @@ const MainLayout = ({
             const user = await authUtils.isAuthenticated()
             if (user) {
 
-                dispatch(setUser(user))
+                dispatch(setUser({
+                    value: user,
+                    isLogin: true
+                }))
             }
             else {
                 navigate('/login');

@@ -27,14 +27,13 @@ const DocumentApproval = () => {
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getAllDocument = async () => {
       try {
         if (!tabView.filter) {
           const data = await documentApprovalApi.getListDocument({ userId: user?.Id, tabName: tabView.tabName, page: currentPage })
-          setIsLoading(true)
           setList(data)
           if (data.state === "true") {
             // connection.start()
@@ -106,35 +105,6 @@ const DocumentApproval = () => {
     }
     getAllDocumentApproval();
   }, [tabView, user])
-
-  const [exportExcel, setExportExcel] = useState('')
-  useEffect(() => {
-    const getAllDocumentApproval = async () => {
-      try {
-        if (!tabView.filter) {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user?.Id,
-            tabName: tabView.tabName
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
-
-        }
-        else {
-          const dataAllDocumentApproval = await documentApprovalApi.getAllListDocument({
-            userId: user?.Id, tabName: tabView.tabName,
-            dataFilter: tabView.filterList
-          })
-          setDataDocument(dataAllDocumentApproval.listDcapproval)
-        }
-      }
-      catch (error) {
-        console.log(error)
-      }
-    }
-    getAllDocumentApproval();
-  }, [dataDocument])
-
-
 
   const dataArray = [ // Chú ý dùng mảng ngoài cùng
     ['CONTRACT APPROVAL REQUEST REPORT'],
