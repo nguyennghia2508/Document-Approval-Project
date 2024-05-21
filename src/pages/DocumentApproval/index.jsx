@@ -27,14 +27,13 @@ const DocumentApproval = () => {
   const tabView = useSelector((state) => state.tabview.value)
   const [dataDocument, setDataDocument] = useState([])
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getAllDocument = async () => {
       try {
         if (!tabView.filter) {
           const data = await documentApprovalApi.getListDocument({ userId: user?.Id, tabName: tabView.tabName, page: currentPage })
-          setIsLoading(true)
           setList(data)
           if (data.state === "true") {
             // connection.start()

@@ -173,7 +173,7 @@ const SystemEmployee = () => {
                     />
                 </Col>
                 <Col className='SystemEmployee__UserName'>
-                    <Typography.Paragraph>{user.Username}</Typography.Paragraph>
+                    <Typography.Paragraph>{user?.Username}</Typography.Paragraph>
                 </Col>
                 <Col className='SystemEmployy__EditIcon'>
                     <FaUserEdit />

@@ -6,21 +6,15 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 // import { Col, Row, Flex, Layout } from 'antd';
 import "./MainStyle.scss"
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import authUtils from "../../utils/authUtils"
 import { useDispatch } from 'react-redux';
 import { resetUser, setUser } from '../../redux/features/userSlice'
-import { useSelector } from 'react-redux';
-import { hubConnection } from 'signalr-no-jquery';
 
 const MainLayout = ({
     isForm = false,
     href
 }) => {
-
-    const user = useSelector((state) => state.user.value)
-    const isLogin = useSelector((state) => state.user.isLogin)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -43,33 +37,6 @@ const MainLayout = ({
         }
         checkAuth()
     }, [navigate])
-
-    useEffect(() => {
-        if (user && isLogin) {
-            console.log("true")
-            const connection = hubConnection("https://localhost:44389", {
-                qs: { "userId": `${user.Id}` }
-            });
-
-            const hubProxy = connection.createHubProxy('SignalRHub');
-
-            hubProxy.on("addNotification", (data) => {
-                if (data) {
-                    if (data.type === "WAITING_FOR_APPROVAL") {
-                        toast.success(`Request ${data.parameter.code} is waiting for your approval`)
-                    }
-                }
-            })
-
-            connection.start()
-                .done(() => {
-                    console.log('SignalR connected');
-                })
-                .fail((error) => {
-                    console.error('SignalR connection error: ' + error);
-                })
-        }
-    }, [isLogin]);
 
     return (
         <>

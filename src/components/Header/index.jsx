@@ -39,15 +39,47 @@ import { Col, Image, Menu, Drawer, Row } from 'antd';
 import logo from '../../assets/images/brand.png';
 import user_default_image from '../../assets/images/default-user-profile.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ButtonDropdown from '../ButtonDropdown';
+import { useSelector } from 'react-redux';
+import { hubConnection } from 'signalr-no-jquery';
 
 const { Item } = Menu;
 const Header = () => {
 
   const navigate = useNavigate()
+  const user = useSelector((state) => state.user.value)
+  const isLogin = useSelector((state) => state.user.isLogin)
 
   const [openMenu, setOpenMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    if (user && isLogin) {
+      console.log("true")
+      const connection = hubConnection("https://localhost:44389", {
+        qs: { "userId": `${user.Id}` }
+      });
+
+      const hubProxy = connection.createHubProxy('SignalRHub');
+
+      hubProxy.on("addNotification", (data) => {
+        if (data) {
+          if (data.type === "WAITING_FOR_APPROVAL") {
+            toast.success(`Request ${data.parameter.code} is waiting for your approval`)
+          }
+        }
+      })
+
+      connection.start()
+        .done(() => {
+          console.log('SignalR connected');
+        })
+        .fail((error) => {
+          console.error('SignalR connection error: ' + error);
+        })
+    }
+  }, [isLogin]);
 
   const handleMobileHeaderClick = () => {
     setIsMobile(!isMobile); // Thay đổi trạng thái xoay

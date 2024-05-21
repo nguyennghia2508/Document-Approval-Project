@@ -3,7 +3,7 @@ import "./style.scss"
 import { BellOutlined, CloseOutlined, QuestionOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Menu, Divider, Image } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { resetUser } from '../../redux/features/userSlice';
 import { useState } from 'react';
 import NotificationMenu from '../NotificationMenu';

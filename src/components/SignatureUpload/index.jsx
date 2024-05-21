@@ -45,7 +45,7 @@ const SignatureUpload = ({
     }, [switchTab]);
 
     useEffect(() => {
-        if (user.SignatureFileName && user.SignatureFilePath) {
+        if (user && user.SignatureFileName && user.SignatureFilePath) {
             setFileListUpload(null)
             const fileObj = new File([null], user.SignatureFileName, {
                 type: "image/png",
@@ -74,10 +74,13 @@ const SignatureUpload = ({
                     formData.append('signature', data.signature[i]);
                 }
             }
-            const res = await userApi.addSignature(user.Id, formData);
+            const res = await userApi.addSignature(user?.Id, formData);
             if (res.state === "true") {
                 setConfirmLoading(false);
-                dispatch(setUser(res.user))
+                dispatch(setUser({
+                    value: res.user,
+                    isLogin: true
+                }))
                 setFileList([])
                 toast.success(res.msg)
             }
