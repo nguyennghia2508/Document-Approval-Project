@@ -8,9 +8,12 @@ import './style.scss';
 import { useEffect, useState } from 'react';
 import { Row, Col } from "antd";
 
+
+
 library.add(fas, far, fab);
 
 const NotificationMenu = ({
+  notificationById
 }) => {
 
   const [openKeys, setOpenKeys] = useState(['sub1']);
@@ -35,24 +38,20 @@ const NotificationMenu = ({
     };
   };
 
-
-
   const items = [
     getItem(
       'Project Task',
       'sub1',
       <FontAwesomeIcon icon={['fas', 'fa-folder-open']} />,
       'submenu',
-      [<Row className='customMenu-Element'>
-        <Col className='customMenu-ElementAvatar'>
-          <Avatar src="/logo192.png"></Avatar>
-        </Col>
-        <Col className='customMenu-ElementContain'>
-          <Row className='customMenu-ElementContain-item' >Nhan Nguyen Minh has commented on request 00007-eDoc-LMart-2004</Row>
-          <Row className='customMenu-ElementContain-itemDate'>17/04/2024</Row>
-        </Col>
-      </Row >,
-      ],
+
+      [
+        notificationById.length > 0 && notificationById.map((notification, index) => {
+          <span>AA</span>
+        })
+        ,
+      ]
+
     ),
     getItem(
       'AVN Document Approval',

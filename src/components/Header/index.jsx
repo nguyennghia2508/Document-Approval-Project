@@ -41,8 +41,9 @@ import user_default_image from '../../assets/images/default-user-profile.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ButtonDropdown from '../ButtonDropdown';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { hubConnection } from 'signalr-no-jquery';
+import notificationApi from '../../api/notificationApi';
 
 const { Item } = Menu;
 const Header = () => {
@@ -52,11 +53,20 @@ const Header = () => {
   const isLogin = useSelector((state) => state.user.isLogin)
 
   const [openMenu, setOpenMenu] = useState(false);
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(false);
+  const [isNotify, setIsNotify] = useState(false)
+
+  const [notificationById, setNotificationById] = useState([])
+
+  const dispatch = useDispatch()
+
+
 
   useEffect(() => {
     if (user && isLogin) {
       console.log("true")
+
+
       const connection = hubConnection("https://localhost:44389", {
         qs: { "userId": `${user.Id}` }
       });
@@ -65,6 +75,7 @@ const Header = () => {
 
       hubProxy.on("addNotification", (data) => {
         if (data) {
+          setIsNotify(true)
           if (data.type === "WAITING_FOR_APPROVAL") {
             toast.success(`Request ${data.parameter.code} is waiting for your approval`)
           }
@@ -76,6 +87,7 @@ const Header = () => {
           }
           if (data.type === "COMMENT") {
             toast.success(`${data.parameter.userDisplayName} has commented on request ${data.parameter.code}`)
+
           }
         }
       })
@@ -88,7 +100,23 @@ const Header = () => {
           console.error('SignalR connection error: ' + error);
         })
     }
+
   }, [isLogin]);
+
+  useEffect(() => {
+    if (user && isLogin) {
+      const getNotificationById = async () => {
+        const data = await notificationApi.getNotificationById(user?.Id)
+        // const dataNotification = await notificationApi.getAll()
+        if (data.state === "true") {
+          setNotificationById(data.listNotificationsAll)
+        }
+
+      }
+      getNotificationById()
+    }
+  }, [isLogin, isNotify])
+
 
   const handleMobileHeaderClick = () => {
     setIsMobile(!isMobile); // Thay đổi trạng thái xoay
@@ -131,7 +159,10 @@ const Header = () => {
           <ButtonDropdown isQ={true} />
         </Col>
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
-          <ButtonDropdown isNo={true} />
+          <ButtonDropdown
+            notificationById={notificationById}
+            isNotify={isNotify}
+            isNo={true} />
         </Col>
         <Col className={isMobile ? 'header-icon' : 'header-iconMobile'}>
           <SettingOutlined onClick={() => navigate("/setting")} />

@@ -10,7 +10,7 @@ import NotificationMenu from '../NotificationMenu';
 import { hubConnection } from 'signalr-no-jquery';
 
 const { Item } = Menu;
-const ButtonDropdown = ({ isQ, isNo = false }) => {
+const ButtonDropdown = ({ isQ, isNo = false, notificationById }) => {
 
     const dispatch = useDispatch()
 
@@ -116,7 +116,7 @@ const ButtonDropdown = ({ isQ, isNo = false }) => {
 
         <Menu className='buttonDropdown' style={{ marginTop: "7px" }}>
             {isNo ? (
-                <NotificationMenu />
+                <NotificationMenu notificationById={notificationById} />
             ) : (
                 items.map(item => (
                     <Menu.Item key={item.key}>
