@@ -68,6 +68,15 @@ const Header = () => {
           if (data.type === "WAITING_FOR_APPROVAL") {
             toast.success(`Request ${data.parameter.code} is waiting for your approval`)
           }
+          if (data.type === "WAITING_FOR_SIGNATURE") {
+            toast.success(`Request ${data.parameter.code} is waiting for your signature`)
+          }
+          if (data.type === "REJECTED") {
+            toast.success(`Request ${data.parameter.code} is rejected`)
+          }
+          if (data.type === "COMMENT") {
+            toast.success(`${data.parameter.userDisplayName} has commented on request ${data.parameter.code}`)
+          }
         }
       })
 

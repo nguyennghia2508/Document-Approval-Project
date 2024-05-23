@@ -85,7 +85,7 @@ const ModalApproval = ({
     if (isShare && personShare.length > 0) {
       return false
     }
-    else if (approvalText.length > 0 && personForward) {
+    else if (approvalText.length > 0 && personForward != null) {
       return false
     }
     else if (approvalText.length > 0 && !isForward && !isShare) {
