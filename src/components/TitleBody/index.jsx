@@ -261,14 +261,19 @@ const TitleBody = ({
                                     referenceFile={referenceFile}
                                     comment={comment}
                                 />
-
+                                {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
+                                    value.ApprovalPersonId === currentUser?.Id
+                                    &&
+                                    <React.Fragment key={index}>
+                                        <Link onClick={() => openModal(6, value.Index, value.PersonDuty)}><ShareAltOutlined />Share</Link>
+                                    </React.Fragment>
+                                ))}
 
                                 {listApprover && listApprover?.length > 0 && listApprover.map((value, index) => (
                                     value.ApprovalPersonId === currentUser?.Id
                                     && value.IsProcessing
                                     &&
                                     <React.Fragment key={index}>
-                                        <Link onClick={() => openModal(6, value.Index, value.PersonDuty)}><ShareAltOutlined />Share</Link>
                                         <Link onClick={() => openModal(2, value.Index)} ><CheckOutlined />Approve</Link>
                                         <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
                                         <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>
@@ -276,8 +281,10 @@ const TitleBody = ({
                                 ))}
                                 {listSigner && listSigner?.length > 0 && listSigner.map((value, index) => {
                                     const isCurrentUserSigner = value.ApprovalPersonId === currentUser?.Id && value.IsProcessing;
+
                                     const isLastApproverApproved = listApprover.some((ap, index) =>
                                         value.Index === 1 &&
+                                        value.Id === currentUser?.Id &&
                                         value.IsProcessing &&
                                         ap.ApprovalPersonId === value.ApprovalPersonId &&
                                         ap.IsLast &&
@@ -287,7 +294,6 @@ const TitleBody = ({
                                     if (isCurrentUserSigner || isLastApproverApproved) {
                                         return (
                                             <React.Fragment key={index}>
-                                                <Link onClick={() => openModal(6, value.Index, value.PersonDuty)}><ShareAltOutlined />Share</Link>
                                                 <Link onClick={() => openModal(3, value.Index)}><CheckOutlined />Sign</Link>
                                                 <Link onClick={() => openModal(4, value.Index, value.PersonDuty)}><CloseOutlined />Reject</Link>
                                                 <Link onClick={() => openModal(5, value.Index, value.PersonDuty)}><MailOutlined />Forward</Link>

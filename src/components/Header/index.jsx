@@ -83,7 +83,11 @@ const Header = () => {
             toast.success(`Request ${data.parameter.code} is waiting for your signature`)
           }
           if (data.type === "REJECTED") {
-            toast.error(`Request ${data.parameter.code} is rejected`)
+            toast.success(`Request ${data.parameter.code} is rejected`)
+          }
+          if (data.type === "COMMENT") {
+            toast.success(`${data.parameter.userDisplayName} has commented on request ${data.parameter.code}`)
+
           }
         }
       })

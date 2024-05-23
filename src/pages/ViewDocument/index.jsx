@@ -161,8 +161,10 @@ const ViewDocument = () => {
         }
 
         setActiveCommentIndex(null)
+        setIsLoading(true)
         const res = await commentApi.addComment(formData)
         if (res.state === "true") {
+            setIsLoading(false)
             setComment(res.comments)
             const files = res.files
 
